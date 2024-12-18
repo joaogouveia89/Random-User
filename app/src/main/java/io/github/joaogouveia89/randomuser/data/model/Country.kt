@@ -91,7 +91,10 @@ enum class Country(val code: String, val humanizedName: String) {
     GUADELOUPE("GP", "Guadeloupe"),
     EQUATORIAL_GUINEA("GQ", "Equatorial Guinea"),
     GREECE("GR", "Greece"),
-    SOUTH_GEORGIA_AND_THE_SOUTH_SANDWICH_ISLANDS("GS", "South Georgia and the South Sandwich Islands"),
+    SOUTH_GEORGIA_AND_THE_SOUTH_SANDWICH_ISLANDS(
+        "GS",
+        "South Georgia and the South Sandwich Islands"
+    ),
     GUATEMALA("GT", "Guatemala"),
     GUAM("GU", "Guam"),
     GUINEABISSAU("GW", "Guinea-Bissau"),
@@ -252,10 +255,10 @@ enum class Country(val code: String, val humanizedName: String) {
     ZAMBIA("ZM", "Zambia"),
     ZIMBABWE("ZW", "Zimbabwe");
 
-    companion object{
+    companion object {
         fun getByName(url: String?) =
             url?.let { u ->
-                entries.firstOrNull{ entry ->
+                entries.firstOrNull { entry ->
                     entry.humanizedName == u
                 }
             }

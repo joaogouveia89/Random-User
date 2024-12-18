@@ -3,11 +3,8 @@ package io.github.joaogouveia89.randomuser.remoteService.model.mappers
 import io.github.joaogouveia89.randomuser.data.model.Country
 import io.github.joaogouveia89.randomuser.data.model.Nationality
 import io.github.joaogouveia89.randomuser.data.model.User
-import io.github.joaogouveia89.randomuser.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.remoteService.model.Results
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
 
 fun Results.asUser(): User =
     User(

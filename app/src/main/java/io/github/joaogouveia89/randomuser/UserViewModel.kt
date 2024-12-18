@@ -34,7 +34,7 @@ class UserViewModel(
                     }
 
                     is UserFetchState.Success -> {
-                        randomUserResponse.user.timezoneOffset?.let {
+                        randomUserResponse.user.timezoneOffset.let {
                             startChronometer(
                                 Clock.System.now().calculateOffset(it)
                             )

@@ -7,7 +7,7 @@ import io.github.joaogouveia89.randomuser.remoteService.model.RandomUserResponse
 
 class UserSourceImpl(
     private val service: UserService
-): UserSource {
+) : UserSource {
     override suspend fun getRandomUser(): RandomUserResponse {
         val user = service.getRandomUser()
         Log.i("JOAODEBUG", user.toString())

@@ -3,7 +3,6 @@ package io.github.joaogouveia89.randomuser
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -41,7 +40,6 @@ import io.github.joaogouveia89.randomuser.data.model.Country
 import io.github.joaogouveia89.randomuser.data.model.Nationality
 import io.github.joaogouveia89.randomuser.data.model.User
 import io.github.joaogouveia89.randomuser.remoteService.RandomUserRetrofit
-import io.github.joaogouveia89.randomuser.remoteService.model.Timezone
 import io.github.joaogouveia89.randomuser.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import kotlinx.datetime.Instant
@@ -70,7 +68,7 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     val uiState by viewModel.uiState.collectAsState()
                     val user = uiState.user
-                    UserProfileScreen(innerPadding, user, uiState){
+                    UserProfileScreen(innerPadding, user, uiState) {
                         val gmmIntentUri: Uri = Uri.parse("geo:${user.latitude},${user.longitude}")
                         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                         mapIntent.setPackage("com.google.android.apps.maps")
@@ -231,20 +229,20 @@ fun Birthday(
     age: Int
 ) {
 
-        val localTime = date.toLocalDateTime(TimeZone.UTC)
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = Icons.Default.Cake,
-                contentDescription = null
-            )
+    val localTime = date.toLocalDateTime(TimeZone.UTC)
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            imageVector = Icons.Default.Cake,
+            contentDescription = null
+        )
 
-            Column {
-                Text("${localTime.dayOfMonth}/${localTime.monthNumber}/${localTime.year}")
-                Text("$age")
-            }
+        Column {
+            Text("${localTime.dayOfMonth}/${localTime.monthNumber}/${localTime.year}")
+            Text("$age")
         }
+    }
 }
 
 @Composable

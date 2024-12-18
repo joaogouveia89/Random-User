@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 
 class UserRepositoryImpl(
     private val source: UserSource
-): UserRepository {
+) : UserRepository {
     override fun getRandomUser(): Flow<UserFetchState> = flow {
         emit(UserFetchState.Loading)
 
