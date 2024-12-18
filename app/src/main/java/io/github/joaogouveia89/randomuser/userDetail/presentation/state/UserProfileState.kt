@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.state
+package io.github.joaogouveia89.randomuser.userDetail.presentation.state
 
 import io.github.joaogouveia89.randomuser.data.model.User
 import kotlinx.datetime.Instant
