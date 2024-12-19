@@ -38,12 +38,17 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     val uiState by viewModel.uiState.collectAsState()
                     val user = uiState.user
-                    RandomUserScreen(innerPadding, user, uiState) {
-                        val gmmIntentUri: Uri = Uri.parse("geo:${user.latitude},${user.longitude}")
-                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                        mapIntent.setPackage("com.google.android.apps.maps")
-                        startActivity(mapIntent)
-                    }
+                    RandomUserScreen(
+                        innerPadding,
+                        user,
+                        uiState,
+                        onAddToContactsClick = {},
+                        onOpenMapClick = {
+                            val gmmIntentUri: Uri = Uri.parse("geo:${user.latitude},${user.longitude}")
+                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                            mapIntent.setPackage("com.google.android.apps.maps")
+                            startActivity(mapIntent)
+                        })
                 }
             }
         }

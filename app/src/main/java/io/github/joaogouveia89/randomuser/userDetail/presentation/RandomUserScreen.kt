@@ -1,14 +1,29 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,13 +44,15 @@ fun RandomUserScreen(
     innerPadding: PaddingValues,
     user: User,
     uiState: UserProfileState,
-    onOpenMapClick: () -> Unit
+    onOpenMapClick: () -> Unit,
+    onAddToContactsClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
     ) {
         UserProfileHeader(
             title = user.title,
@@ -44,33 +61,88 @@ fun RandomUserScreen(
             pictureUrl = user.largePictureUrl,
             nationality = user.nationality?.reference ?: ""
         )
+
         Spacer(modifier = Modifier.height(16.dp))
-        UserLocation(
-            city = user.city,
-            state = user.state,
-            country = user.country,
-            countryCode = user.countryCode?.code ?: "",
-            onOpenMapClick = onOpenMapClick
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        UserTimezone(
-            timezone = user.timezoneOffset,
-            timezoneDescription = user.timezoneDescription,
-            localTime = uiState.locationTime
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        user.dateOfBirth?.let {
-            UserBirthday(
-                date = it,
-                age = user.age
+
+        CardSection {
+            UserLocation(
+                city = user.city,
+                state = user.state,
+                country = user.country,
+                onOpenMapClick = onOpenMapClick
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
-        UserContacts(
-            phone = user.phone,
-            cellPhone = user.cellPhone,
-            email = user.email
-        )
+
+        CardSection {
+            UserTimezone(
+                timezone = user.timezoneOffset,
+                timezoneDescription = user.timezoneDescription,
+                localTime = uiState.locationTime
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        user.dateOfBirth?.let {
+            CardSection {
+                UserBirthday(
+                    date = it,
+                    age = user.age
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CardSection {
+            UserContacts(
+                phone = user.phone,
+                cellPhone = user.cellPhone,
+                email = user.email
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Add to Contacts Button
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                onClick = onAddToContactsClick,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PersonAdd,
+                    contentDescription = "Add to Contacts",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Add to Contacts")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
+@Composable
+private fun CardSection(content: @Composable () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(8.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        content()
     }
 }
 
@@ -123,7 +195,8 @@ fun GreetingPreview() {
                 ),
                 locationTime = Instant.parse("2024-04-01T14:30:00Z")
             ),
-            onOpenMapClick = { /* Do nothing for preview */ }
+            onOpenMapClick = { /* Do nothing for preview */ },
+            onAddToContactsClick = {}
         )
     }
 }

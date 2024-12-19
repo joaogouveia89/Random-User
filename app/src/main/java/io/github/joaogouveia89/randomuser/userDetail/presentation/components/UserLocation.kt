@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,50 +28,40 @@ fun UserLocation(
     city: String,
     state: String,
     country: String,
-    countryCode: String,
     onOpenMapClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = Icons.Default.Place,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(28.dp)
         )
-        Spacer(modifier = Modifier.width(8.dp))
 
-        Column {
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "$city, $state",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = country,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = country,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                AsyncImage(
-                    modifier = Modifier.size(24.dp),
-                    model = "https://flagsapi.com/$countryCode/flat/64.png",
-                    contentDescription = null
-                )
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
+        IconButton(
+            onClick = onOpenMapClick
+        ) {
             Icon(
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable(onClick = onOpenMapClick),
                 imageVector = Icons.Default.Map,
                 contentDescription = "Open Map",
                 tint = MaterialTheme.colorScheme.secondary
@@ -78,14 +69,12 @@ fun UserLocation(
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 private fun UserLocationPreview() {
     UserLocation(
         city = "Lisbon",
         state = "Lisbon",
-        country = "Portugal",
-        countryCode = "PT"
+        country = "Portugal"
     ) { }
 }

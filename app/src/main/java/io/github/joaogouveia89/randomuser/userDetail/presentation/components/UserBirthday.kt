@@ -27,31 +27,33 @@ fun UserBirthday(
     date: Instant,
     age: Int
 ) {
-    val localDate = date.toLocalDateTime(TimeZone.currentSystemDefault())
+    val localTime = date.toLocalDateTime(TimeZone.UTC)
+
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = Icons.Default.Cake,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(28.dp)
         )
-        Spacer(modifier = Modifier.width(8.dp))
+
+        Spacer(modifier = Modifier.width(12.dp))
 
         Column {
             Text(
-                text = "${localDate.dayOfMonth}/${localDate.monthNumber}/${localDate.year}",
+                text = "${localTime.dayOfMonth}/${localTime.monthNumber}/${localTime.year}",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = "$age years old",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
