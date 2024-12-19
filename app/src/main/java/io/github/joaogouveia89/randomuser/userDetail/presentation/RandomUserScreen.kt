@@ -27,9 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.joaogouveia89.randomuser.data.model.Country
-import io.github.joaogouveia89.randomuser.data.model.Nationality
-import io.github.joaogouveia89.randomuser.data.model.User
+import io.github.joaogouveia89.randomuser.domain.model.Country
+import io.github.joaogouveia89.randomuser.domain.model.Nationality
+import io.github.joaogouveia89.randomuser.domain.model.User
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserBirthday
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserContacts

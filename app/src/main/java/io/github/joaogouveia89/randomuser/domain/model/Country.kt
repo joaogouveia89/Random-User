@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.data.model
+package io.github.joaogouveia89.randomuser.domain.model
 
 enum class Country(val code: String, val humanizedName: String) {
     ANDORRA("AD", "Andorra"),

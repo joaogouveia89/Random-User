@@ -11,8 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import io.github.joaogouveia89.randomuser.data.UserRepositoryImpl
-import io.github.joaogouveia89.randomuser.data.UserSourceImpl
+import io.github.joaogouveia89.randomuser.data.repository.UserRepositoryImpl
+import io.github.joaogouveia89.randomuser.data.source.UserSourceImpl
 import io.github.joaogouveia89.randomuser.remoteService.RandomUserRetrofit
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import io.github.joaogouveia89.randomuser.userDetail.presentation.RandomUserScreen

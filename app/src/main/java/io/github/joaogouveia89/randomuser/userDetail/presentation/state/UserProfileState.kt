@@ -1,6 +1,6 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation.state
 
-import io.github.joaogouveia89.randomuser.data.model.User
+import io.github.joaogouveia89.randomuser.domain.model.User
 import kotlinx.datetime.Instant
 
 data class UserProfileState(

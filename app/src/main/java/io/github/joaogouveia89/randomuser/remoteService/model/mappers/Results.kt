@@ -1,8 +1,8 @@
 package io.github.joaogouveia89.randomuser.remoteService.model.mappers
 
-import io.github.joaogouveia89.randomuser.data.model.Country
-import io.github.joaogouveia89.randomuser.data.model.Nationality
-import io.github.joaogouveia89.randomuser.data.model.User
+import io.github.joaogouveia89.randomuser.domain.model.Country
+import io.github.joaogouveia89.randomuser.domain.model.Nationality
+import io.github.joaogouveia89.randomuser.domain.model.User
 import io.github.joaogouveia89.randomuser.remoteService.model.Results
 import kotlinx.datetime.Instant
 

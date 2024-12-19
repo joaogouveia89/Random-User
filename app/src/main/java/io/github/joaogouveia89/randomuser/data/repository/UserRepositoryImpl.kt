@@ -1,8 +1,8 @@
-package io.github.joaogouveia89.randomuser.data
+package io.github.joaogouveia89.randomuser.data.repository
 
-import io.github.joaogouveia89.randomuser.domain.UserFetchState
-import io.github.joaogouveia89.randomuser.domain.UserRepository
-import io.github.joaogouveia89.randomuser.domain.UserSource
+import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
+import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.domain.source.UserSource
 import io.github.joaogouveia89.randomuser.remoteService.model.mappers.asUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

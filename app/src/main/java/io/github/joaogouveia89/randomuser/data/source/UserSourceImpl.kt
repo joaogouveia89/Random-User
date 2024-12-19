@@ -1,7 +1,7 @@
-package io.github.joaogouveia89.randomuser.data
+package io.github.joaogouveia89.randomuser.data.source
 
 import android.util.Log
-import io.github.joaogouveia89.randomuser.domain.UserSource
+import io.github.joaogouveia89.randomuser.domain.source.UserSource
 import io.github.joaogouveia89.randomuser.remoteService.UserService
 import io.github.joaogouveia89.randomuser.remoteService.model.RandomUserResponse
 
