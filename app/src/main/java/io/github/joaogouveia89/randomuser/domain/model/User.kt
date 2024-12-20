@@ -23,5 +23,6 @@ data class User(
     val cellPhone: String = "",
     val largePictureUrl: String = "",
     val thumbnailUrl: String = "",
-    val nationality: Nationality? = null
+    val nationality: Nationality? = null,
+    val nationalityColors: Pair<String, String> = Pair("", "")
 )

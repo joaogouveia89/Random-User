@@ -1,6 +1,5 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,8 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import io.github.joaogouveia89.randomuser.domain.model.Country
 import io.github.joaogouveia89.randomuser.domain.model.Nationality
 import io.github.joaogouveia89.randomuser.domain.model.User
@@ -47,11 +48,20 @@ fun RandomUserScreen(
     onOpenMapClick: () -> Unit,
     onAddToContactsClick: () -> Unit
 ) {
+    val iconsBackgroundColor = if (user.nationalityColors.first.isNotEmpty())
+        Color(user.nationalityColors.first.toColorInt())
+    else
+        MaterialTheme.colorScheme.surface
+
+    val iconsColor = if (user.nationalityColors.second.isNotEmpty())
+        Color(user.nationalityColors.second.toColorInt())
+    else
+        MaterialTheme.colorScheme.surface
+
     Column(
         modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
         UserProfileHeader(
@@ -69,6 +79,8 @@ fun RandomUserScreen(
                 city = user.city,
                 state = user.state,
                 country = user.country,
+                iconBackgroundColor = iconsBackgroundColor,
+                iconColor = iconsColor,
                 onOpenMapClick = onOpenMapClick
             )
         }
@@ -79,7 +91,9 @@ fun RandomUserScreen(
             UserTimezone(
                 timezone = user.timezoneOffset,
                 timezoneDescription = user.timezoneDescription,
-                localTime = uiState.locationTime
+                localTime = uiState.locationTime,
+                iconBackgroundColor = iconsBackgroundColor,
+                iconColor = iconsColor
             )
         }
 
@@ -89,7 +103,9 @@ fun RandomUserScreen(
             CardSection {
                 UserBirthday(
                     date = it,
-                    age = user.age
+                    age = user.age,
+                    iconBackgroundColor = iconsBackgroundColor,
+                    iconColor = iconsColor
                 )
             }
         }
@@ -100,7 +116,9 @@ fun RandomUserScreen(
             UserContacts(
                 phone = user.phone,
                 cellPhone = user.cellPhone,
-                email = user.email
+                email = user.email,
+                iconBackgroundColor = iconsBackgroundColor,
+                iconColor = iconsColor
             )
         }
 
@@ -133,14 +151,19 @@ fun RandomUserScreen(
 }
 
 @Composable
-private fun CardSection(content: @Composable () -> Unit) {
+private fun CardSection(
+    content: @Composable () -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        //colors = CardDefaults.cardColors(containerColor = )
     ) {
         content()
     }

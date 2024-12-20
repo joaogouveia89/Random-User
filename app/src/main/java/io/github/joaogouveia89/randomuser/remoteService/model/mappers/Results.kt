@@ -6,7 +6,7 @@ import io.github.joaogouveia89.randomuser.domain.model.User
 import io.github.joaogouveia89.randomuser.remoteService.model.Results
 import kotlinx.datetime.Instant
 
-fun Results.asUser(): User =
+fun Results.asUser(colors: Pair<String, String>): User =
     User(
         gender = gender,
         title = name.title,
@@ -27,5 +27,6 @@ fun Results.asUser(): User =
         cellPhone = cell,
         largePictureUrl = picture.large,
         thumbnailUrl = picture.thumbnail,
-        nationality = Nationality.fromReference(nat)
+        nationality = Nationality.fromReference(nat),
+        nationalityColors = colors
     )

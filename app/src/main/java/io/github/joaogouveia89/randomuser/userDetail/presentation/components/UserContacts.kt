@@ -1,5 +1,6 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,17 +8,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -25,15 +26,19 @@ import androidx.compose.ui.unit.dp
 fun UserContacts(
     phone: String,
     cellPhone: String,
-    email: String
+    email: String,
+    iconBackgroundColor: Color,
+    iconColor: Color
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(iconBackgroundColor, shape = RoundedCornerShape(10.dp)),
                 imageVector = Icons.Default.Phone,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
+                tint = iconColor
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column {
@@ -54,10 +59,12 @@ fun UserContacts(
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(iconBackgroundColor, shape = RoundedCornerShape(10.dp)),
                 imageVector = Icons.Default.Mail,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
+                tint = iconColor
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
@@ -72,9 +79,14 @@ fun UserContacts(
 @Preview(showBackground = true)
 @Composable
 private fun UserContactsPreview() {
+    // Example dynamic colors (replace these with your analyzed colors)
+    val dynamicIconColor = Color(0xFF6200EE)      // Example purple color
+    val dynamicIconBackgroundColor = Color(0xFF00FFFF) // Light purple background
     UserContacts(
         phone = "2222 222 2222",
         cellPhone = "3333 3333 333",
-        email = "johndoe@gmail.com"
+        email = "johndoe@gmail.com",
+        iconBackgroundColor = dynamicIconBackgroundColor,
+        iconColor = dynamicIconColor
     )
 }
