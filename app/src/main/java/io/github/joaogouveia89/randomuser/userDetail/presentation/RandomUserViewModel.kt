@@ -2,9 +2,9 @@ package io.github.joaogouveia89.randomuser.userDetail.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
-import io.github.joaogouveia89.randomuser.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

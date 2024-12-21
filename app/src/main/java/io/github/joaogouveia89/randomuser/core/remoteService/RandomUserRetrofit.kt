@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.remoteService
+package io.github.joaogouveia89.randomuser.core.remoteService
 
 import com.google.gson.GsonBuilder
 import io.github.joaogouveia89.randomuser.BuildConfig

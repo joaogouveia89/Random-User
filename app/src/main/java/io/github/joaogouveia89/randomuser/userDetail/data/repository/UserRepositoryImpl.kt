@@ -7,7 +7,7 @@ import androidx.palette.graphics.Palette
 import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.domain.source.UserSource
-import io.github.joaogouveia89.randomuser.remoteService.model.mappers.asUser
+import io.github.joaogouveia89.randomuser.core.remoteService.model.mappers.asUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

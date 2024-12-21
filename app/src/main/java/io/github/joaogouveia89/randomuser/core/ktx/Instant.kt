@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.ktx
+package io.github.joaogouveia89.randomuser.core.ktx
 
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.hours

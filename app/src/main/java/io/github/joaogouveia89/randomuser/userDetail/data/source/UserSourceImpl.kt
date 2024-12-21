@@ -1,8 +1,8 @@
-package io.github.joaogouveia89.randomuser.data.source
+package io.github.joaogouveia89.randomuser.userDetail.data.source
 
+import io.github.joaogouveia89.randomuser.core.remoteService.UserService
 import io.github.joaogouveia89.randomuser.domain.source.UserSource
-import io.github.joaogouveia89.randomuser.remoteService.UserService
-import io.github.joaogouveia89.randomuser.remoteService.model.RandomUserResponse
+import io.github.joaogouveia89.randomuser.core.remoteService.model.RandomUserResponse
 
 class UserSourceImpl(
     private val service: UserService
