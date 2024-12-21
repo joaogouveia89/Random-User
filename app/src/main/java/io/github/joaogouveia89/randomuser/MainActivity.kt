@@ -20,8 +20,6 @@ import io.github.joaogouveia89.randomuser.userDetail.presentation.RandomUserView
 
 
 class MainActivity : ComponentActivity() {
-
-
     private val service by lazy { RandomUserRetrofit().service }
     private val userSource = UserSourceImpl(service)
     private val userRepository = UserRepositoryImpl(userSource)
@@ -40,7 +38,6 @@ class MainActivity : ComponentActivity() {
                     val user = uiState.user
                     RandomUserScreen(
                         innerPadding,
-                        user,
                         uiState,
                         onAddToContactsClick = {},
                         onOpenMapClick = {

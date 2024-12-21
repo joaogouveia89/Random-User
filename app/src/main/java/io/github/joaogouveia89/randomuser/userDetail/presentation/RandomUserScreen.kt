@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
+import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.domain.model.Country
 import io.github.joaogouveia89.randomuser.domain.model.Nationality
 import io.github.joaogouveia89.randomuser.domain.model.User
@@ -44,11 +45,12 @@ import kotlinx.datetime.Instant
 @Composable
 fun RandomUserScreen(
     innerPadding: PaddingValues,
-    user: User,
     uiState: UserProfileState,
     onOpenMapClick: () -> Unit,
     onAddToContactsClick: () -> Unit
 ) {
+    val user = uiState.user
+
     val iconsBackgroundColor = if (user.nationalityColors.first.isNotEmpty())
         Color(user.nationalityColors.first.toColorInt())
     else
@@ -206,47 +208,8 @@ fun GreetingPreview() {
     RandomUserTheme {
         RandomUserScreen(
             innerPadding = PaddingValues(16.dp),
-            user = User(
-                title = "Mr.",
-                firstName = "John",
-                lastName = "Doe",
-                largePictureUrl = "https://randomuser.me/api/portraits/men/1.jpg",
-                nationality = Nationality.US,
-                city = "New York",
-                state = "New York",
-                country = "United States",
-                countryCode = Country.UNITED_STATES,
-                latitude = "40.7128",
-                longitude = "-74.0060",
-                timezoneOffset = "UTC-5",
-                timezoneDescription = "Eastern Standard Time",
-                dateOfBirth = Instant.parse("1990-05-20T00:00:00Z"),
-                age = 34,
-                phone = "(555) 123-4567",
-                cellPhone = "(555) 987-6543",
-                email = "johndoe@example.com"
-            ),
             uiState = UserProfileState(
-                user = User(
-                    title = "Mr.",
-                    firstName = "John",
-                    lastName = "Doe",
-                    largePictureUrl = "https://randomuser.me/api/portraits/men/1.jpg",
-                    nationality = Nationality.US,
-                    city = "New York",
-                    state = "New York",
-                    country = "United States",
-                    countryCode = Country.UNITED_STATES,
-                    latitude = "40.7128",
-                    longitude = "-74.0060",
-                    timezoneOffset = "UTC-5",
-                    timezoneDescription = "Eastern Standard Time",
-                    dateOfBirth = Instant.parse("1990-05-20T00:00:00Z"),
-                    age = 34,
-                    phone = "(555) 123-4567",
-                    cellPhone = "(555) 987-6543",
-                    email = "johndoe@example.com"
-                ),
+                user = fakeUser,
                 locationTime = Instant.parse("2024-04-01T14:30:00Z")
             ),
             onOpenMapClick = { /* Do nothing for preview */ },
