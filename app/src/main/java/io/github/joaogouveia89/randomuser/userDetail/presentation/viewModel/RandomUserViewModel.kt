@@ -3,6 +3,7 @@ package io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
+import io.github.joaogouveia89.randomuser.domain.model.User
 import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
@@ -27,6 +28,7 @@ class RandomUserViewModel(
 ) : ViewModel() {
     private val locationTime = MutableStateFlow<Instant?>(null)
     private val refreshUser = MutableStateFlow<UserFetchState?>(null)
+    private var currentUser: User = User()
 
     private var userProfileRequest =
         repository
@@ -44,9 +46,11 @@ class RandomUserViewModel(
                             )
                         }
 
+                        currentUser = randomUserResponse.user
+
                         UserProfileState(
                             isLoading = false,
-                            user = randomUserResponse.user
+                            user = currentUser
                         )
                     }
 
@@ -71,13 +75,17 @@ class RandomUserViewModel(
             when (refreshedState) {
                 is UserFetchState.Error -> profileRequest
                 UserFetchState.Loading -> profileRequest.copy(
-                    isGettingNewUser = true
+                    isGettingNewUser = true,
+                    user = currentUser
                 )
 
-                is UserFetchState.Success -> profileRequest.copy(
-                    isGettingNewUser = false,
-                    user = refreshedState.user
-                )
+                is UserFetchState.Success -> {
+                    currentUser = refreshedState.user
+                    profileRequest.copy(
+                        isGettingNewUser = false,
+                        user = currentUser
+                    )
+                }
             }
         } ?: profileRequest
 
