@@ -7,12 +7,17 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Display user information fetched from the Random User API.~~
 - [x] ~~Open Google Maps with the latitude and longitude provided by the API.~~
 - [x] ~~Customize icons based on the user's nationality flag.~~
-- [ ] Swipe-to-refresh: Enable users to refresh the data by swiping down.
+- [x] ~~Swipe-to-refresh: Enable users to refresh the data by swiping down.~~
+- [x] ~~Added a json raw interceptor for bug tracing help~~
 - [ ] Bottom navigation bar: Implement navigation for different app sections.
 - [ ] Add to contacts: Add functionality to save users as contacts, including:
     - [ ] A dedicated screen to display saved contacts.
     - [ ] A sticky letter list for easier navigation through the contact list.
 - [ ] Clickable phone numbers: Enable users to initiate calls by tapping on phone numbers.
+
+## Bug fixing
+
+- [x] ~~Crash on user fetching~~
 
 ## Screenshots
 

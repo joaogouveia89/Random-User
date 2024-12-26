@@ -22,12 +22,16 @@ class RandomUserRetrofit {
             }
         }
 
+    private val logJsonInterceptor: LogJsonInterceptor =
+        LogJsonInterceptor()
+
     private val paramsInterceptor = ParamsInterceptor()
 
     private val httpClient: OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(paramsInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(logJsonInterceptor)
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()

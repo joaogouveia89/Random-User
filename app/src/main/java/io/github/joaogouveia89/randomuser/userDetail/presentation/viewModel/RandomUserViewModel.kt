@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.userDetail.presentation
+package io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -19,12 +20,15 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.seconds
 
+// https://medium.com/@domen.lanisnik/pull-to-refresh-with-compose-material-3-26b37dbea966
+
 class RandomUserViewModel(
-    repository: UserRepository
+    private val repository: UserRepository
 ) : ViewModel() {
     private val locationTime = MutableStateFlow<Instant?>(null)
+    private val refreshUser = MutableStateFlow<UserFetchState?>(null)
 
-    private val userProfileRequest =
+    private var userProfileRequest =
         repository
             .getRandomUser()
             .map { randomUserResponse ->
@@ -57,16 +61,38 @@ class RandomUserViewModel(
                 initialValue = UserProfileState()
             )
 
+
     val uiState: StateFlow<UserProfileState> = combine(
         userProfileRequest,
-        locationTime
-    ) { profileRequest, locationTime ->
-        profileRequest.copy(locationTime = locationTime)
+        locationTime,
+        refreshUser
+    ) { profileRequest, locationTime, refreshedUser ->
+        val newState = refreshedUser?.let { refreshedState ->
+            when (refreshedState) {
+                is UserFetchState.Error -> profileRequest
+                UserFetchState.Loading -> profileRequest.copy(
+                    isGettingNewUser = true
+                )
+
+                is UserFetchState.Success -> profileRequest.copy(
+                    isGettingNewUser = false,
+                    user = refreshedState.user
+                )
+            }
+        } ?: profileRequest
+
+        newState.copy(locationTime = locationTime)
     }.stateIn(
         scope = viewModelScope,
         started = WhileSubscribed(),
         initialValue = UserProfileState()
     )
+
+    fun execute(command: RandomUserCommand) {
+        when (command) {
+            is RandomUserCommand.GetNewUser -> getNewUser()
+        }
+    }
 
     private fun startChronometer(start: Instant) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -76,6 +102,14 @@ class RandomUserViewModel(
                 currentInst = currentInst.plus(1.seconds)
                 locationTime.emit(currentInst)
             }
+        }
+    }
+
+    private fun getNewUser() {
+        viewModelScope.launch {
+            refreshUser.emitAll(
+                repository.getRandomUser()
+            )
         }
     }
 }

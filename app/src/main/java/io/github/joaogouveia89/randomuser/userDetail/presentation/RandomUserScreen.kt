@@ -30,9 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
-import io.github.joaogouveia89.randomuser.domain.model.Country
-import io.github.joaogouveia89.randomuser.domain.model.Nationality
-import io.github.joaogouveia89.randomuser.domain.model.User
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserBirthday
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserContacts
@@ -41,6 +38,8 @@ import io.github.joaogouveia89.randomuser.userDetail.presentation.components.Use
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserTimezone
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
 import kotlinx.datetime.Instant
+
+// https://medium.com/@domen.lanisnik/pull-to-refresh-with-compose-material-3-26b37dbea966
 
 @Composable
 fun RandomUserScreen(
@@ -210,7 +209,8 @@ fun GreetingPreview() {
             innerPadding = PaddingValues(16.dp),
             uiState = UserProfileState(
                 user = fakeUser,
-                locationTime = Instant.parse("2024-04-01T14:30:00Z")
+                locationTime = Instant.parse("2024-04-01T14:30:00Z"),
+                isLoading = false
             ),
             onOpenMapClick = { /* Do nothing for preview */ },
             onAddToContactsClick = {}
