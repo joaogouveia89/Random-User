@@ -1,6 +1,5 @@
 package io.github.joaogouveia89.randomuser.core.ktx
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -22,10 +21,10 @@ fun Instant.calculateOffset(offset: String): Instant {
         .minus(offsetSplit.last().toInt().minutes)
 }
 
-fun Instant.hadPassedOneMinute(): Boolean {
-    val systemTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    val instantTime = this.toLocalDateTime(TimeZone.currentSystemDefault())
-    return systemTime.minute != instantTime.minute
+fun Instant.hadPassedOneMinute(compareToInstant: Instant): Boolean {
+    val compareToTime = compareToInstant.toLocalDateTime(TimeZone.currentSystemDefault())
+    val thisTime = this.toLocalDateTime(TimeZone.currentSystemDefault())
+    return compareToTime.minute != thisTime.minute
 }
 
 fun Instant.humanizedHourMin(): String {

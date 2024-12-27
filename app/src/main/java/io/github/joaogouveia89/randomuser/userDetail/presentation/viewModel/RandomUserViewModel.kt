@@ -41,9 +41,7 @@ class RandomUserViewModel(
                     }
 
                     is UserFetchState.Success -> {
-                        randomUserResponse.user.timezoneOffset.let {
-                            startChronometer(it)
-                        }
+                        startChronometer(randomUserResponse.user.timezoneOffset)
 
                         currentUser = randomUserResponse.user
 
@@ -104,14 +102,13 @@ class RandomUserViewModel(
 
     private fun startChronometer(offset: String) {
         stopChronometer()
-        val start = Clock.System.now().calculateOffset(offset)
         chronJob = viewModelScope.launch(Dispatchers.IO) {
-            var currentInst = start
-            locationTime.emit(start)
+            var currentInst = Clock.System.now().calculateOffset(offset)
+            locationTime.emit(currentInst)
             while (true) {
                 delay(1000)
                 currentInst = currentInst.plus(1.seconds)
-                if (currentInst.hadPassedOneMinute()) {
+                if (currentInst.hadPassedOneMinute(locationTime.value)) {
                     locationTime.emit(currentInst)
                 }
             }

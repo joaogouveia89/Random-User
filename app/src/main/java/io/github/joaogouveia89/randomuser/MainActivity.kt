@@ -13,6 +13,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
 import io.github.joaogouveia89.randomuser.userDetail.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                 ) { innerPadding ->
-                    val uiState by viewModel.uiState.collectAsState()
+                    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
                     PullToRefreshBox(
                         isRefreshing = uiState.isGettingNewUser,
