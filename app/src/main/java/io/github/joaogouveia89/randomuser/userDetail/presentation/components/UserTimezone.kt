@@ -29,7 +29,7 @@ import kotlinx.datetime.toLocalDateTime
 fun UserTimezone(
     timezone: String,
     timezoneDescription: String,
-    localTime: Instant?,
+    localTime: String,
     iconBackgroundColor: Color,
     iconColor: Color,
 ) {
@@ -73,9 +73,8 @@ fun UserTimezone(
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            val instant = localTime?.toLocalDateTime(TimeZone.currentSystemDefault())
             Text(
-                text = "${instant?.hour}:${instant?.minute}",
+                text = localTime,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.secondary
             )
@@ -94,7 +93,7 @@ private fun UserTimezonePreview() {
     UserTimezone(
         timezone = "0:00",
         timezoneDescription = "Lisbon",
-        localTime = Clock.System.now(),
+        localTime = "15:20",
         iconBackgroundColor = dynamicIconBackgroundColor,
         iconColor = dynamicIconColor
     )

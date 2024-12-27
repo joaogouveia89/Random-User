@@ -5,7 +5,7 @@ import kotlinx.datetime.Instant
 
 data class UserProfileState(
     val user: User = User(),
-    val locationTime: Instant? = null,
+    val locationTime: String = "",
     val isLoading: Boolean = true,
     val isGettingNewUser: Boolean = false,
 )

@@ -209,7 +209,7 @@ fun GreetingPreview() {
             innerPadding = PaddingValues(16.dp),
             uiState = UserProfileState(
                 user = fakeUser,
-                locationTime = Instant.parse("2024-04-01T14:30:00Z"),
+                locationTime = "2024-04-01T14:30:00Z",
                 isLoading = false
             ),
             onOpenMapClick = { /* Do nothing for preview */ },

@@ -1,13 +1,18 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
+import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
+import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
 import io.github.joaogouveia89.randomuser.domain.model.User
 import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -19,14 +24,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
-
-// https://medium.com/@domen.lanisnik/pull-to-refresh-with-compose-material-3-26b37dbea966
 
 class RandomUserViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
-    private val locationTime = MutableStateFlow<Instant?>(null)
+    private var chronJob: Job? = null
+    private val locationTime = MutableStateFlow(Clock.System.now())
     private val refreshUser = MutableStateFlow<UserFetchState?>(null)
     private var currentUser: User = User()
 
@@ -41,9 +48,7 @@ class RandomUserViewModel(
 
                     is UserFetchState.Success -> {
                         randomUserResponse.user.timezoneOffset.let {
-                            startChronometer(
-                                Clock.System.now().calculateOffset(it)
-                            )
+                            startChronometer(it)
                         }
 
                         currentUser = randomUserResponse.user
@@ -81,6 +86,7 @@ class RandomUserViewModel(
 
                 is UserFetchState.Success -> {
                     currentUser = refreshedState.user
+                    startChronometer(refreshedState.user.timezoneOffset)
                     profileRequest.copy(
                         isGettingNewUser = false,
                         user = currentUser
@@ -89,7 +95,7 @@ class RandomUserViewModel(
             }
         } ?: profileRequest
 
-        newState.copy(locationTime = locationTime)
+        newState.copy(locationTime = locationTime.humanizedHourMin())
     }.stateIn(
         scope = viewModelScope,
         started = WhileSubscribed(),
@@ -102,15 +108,25 @@ class RandomUserViewModel(
         }
     }
 
-    private fun startChronometer(start: Instant) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun startChronometer(offset: String) {
+        stopChronometer()
+        val start = Clock.System.now().calculateOffset(offset)
+        chronJob = viewModelScope.launch(Dispatchers.IO) {
             var currentInst = start
+            locationTime.emit(start)
             while (true) {
                 delay(1000)
                 currentInst = currentInst.plus(1.seconds)
-                locationTime.emit(currentInst)
+                if(currentInst.hadPassedOneMinute()){
+                    locationTime.emit(currentInst)
+                }
             }
         }
+    }
+
+    private fun stopChronometer(){
+        chronJob?.cancel()
+        chronJob = null
     }
 
     private fun getNewUser() {
@@ -119,5 +135,10 @@ class RandomUserViewModel(
                 repository.getRandomUser()
             )
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopChronometer()
     }
 }
