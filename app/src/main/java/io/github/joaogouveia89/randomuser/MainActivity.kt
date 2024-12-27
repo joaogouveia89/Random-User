@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                             onAddToContactsClick = {},
                             onOpenMapClick = {
                                 val gmmIntentUri: Uri =
-                                    Uri.parse("geo:${uiState.user.latitude},${uiState.user.longitude}")
+                                    Uri.parse(uiState.user.getMapsIntentQuery())
                                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                                 mapIntent.setPackage("com.google.android.apps.maps")
                                 startActivity(mapIntent)
