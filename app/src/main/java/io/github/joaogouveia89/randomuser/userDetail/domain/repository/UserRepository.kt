@@ -1,6 +1,6 @@
-package io.github.joaogouveia89.randomuser.domain.repository
+package io.github.joaogouveia89.randomuser.userDetail.domain.repository
 
-import io.github.joaogouveia89.randomuser.domain.model.User
+import io.github.joaogouveia89.randomuser.userDetail.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 sealed class UserFetchState {

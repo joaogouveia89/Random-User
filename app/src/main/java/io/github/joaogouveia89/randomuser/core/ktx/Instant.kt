@@ -22,7 +22,7 @@ fun Instant.calculateOffset(offset: String): Instant {
         .minus(offsetSplit.last().toInt().minutes)
 }
 
-fun Instant.hadPassedOneMinute(): Boolean{
+fun Instant.hadPassedOneMinute(): Boolean {
     val systemTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     val instantTime = this.toLocalDateTime(TimeZone.currentSystemDefault())
     return systemTime.minute != instantTime.minute

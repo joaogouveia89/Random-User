@@ -1,18 +1,16 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
-import io.github.joaogouveia89.randomuser.domain.model.User
-import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
-import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.userDetail.domain.model.User
+import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserFetchState
+import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -23,10 +21,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class RandomUserViewModel(
@@ -117,14 +111,14 @@ class RandomUserViewModel(
             while (true) {
                 delay(1000)
                 currentInst = currentInst.plus(1.seconds)
-                if(currentInst.hadPassedOneMinute()){
+                if (currentInst.hadPassedOneMinute()) {
                     locationTime.emit(currentInst)
                 }
             }
         }
     }
 
-    private fun stopChronometer(){
+    private fun stopChronometer() {
         chronJob?.cancel()
         chronJob = null
     }

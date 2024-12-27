@@ -74,6 +74,7 @@ fun UserLocation(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun UserLocationPreview() {

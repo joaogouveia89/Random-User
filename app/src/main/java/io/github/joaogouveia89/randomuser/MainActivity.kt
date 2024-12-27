@@ -12,12 +12,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
-import io.github.joaogouveia89.randomuser.data.repository.UserRepositoryImpl
+import io.github.joaogouveia89.randomuser.userDetail.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import io.github.joaogouveia89.randomuser.userDetail.data.source.UserSourceImpl
 import io.github.joaogouveia89.randomuser.userDetail.presentation.RandomUserScreen

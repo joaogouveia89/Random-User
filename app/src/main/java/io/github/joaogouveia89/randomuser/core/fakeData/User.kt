@@ -1,8 +1,8 @@
 package io.github.joaogouveia89.randomuser.core.fakeData
 
-import io.github.joaogouveia89.randomuser.domain.model.Country
-import io.github.joaogouveia89.randomuser.domain.model.Nationality
-import io.github.joaogouveia89.randomuser.domain.model.User
+import io.github.joaogouveia89.randomuser.userDetail.domain.model.Country
+import io.github.joaogouveia89.randomuser.userDetail.domain.model.Nationality
+import io.github.joaogouveia89.randomuser.userDetail.domain.model.User
 import kotlinx.datetime.Instant
 
 val fakeUser = User(

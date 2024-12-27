@@ -37,9 +37,6 @@ import io.github.joaogouveia89.randomuser.userDetail.presentation.components.Use
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserProfileHeader
 import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserTimezone
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
-import kotlinx.datetime.Instant
-
-// https://medium.com/@domen.lanisnik/pull-to-refresh-with-compose-material-3-26b37dbea966
 
 @Composable
 fun RandomUserScreen(
@@ -60,14 +57,14 @@ fun RandomUserScreen(
     else
         MaterialTheme.colorScheme.surface
 
-    if(uiState.isLoading){
+    if (uiState.isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
-    }else{
+    } else {
         RandomUserContent(
             innerPadding = innerPadding,
             uiState = uiState,

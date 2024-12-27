@@ -1,13 +1,13 @@
-package io.github.joaogouveia89.randomuser.data.repository
+package io.github.joaogouveia89.randomuser.userDetail.data.repository
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.palette.graphics.Palette
-import io.github.joaogouveia89.randomuser.domain.repository.UserFetchState
-import io.github.joaogouveia89.randomuser.domain.repository.UserRepository
-import io.github.joaogouveia89.randomuser.domain.source.UserSource
 import io.github.joaogouveia89.randomuser.core.remoteService.model.mappers.asUser
+import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserFetchState
+import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.userDetail.domain.source.UserSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
