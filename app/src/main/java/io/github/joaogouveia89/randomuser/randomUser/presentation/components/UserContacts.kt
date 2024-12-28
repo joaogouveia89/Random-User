@@ -1,6 +1,7 @@
 package io.github.joaogouveia89.randomuser.randomUser.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Icon
@@ -28,7 +30,8 @@ fun UserContacts(
     cellPhone: String,
     email: String,
     iconBackgroundColor: Color,
-    iconColor: Color
+    iconColor: Color,
+    onCopyEmailToClipboard: () -> Unit
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -72,6 +75,14 @@ fun UserContacts(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
+
+            Icon(
+                modifier = Modifier
+                    .clickable { onCopyEmailToClipboard() }
+                    .padding(start = 12.dp),
+                imageVector = Icons.Default.ContentCopy,
+                contentDescription = null
+            )
         }
     }
 }
@@ -87,6 +98,7 @@ private fun UserContactsPreview() {
         cellPhone = "3333 3333 333",
         email = "johndoe@gmail.com",
         iconBackgroundColor = dynamicIconBackgroundColor,
-        iconColor = dynamicIconColor
+        iconColor = dynamicIconColor,
+        onCopyEmailToClipboard = {}
     )
 }

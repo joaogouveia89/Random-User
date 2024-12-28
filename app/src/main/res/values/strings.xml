@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Random User</string>
+    <string name="email_copied_to_clipboard">Email copied to clipboard</string>
 </resources>

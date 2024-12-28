@@ -43,7 +43,8 @@ fun RandomUserScreen(
     innerPadding: PaddingValues,
     uiState: UserProfileState,
     onOpenMapClick: () -> Unit,
-    onAddToContactsClick: () -> Unit
+    onAddToContactsClick: () -> Unit,
+    onCopyEmailToClipboard: () -> Unit
 ) {
     val user = uiState.user
 
@@ -71,7 +72,8 @@ fun RandomUserScreen(
             iconsBackgroundColor = iconsBackgroundColor,
             iconsColor = iconsColor,
             onOpenMapClick = onOpenMapClick,
-            onAddToContactsClick = onAddToContactsClick
+            onAddToContactsClick = onAddToContactsClick,
+            onCopyEmailToClipboard = onCopyEmailToClipboard
         )
     }
 }
@@ -83,7 +85,8 @@ fun RandomUserContent(
     iconsBackgroundColor: Color,
     iconsColor: Color,
     onOpenMapClick: () -> Unit,
-    onAddToContactsClick: () -> Unit
+    onAddToContactsClick: () -> Unit,
+    onCopyEmailToClipboard: () -> Unit
 ) {
     val user = uiState.user
     Column(
@@ -146,7 +149,8 @@ fun RandomUserContent(
                 cellPhone = user.cellPhone,
                 email = user.email,
                 iconBackgroundColor = iconsBackgroundColor,
-                iconColor = iconsColor
+                iconColor = iconsColor,
+                onCopyEmailToClipboard = onCopyEmailToClipboard
             )
         }
 
@@ -192,7 +196,6 @@ private fun CardSection(
         ),
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(12.dp),
-        //colors = CardDefaults.cardColors(containerColor = )
     ) {
         content()
     }
@@ -209,8 +212,9 @@ fun GreetingPreview() {
                 locationTime = "2024-04-01T14:30:00Z",
                 isLoading = false
             ),
-            onOpenMapClick = { /* Do nothing for preview */ },
-            onAddToContactsClick = {}
+            onOpenMapClick = {},
+            onAddToContactsClick = {},
+            onCopyEmailToClipboard = {}
         )
     }
 }
