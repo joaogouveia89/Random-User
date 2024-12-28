@@ -16,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
 import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
@@ -33,7 +32,7 @@ class MainActivity : ComponentActivity() {
     private val service by lazy { RandomUserRetrofit().service }
     private val userSource = UserSourceImpl(service)
     private val userRepository = UserRepositoryImpl(userSource)
-    val viewModel = RandomUserViewModel(userRepository)
+    private val viewModel = RandomUserViewModel(userRepository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +71,14 @@ class MainActivity : ComponentActivity() {
                                 clipboard.setPrimaryClip(clip)
                                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
                                     Toast.makeText(baseContext, getString(R.string.email_copied_to_clipboard), Toast.LENGTH_SHORT).show()
+                            },
+                            onDialRequired = { phoneNumber ->
+                                val intent = Intent(Intent.ACTION_DIAL).apply {
+                                    data = Uri.parse("tel:$phoneNumber")
+                                }
+                                if (intent.resolveActivity(packageManager) != null) {
+                                    startActivity(intent)
+                                }
                             }
                         )
                     }

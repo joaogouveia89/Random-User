@@ -10,7 +10,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Swipe-to-refresh: Enable users to refresh the data by swiping down.~~
 - [x] ~~Added a json raw interceptor for bug tracing help~~
 - [x] ~~Add copy icon near the email and click to copy to clipboard~~
-- [ ] Clickable phone numbers: Enable users to initiate calls by tapping on phone numbers.
+- [x] ~~Clickable phone numbers: Enable users to initiate calls by tapping on phone numbers.~~
 - [ ] Bottom navigation bar: Implement navigation for different app sections.
 - [ ] Add to contacts: Add functionality to save users as contacts
 - [ ] Add dedicated screen to display saved contacts.

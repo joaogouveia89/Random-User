@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.joaogouveia89.randomuser.core.ktx.asClickableUrl
 
 @Composable
 fun UserContacts(
@@ -31,7 +32,8 @@ fun UserContacts(
     email: String,
     iconBackgroundColor: Color,
     iconColor: Color,
-    onCopyEmailToClipboard: () -> Unit
+    onCopyEmailToClipboard: () -> Unit,
+    onDialRequired: (String) -> Unit
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -46,12 +48,16 @@ fun UserContacts(
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Text(
-                    text = phone,
+                    modifier = Modifier
+                        .clickable { onDialRequired(phone) },
+                    text = phone.asClickableUrl(),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = cellPhone,
+                    modifier = Modifier
+                        .clickable { onDialRequired(cellPhone) },
+                    text = cellPhone.asClickableUrl(),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -99,6 +105,7 @@ private fun UserContactsPreview() {
         email = "johndoe@gmail.com",
         iconBackgroundColor = dynamicIconBackgroundColor,
         iconColor = dynamicIconColor,
-        onCopyEmailToClipboard = {}
+        onCopyEmailToClipboard = {},
+        onDialRequired = {}
     )
 }

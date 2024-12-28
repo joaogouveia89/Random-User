@@ -44,7 +44,8 @@ fun RandomUserScreen(
     uiState: UserProfileState,
     onOpenMapClick: () -> Unit,
     onAddToContactsClick: () -> Unit,
-    onCopyEmailToClipboard: () -> Unit
+    onCopyEmailToClipboard: () -> Unit,
+    onDialRequired: (phoneNumber: String) -> Unit
 ) {
     val user = uiState.user
 
@@ -73,7 +74,8 @@ fun RandomUserScreen(
             iconsColor = iconsColor,
             onOpenMapClick = onOpenMapClick,
             onAddToContactsClick = onAddToContactsClick,
-            onCopyEmailToClipboard = onCopyEmailToClipboard
+            onCopyEmailToClipboard = onCopyEmailToClipboard,
+            onDialRequired = onDialRequired
         )
     }
 }
@@ -86,7 +88,8 @@ fun RandomUserContent(
     iconsColor: Color,
     onOpenMapClick: () -> Unit,
     onAddToContactsClick: () -> Unit,
-    onCopyEmailToClipboard: () -> Unit
+    onCopyEmailToClipboard: () -> Unit,
+    onDialRequired: (String) -> Unit
 ) {
     val user = uiState.user
     Column(
@@ -150,7 +153,8 @@ fun RandomUserContent(
                 email = user.email,
                 iconBackgroundColor = iconsBackgroundColor,
                 iconColor = iconsColor,
-                onCopyEmailToClipboard = onCopyEmailToClipboard
+                onCopyEmailToClipboard = onCopyEmailToClipboard,
+                onDialRequired = onDialRequired
             )
         }
 
@@ -214,7 +218,8 @@ fun GreetingPreview() {
             ),
             onOpenMapClick = {},
             onAddToContactsClick = {},
-            onCopyEmailToClipboard = {}
+            onCopyEmailToClipboard = {},
+            onDialRequired = {}
         )
     }
 }
