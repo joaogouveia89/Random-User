@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
 import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.randomUser.data.source.UserSourceImpl
@@ -43,6 +44,7 @@ class RandomUserViewModelFactory(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val service by lazy { RandomUserRetrofit().service }
     private val userSource by lazy { UserSourceImpl(service) }

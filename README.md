@@ -20,7 +20,9 @@ This project is an Android application that consumes the [Random User API](https
 ## Technical features
 
 - [x] ~~Api fetching and display.~~
-- [ ] Hilt DI
+- [x] ~~Hilt DI including~~
+- [ ] Add random user source as an injectable dependency
+- [ ] Add random user repository as an injectable dependency
 - [ ] Testing strategy in general
 
 ## Bug fixing
