@@ -1,5 +1,6 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
@@ -28,10 +29,10 @@ import kotlin.time.Duration.Companion.seconds
 class RandomUserViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
+
     private var chronJob: Job? = null
     private val locationTime = MutableStateFlow(Clock.System.now())
     private val refreshUser = MutableStateFlow<UserFetchState?>(null)
-    private var currentUser: User = User()
 
     private var userProfileRequest =
         repository
@@ -45,11 +46,9 @@ class RandomUserViewModel(
                     is UserFetchState.Success -> {
                         startChronometer(randomUserResponse.user.timezoneOffset)
 
-                        currentUser = randomUserResponse.user
-
                         UserProfileState(
                             isLoading = false,
-                            user = currentUser
+                            user = randomUserResponse.user
                         )
                     }
 
@@ -70,31 +69,34 @@ class RandomUserViewModel(
         locationTime,
         refreshUser
     ) { profileRequest, locationTime, refreshedUser ->
-        val newState = refreshedUser?.let { refreshedState ->
-            when (refreshedState) {
-                is UserFetchState.Error -> profileRequest
-                UserFetchState.Loading -> profileRequest.copy(
-                    isGettingNewUser = true,
-                    user = currentUser
-                )
-
-                is UserFetchState.Success -> {
-                    currentUser = refreshedState.user
-                    startChronometer(refreshedState.user.timezoneOffset)
-                    profileRequest.copy(
-                        isGettingNewUser = false,
-                        user = currentUser
-                    )
-                }
-            }
-        } ?: profileRequest
-
-        newState.copy(locationTime = locationTime.humanizedHourMin())
+        handleRefreshedUser(
+            state = refreshedUser,
+            profileRequest = profileRequest
+        ).copy(locationTime = locationTime.humanizedHourMin())
     }.stateIn(
         scope = viewModelScope,
         started = WhileSubscribed(),
         initialValue = UserProfileState()
     )
+
+    private fun handleRefreshedUser(state: UserFetchState?, profileRequest: UserProfileState): UserProfileState =
+        state?.let { refreshedState ->
+            when (refreshedState) {
+                is UserFetchState.Error -> profileRequest
+                UserFetchState.Loading -> profileRequest.copy(
+                    isGettingNewUser = true,
+                    user = uiState.value.user
+                )
+
+                is UserFetchState.Success -> {
+                    startChronometer(refreshedState.user.timezoneOffset)
+                    profileRequest.copy(
+                        isGettingNewUser = false,
+                        user = refreshedState.user
+                    )
+                }
+            }
+        } ?:  profileRequest
 
     fun execute(command: RandomUserCommand) {
         when (command) {
@@ -105,14 +107,18 @@ class RandomUserViewModel(
     private fun startChronometer(offset: String) {
         stopChronometer()
         chronJob = viewModelScope.launch(Dispatchers.IO) {
-            var currentInst = Clock.System.now().calculateOffset(offset)
-            locationTime.emit(currentInst)
-            while (isActive) {
-                delay(1000)
-                currentInst = currentInst.plus(1.seconds)
-                if (currentInst.hadPassedOneMinute(locationTime.value)) {
-                    locationTime.emit(currentInst)
+            try {
+                var currentInst = Clock.System.now().calculateOffset(offset)
+                locationTime.emit(currentInst)
+                while (isActive) {
+                    delay(1000)
+                    currentInst = currentInst.plus(1.seconds)
+                    if (currentInst.hadPassedOneMinute(locationTime.value)) {
+                        locationTime.emit(currentInst)
+                    }
                 }
+            }catch (exception: Exception){
+                Log.e(TAG, "chronJob has stopped due to ${exception.message}")
             }
         }
     }
@@ -141,5 +147,9 @@ class RandomUserViewModel(
     override fun onCleared() {
         super.onCleared()
         stopChronometer()
+    }
+
+    companion object{
+        private val TAG = this::class.java.name
     }
 }
