@@ -10,17 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
-import io.github.joaogouveia89.randomuser.userDetail.data.repository.UserRepositoryImpl
+import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
-import io.github.joaogouveia89.randomuser.userDetail.data.source.UserSourceImpl
-import io.github.joaogouveia89.randomuser.userDetail.presentation.RandomUserScreen
-import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.RandomUserCommand
-import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.RandomUserViewModel
+import io.github.joaogouveia89.randomuser.randomUser.data.source.UserSourceImpl
+import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScreen
+import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
+import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)

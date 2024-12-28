@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel
+package io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,10 +6,9 @@ import androidx.lifecycle.viewModelScope
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
-import io.github.joaogouveia89.randomuser.userDetail.domain.model.User
-import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserFetchState
-import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserRepository
-import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin

@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.userDetail.domain.source
+package io.github.joaogouveia89.randomuser.randomUser.domain.source
 
 import io.github.joaogouveia89.randomuser.core.remoteService.model.RandomUserResponse
 

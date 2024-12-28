@@ -1,6 +1,6 @@
-package io.github.joaogouveia89.randomuser.userDetail.presentation.state
+package io.github.joaogouveia89.randomuser.randomUser.presentation.state
 
-import io.github.joaogouveia89.randomuser.userDetail.domain.model.User
+import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 
 data class UserProfileState(
     val user: User = User(),

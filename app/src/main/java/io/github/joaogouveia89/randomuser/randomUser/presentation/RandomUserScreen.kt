@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.userDetail.presentation
+package io.github.joaogouveia89.randomuser.randomUser.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,12 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
-import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserBirthday
-import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserContacts
-import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserLocation
-import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserProfileHeader
-import io.github.joaogouveia89.randomuser.userDetail.presentation.components.UserTimezone
-import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
+import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserBirthday
+import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserContacts
+import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserLocation
+import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserProfileHeader
+import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserTimezone
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 
 @Composable
 fun RandomUserScreen(

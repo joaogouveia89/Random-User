@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.userDetail.presentation.components
+package io.github.joaogouveia89.randomuser.randomUser.presentation.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column

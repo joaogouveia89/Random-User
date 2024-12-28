@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.userDetail.domain.model
+package io.github.joaogouveia89.randomuser.randomUser.domain.model
 
 enum class Nationality(
     val reference: String,
