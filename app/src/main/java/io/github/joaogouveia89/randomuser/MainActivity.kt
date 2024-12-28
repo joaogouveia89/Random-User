@@ -10,16 +10,20 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
 import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.randomUser.data.source.UserSourceImpl
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScreen
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
@@ -27,12 +31,22 @@ import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 
 private const val COPY_EMAIL_TO_CLIPBOARD_LABEL = "random_user_email"
 
+class RandomUserViewModelFactory(
+    private val repository: UserRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(RandomUserViewModel::class.java)) {
+            return RandomUserViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     private val service by lazy { RandomUserRetrofit().service }
-    private val userSource = UserSourceImpl(service)
-    private val userRepository = UserRepositoryImpl(userSource)
-    private val viewModel = RandomUserViewModel(userRepository)
+    private val userSource by lazy { UserSourceImpl(service) }
+    private val viewModel: RandomUserViewModel by viewModels { RandomUserViewModelFactory(UserRepositoryImpl(userSource)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

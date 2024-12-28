@@ -14,6 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -25,10 +26,11 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlin.time.Duration.Companion.seconds
 
+private const val CACHE_LIFETIME_MS = 5000L
+
 class RandomUserViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
-
     private var chronJob: Job? = null
     private val locationTime = MutableStateFlow(Clock.System.now())
     private val refreshUser = MutableStateFlow<UserFetchState?>(null)
@@ -55,10 +57,9 @@ class RandomUserViewModel(
                         UserProfileState()
                     }
                 }
-            }
-            .stateIn(
+            }.stateIn(
                 scope = viewModelScope,
-                started = WhileSubscribed(),
+                started = WhileSubscribed(stopTimeoutMillis = CACHE_LIFETIME_MS),
                 initialValue = UserProfileState()
             )
 
