@@ -2,18 +2,26 @@
 
 This project is an Android application that consumes the [Random User API](https://randomuser.me/) to display user information and provide interactive features such as launching Google Maps with user locations and customizing icons based on user nationality.
 
-## Features
+## App Features
 
 - [x] ~~Display user information fetched from the Random User API.~~
 - [x] ~~Open Google Maps with the latitude and longitude provided by the API.~~
 - [x] ~~Customize icons based on the user's nationality flag.~~
 - [x] ~~Swipe-to-refresh: Enable users to refresh the data by swiping down.~~
 - [x] ~~Added a json raw interceptor for bug tracing help~~
-- [ ] Bottom navigation bar: Implement navigation for different app sections.
-- [ ] Add to contacts: Add functionality to save users as contacts, including:
-    - [ ] A dedicated screen to display saved contacts.
-    - [ ] A sticky letter list for easier navigation through the contact list.
+- [ ] Add copy icon near the email and click to copy to clipboard
 - [ ] Clickable phone numbers: Enable users to initiate calls by tapping on phone numbers.
+- [ ] Bottom navigation bar: Implement navigation for different app sections.
+- [ ] Add to contacts: Add functionality to save users as contacts
+- [ ] Add dedicated screen to display saved contacts.
+- [ ] A sticky letter list for easier navigation through the contact list.
+
+
+## Technical features
+
+- [x] ~~Api fetching and display.~~
+- [ ] Hilt DI
+- [ ] Testing strategy in general
 
 ## Bug fixing
 
