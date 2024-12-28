@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.joaogouveia89.randomuser.core.remoteService.RandomUserRetrofit
 import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.randomUser.data.source.UserSourceImpl
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
@@ -32,23 +31,10 @@ import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 
 private const val COPY_EMAIL_TO_CLIPBOARD_LABEL = "random_user_email"
 
-class RandomUserViewModelFactory(
-    private val repository: UserRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RandomUserViewModel::class.java)) {
-            return RandomUserViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val service by lazy { RandomUserRetrofit().service }
-    private val userSource by lazy { UserSourceImpl(service) }
-    private val viewModel: RandomUserViewModel by viewModels { RandomUserViewModelFactory(UserRepositoryImpl(userSource)) }
+    private val viewModel: RandomUserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

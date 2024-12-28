@@ -21,8 +21,8 @@ This project is an Android application that consumes the [Random User API](https
 
 - [x] ~~Api fetching and display.~~
 - [x] ~~Hilt DI including~~
-- [ ] Add random user source as an injectable dependency
-- [ ] Add random user repository as an injectable dependency
+- [x] ~~Add random user source as an injectable dependency~~
+- [x] ~~Add random user repository as an injectable dependency~~
 - [ ] Testing strategy in general
 
 ## Bug fixing

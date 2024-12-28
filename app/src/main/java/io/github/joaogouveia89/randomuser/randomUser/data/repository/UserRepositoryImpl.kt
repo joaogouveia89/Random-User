@@ -16,8 +16,9 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val source: UserSource
 ) : UserRepository {
     override fun getRandomUser(): Flow<UserFetchState> = flow {

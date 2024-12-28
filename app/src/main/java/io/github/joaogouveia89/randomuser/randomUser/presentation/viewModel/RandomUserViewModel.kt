@@ -3,6 +3,7 @@ package io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
@@ -24,11 +25,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 private const val CACHE_LIFETIME_MS = 5000L
 
-class RandomUserViewModel(
+@HiltViewModel
+class RandomUserViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
     private var chronJob: Job? = null
