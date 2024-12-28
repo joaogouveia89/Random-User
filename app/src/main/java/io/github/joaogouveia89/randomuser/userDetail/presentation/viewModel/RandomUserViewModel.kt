@@ -11,6 +11,7 @@ import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserRepos
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlin.time.Duration.Companion.seconds
@@ -105,7 +107,7 @@ class RandomUserViewModel(
         chronJob = viewModelScope.launch(Dispatchers.IO) {
             var currentInst = Clock.System.now().calculateOffset(offset)
             locationTime.emit(currentInst)
-            while (true) {
+            while (isActive) {
                 delay(1000)
                 currentInst = currentInst.plus(1.seconds)
                 if (currentInst.hadPassedOneMinute(locationTime.value)) {
@@ -116,8 +118,16 @@ class RandomUserViewModel(
     }
 
     private fun stopChronometer() {
-        chronJob?.cancel()
-        chronJob = null
+        chronJob?.let { job ->
+            viewModelScope.launch {
+                /*
+                 * Avoiding racing conditions, so it ensures the coroutine is
+                 * finished before assigning another one to chronJob
+                 */
+                job.cancelAndJoin()
+                chronJob = null
+            }
+        }
     }
 
     private fun getNewUser() {
