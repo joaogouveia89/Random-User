@@ -30,13 +30,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
-import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserBirthday
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserContacts
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserLocation
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserProfileHeader
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserTimezone
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
+import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 
 @Composable
 fun RandomUserScreen(

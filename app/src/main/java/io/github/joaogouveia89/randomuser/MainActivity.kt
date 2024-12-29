@@ -17,13 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
-import io.github.joaogouveia89.randomuser.randomUser.data.source.UserSourceImpl
-import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScreen
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
