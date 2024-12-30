@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -26,9 +27,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
+import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserBirthday
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserContacts
@@ -165,21 +168,30 @@ fun RandomUserContent(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            Button(
-                onClick = onAddToContactsClick,
-                shape = RoundedCornerShape(12.dp),
-                enabled = uiState.isSaveButtonEnabled,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PersonAdd,
-                    contentDescription = "Add to Contacts",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Add to Contacts")
+
+            with(uiState.isSaveButtonEnabled){
+                val isEnabled = this
+                Button(
+                    onClick = onAddToContactsClick,
+                    shape = RoundedCornerShape(12.dp),
+                    enabled = isEnabled,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = if(isEnabled) Icons.Default.PersonAdd else Icons.Default.CheckCircleOutline,
+                        contentDescription = if(isEnabled) "Add to Contacts" else "Added to Contacts",
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if(isEnabled)
+                            stringResource(R.string.add_to_contacts)
+                        else
+                            stringResource(R.string.added_to_contacts)
+                    )
+                }
             }
         }
 
