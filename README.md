@@ -12,7 +12,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add copy icon near the email and click to copy to clipboard~~
 - [x] ~~Clickable phone numbers: Enable users to initiate calls by tapping on phone numbers.~~
 - [ ] Bottom navigation bar: Implement navigation for different app sections.
-- [ ] Add to contacts: Add functionality to save users as contacts
+- [x] ~~Add to contacts: Add functionality to save users as contacts~~
 - [ ] Add dedicated screen to display saved contacts.
 - [ ] A sticky letter list for easier navigation through the contact list.
 

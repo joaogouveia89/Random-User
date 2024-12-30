@@ -168,6 +168,7 @@ fun RandomUserContent(
             Button(
                 onClick = onAddToContactsClick,
                 shape = RoundedCornerShape(12.dp),
+                enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth()

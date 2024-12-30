@@ -9,6 +9,7 @@ import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -74,14 +76,19 @@ class RandomUserViewModel @Inject constructor(
         handleRefreshedUser(
             state = refreshedUser,
             profileRequest = profileRequest
-        ).copy(locationTime = locationTime.humanizedHourMin())
+        ).copy(
+            locationTime = locationTime.humanizedHourMin()
+        )
     }.stateIn(
         scope = viewModelScope,
         started = WhileSubscribed(),
         initialValue = UserProfileState()
     )
 
-    private fun handleRefreshedUser(state: UserFetchState?, profileRequest: UserProfileState): UserProfileState =
+    private fun handleRefreshedUser(
+        state: UserFetchState?,
+        profileRequest: UserProfileState
+    ): UserProfileState =
         state?.let { refreshedState ->
             when (refreshedState) {
                 is UserFetchState.Error -> profileRequest
@@ -98,7 +105,7 @@ class RandomUserViewModel @Inject constructor(
                     )
                 }
             }
-        } ?:  profileRequest
+        } ?: profileRequest
 
     fun execute(command: RandomUserCommand) {
         when (command) {
@@ -120,7 +127,7 @@ class RandomUserViewModel @Inject constructor(
                         locationTime.emit(currentInst)
                     }
                 }
-            }catch (exception: Exception){
+            } catch (exception: Exception) {
                 Log.e(TAG, "chronJob has stopped due to ${exception.message}")
             }
         }
@@ -148,10 +155,15 @@ class RandomUserViewModel @Inject constructor(
     }
 
     private fun saveUser() {
-        // TODO: saving is working it's missing to handle the saving status, disable save button if success or show error if a problem happens
         viewModelScope.launch {
-            repository.saveUser(uiState.value.user).collect{
-
+            repository.saveUser(uiState.value.user).collect { saveState ->
+                if (saveState is UserSaveState.Success) {
+                    refreshUser.update {
+                        UserFetchState.Success(
+                            user = uiState.value.user.copy(id = saveState.id)
+                        )
+                    }
+                }
             }
         }
     }
@@ -161,7 +173,7 @@ class RandomUserViewModel @Inject constructor(
         stopChronometer()
     }
 
-    companion object{
+    companion object {
         private val TAG = this::class.java.name
     }
 }
