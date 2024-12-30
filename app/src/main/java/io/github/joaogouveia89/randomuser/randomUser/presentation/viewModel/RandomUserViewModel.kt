@@ -103,6 +103,7 @@ class RandomUserViewModel @Inject constructor(
     fun execute(command: RandomUserCommand) {
         when (command) {
             is RandomUserCommand.GetNewUser -> getNewUser()
+            is RandomUserCommand.SaveUser -> saveUser()
         }
     }
 
@@ -143,6 +144,15 @@ class RandomUserViewModel @Inject constructor(
             refreshUser.emitAll(
                 repository.getRandomUser()
             )
+        }
+    }
+
+    private fun saveUser() {
+        // TODO: saving is working it's missing to handle the saving status, disable save button if success or show error if a problem happens
+        viewModelScope.launch {
+            repository.saveUser(uiState.value.user).collect{
+
+            }
         }
     }
 

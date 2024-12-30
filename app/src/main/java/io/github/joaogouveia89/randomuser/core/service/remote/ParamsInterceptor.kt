@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.core.remoteService
+package io.github.joaogouveia89.randomuser.core.service.remote
 
 import okhttp3.Interceptor
 import okhttp3.Response

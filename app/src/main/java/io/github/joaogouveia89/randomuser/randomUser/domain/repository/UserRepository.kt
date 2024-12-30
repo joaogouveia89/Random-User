@@ -9,6 +9,13 @@ sealed class UserFetchState {
     data class Error(val errorMessage: String) : UserFetchState()
 }
 
+sealed class UserSaveState{
+    data object Loading : UserSaveState()
+    data class Success(val id: Long) : UserSaveState()
+    data class Error(val errorMessage: String) : UserSaveState()
+}
+
 interface UserRepository {
     fun getRandomUser(): Flow<UserFetchState>
+    fun saveUser(user: User): Flow<UserSaveState>
 }

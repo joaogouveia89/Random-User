@@ -1,6 +1,6 @@
-package io.github.joaogouveia89.randomuser.core.remoteService.model.mappers
+package io.github.joaogouveia89.randomuser.core.service.remote.model.mappers
 
-import io.github.joaogouveia89.randomuser.core.remoteService.model.Results
+import io.github.joaogouveia89.randomuser.core.service.remote.model.Results
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.Country
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.Nationality
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User

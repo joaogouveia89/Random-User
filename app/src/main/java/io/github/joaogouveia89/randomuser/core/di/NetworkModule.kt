@@ -6,9 +6,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.joaogouveia89.randomuser.BuildConfig
-import io.github.joaogouveia89.randomuser.core.remoteService.LogJsonInterceptor
-import io.github.joaogouveia89.randomuser.core.remoteService.ParamsInterceptor
-import io.github.joaogouveia89.randomuser.core.remoteService.UserService
+import io.github.joaogouveia89.randomuser.core.service.remote.LogJsonInterceptor
+import io.github.joaogouveia89.randomuser.core.service.remote.ParamsInterceptor
+import io.github.joaogouveia89.randomuser.core.service.remote.UserService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

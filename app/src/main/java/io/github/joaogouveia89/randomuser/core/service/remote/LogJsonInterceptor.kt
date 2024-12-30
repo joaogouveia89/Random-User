@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.core.remoteService
+package io.github.joaogouveia89.randomuser.core.service.remote
 
 import android.util.Log
 import io.github.joaogouveia89.randomuser.BuildConfig

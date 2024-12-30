@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         RandomUserScreen(
                             innerPadding,
                             uiState,
-                            onAddToContactsClick = {},
+                            onAddToContactsClick = { viewModel.execute(RandomUserCommand.SaveUser) },
                             onOpenMapClick = {
                                 val gmmIntentUri: Uri =
                                     Uri.parse(uiState.user.getMapsIntentQuery())
