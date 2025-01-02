@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
+import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserBirthday
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserContacts
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserLocation
@@ -40,6 +41,7 @@ import io.github.joaogouveia89.randomuser.randomUser.presentation.components.Use
 import io.github.joaogouveia89.randomuser.randomUser.presentation.components.UserTimezone
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
+import kotlinx.datetime.Clock
 
 @Composable
 fun RandomUserScreen(
@@ -128,7 +130,7 @@ fun RandomUserContent(
             UserTimezone(
                 timezone = user.timezoneOffset,
                 timezoneDescription = user.timezoneDescription,
-                localTime = uiState.locationTime,
+                localTime = uiState.locationTime?.humanizedHourMin() ?: "",
                 iconBackgroundColor = iconsBackgroundColor,
                 iconColor = iconsColor
             )
@@ -226,7 +228,7 @@ fun GreetingPreview() {
             innerPadding = PaddingValues(16.dp),
             uiState = UserProfileState(
                 user = fakeUser,
-                locationTime = "2024-04-01T14:30:00Z",
+                locationTime = Clock.System.now(),
                 isLoading = false
             ),
             onOpenMapClick = {},

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.palette.graphics.Palette
+import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.service.remote.model.mappers.asUser
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
@@ -20,10 +21,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class UserRepositoryImpl @Inject constructor(
     private val remoteSource: UserRemoteSource,
-    private val localSource: UserLocalSource
+    private val localSource: UserLocalSource,
+    @IoDispatcher private val dispatcher: CoroutineContext
 ) : UserRepository {
     override fun getRandomUser(): Flow<UserFetchState> = flow {
         emit(UserFetchState.Loading)
@@ -44,13 +47,13 @@ class UserRepositoryImpl @Inject constructor(
         }
 
         emit(UserFetchState.Success(user.asUser(colors)))
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcher)
 
     override fun saveUser(user: User): Flow<UserSaveState> = flow {
         emit(UserSaveState.Loading)
         val id = localSource.saveUser(user)
         emit(UserSaveState.Success(id))
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcher)
 
     // Suspend function to download the image and extract the colors
     private suspend fun analyzeImageFromUrl(url: String): Pair<String, String> =

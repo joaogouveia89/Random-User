@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.service.local.daos.UserDao
 import io.github.joaogouveia89.randomuser.core.service.remote.UserService
 import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
@@ -12,6 +13,7 @@ import io.github.joaogouveia89.randomuser.randomUser.data.source.UserRemoteSourc
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserLocalSource
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserRemoteSource
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -34,9 +36,11 @@ object RandomUserModule {
     @Singleton
     fun provideRandomUserRepository(
         remoteSource: UserRemoteSource,
-        localSource: UserLocalSource
+        localSource: UserLocalSource,
+        @IoDispatcher dispatcher: CoroutineDispatcher
     ): UserRepository = UserRepositoryImpl(
         remoteSource = remoteSource,
-        localSource = localSource
+        localSource = localSource,
+        dispatcher = dispatcher
     )
 }
