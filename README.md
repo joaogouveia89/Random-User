@@ -41,27 +41,42 @@ This project is an Android application that consumes the [Random User API](https
 - **Android Application Plugin**: `com.android.application` version 8.7.2
 - **Kotlin Android Plugin**: `org.jetbrains.kotlin.android` version 2.0.0
 - **Kotlin Compose Plugin**: `org.jetbrains.kotlin.plugin.compose` version 2.0.0
+- **Hilt Plugin**: `com.google.dagger.hilt.android` version 2.51.1
+- **Kotlin Kapt Plugin**: `org.jetbrains.kotlin.kapt` version 2.0.0
 
 ### Dependencies
 
-| Library                 | Version        | Purpose                             |
-|-------------------------|----------------|-------------------------------------|
-| Android Core KTX        | 1.15.0         | Core Android extensions for Kotlin. |
-| Lifecycle Runtime KTX   | 2.8.7          | Lifecycle-aware components.         |
-| Activity Compose        | 1.9.3          | Jetpack Compose integration.        |
-| Compose BOM             | 2024.04.01     | Compose dependency management.      |
-| Material Icons Extended | Latest version | Material icons for Compose.         |
-| Coil Compose            | 3.0.4          | Image loading for Compose.          |
-| Coil Network (OkHttp)   | 3.0.4          | Network support for Coil.           |
-| Retrofit                | 2.9.0          | REST API client.                    |
-| Gson Converter          | 2.9.0          | JSON serialization/deserialization. |
-| OkHttp                  | 5.0.0-alpha.2  | HTTP client.                        |
-| Logging Interceptor     | 5.0.0-alpha.2  | Logging for HTTP requests.          |
-| Palette KTX             | 1.0.0          | Extract colors from images.         |
-| Kotlinx Datetime        | 0.6.1          | Date and time utilities for Kotlin. |
-| JUnit                   | 4.13.2         | Unit testing framework.             |
-| AndroidX Test JUnit     | 1.2.1          | Android JUnit integration.          |
-| Espresso Core           | 3.6.1          | UI testing framework.               |
+| Library                     | Version        | Purpose                             |
+|-----------------------------|----------------|-------------------------------------|
+| Android Core KTX            | 1.15.0         | Core Android extensions for Kotlin. |
+| Lifecycle Runtime KTX       | 2.8.7          | Lifecycle-aware components.         |
+| Lifecycle ViewModel Compose | 2.8.7          | Lifecycle ViewModel for Compose.    |
+| Activity Compose            | 1.9.3          | Jetpack Compose integration.        |
+| Navigation Compose          | 2.8.5          | Navigation support for Compose.     |
+| Compose BOM                 | 2024.04.01     | Compose dependency management.      |
+| Material Icons Extended     | Latest version | Material icons for Compose.         |
+| Material3                   | 1.3.1          | Material Design 3 components.       |
+| Coil Compose                | 3.0.4          | Image loading for Compose.          |
+| Coil Network (OkHttp)       | 3.0.4          | Network support for Coil.           |
+| Retrofit                    | 2.9.0          | REST API client.                    |
+| Gson Converter              | 2.9.0          | JSON serialization/deserialization. |
+| OkHttp                      | 5.0.0-alpha.2  | HTTP client.                        |
+| Logging Interceptor         | 5.0.0-alpha.2  | Logging for HTTP requests.          |
+| Hilt Android                | 2.51.1         | Dependency injection library.       |
+| Hilt Navigation Compose     | 1.2.0          | Navigation support with Hilt.       |
+| Palette KTX                 | 1.0.0          | Extract colors from images.         |
+| Room Runtime                | 2.6.1          | Database layer for Android.         |
+| Room KTX                    | 2.6.1          | Kotlin extensions for Room.         |
+| Room Compiler               | 2.6.1          | Annotation processor for Room.      |
+| Room Testing                | 2.6.1          | Testing utilities for Room.         |
+| Kotlinx Datetime            | 0.6.1          | Date and time utilities for Kotlin. |
+| Kotlinx Coroutines Test     | 1.7.3          | Coroutines testing utilities.       |
+| Mockk                       | 1.13.7         | Mocking framework for Kotlin.       |
+| JUnit                       | 4.13.2         | Unit testing framework.             |
+| AndroidX Test JUnit         | 1.2.1          | Android JUnit integration.          |
+| Espresso Core               | 3.6.1          | UI testing framework.               |
+| Turbine                     | 1.0.0          | Flow testing utilities.             |
+
 
 ## Setup and Installation
 
