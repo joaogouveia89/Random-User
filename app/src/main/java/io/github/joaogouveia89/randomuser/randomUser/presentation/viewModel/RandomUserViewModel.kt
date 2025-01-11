@@ -49,7 +49,6 @@ class RandomUserViewModel @Inject constructor(
     private val refreshUserFlow = repository
         .getRandomUser()
         .map { userFetchState ->
-            println("MAPPINGGGG")
             when (userFetchState) {
                 is UserFetchState.Loading -> {
                     if (_uiState.value.user == User())
@@ -131,11 +130,13 @@ class RandomUserViewModel @Inject constructor(
 
     private fun saveUser() {
         viewModelScope.launch {
-            repository.saveUser(_uiState.value.user).collect { saveState ->
+            repository.saveUser(uiState.value.user).collect { saveState ->
                 if (saveState is UserSaveState.Success) {
-                    _uiState.value = _uiState.value.copy(
-                        user = _uiState.value.user.copy(id = saveState.id)
-                    )
+                    _uiState.update {
+                        it.copy(
+                            user = it.user.copy(id = saveState.id)
+                        )
+                    }
                 }
             }
         }

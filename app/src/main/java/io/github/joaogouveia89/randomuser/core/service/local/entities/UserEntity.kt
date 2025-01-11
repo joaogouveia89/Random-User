@@ -2,6 +2,8 @@ package io.github.joaogouveia89.randomuser.core.service.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.github.joaogouveia89.randomuser.randomUser.domain.model.Country
+import io.github.joaogouveia89.randomuser.randomUser.domain.model.Nationality
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import kotlinx.datetime.Instant
 
@@ -53,3 +55,29 @@ fun User.asEntity() = UserEntity(
     thumbnailUrl = thumbnailUrl,
     nationalityReference = nationality?.reference
 )
+
+fun UserEntity.asUser() = User(
+    id = id,
+    gender = gender,
+    title = title,
+    firstName = firstName,
+    lastName = lastName,
+    city = city,
+    state = state,
+    country = country,
+    countryCode = Country.getByName(countryCode),
+    latitude = latitude,
+    longitude = longitude,
+    timezoneOffset = timezoneOffset,
+    timezoneDescription = timezoneDescription,
+    email = email,
+    dateOfBirth = dateOfBirth,
+    age = age,
+    phone = phone,
+    cellPhone = cellPhone,
+    largePictureUrl = largePictureUrl,
+    thumbnailUrl = thumbnailUrl,
+    nationality = Nationality.fromReference(nationalityReference)
+)
+
+fun List<UserEntity>.asUsers() = map { it.asUser() }

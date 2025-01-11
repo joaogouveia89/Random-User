@@ -15,6 +15,7 @@ import io.github.joaogouveia89.randomuser.randomUser.openMaps
 import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScreen
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
+import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListViewModel
 import kotlinx.datetime.Clock
 
 
@@ -45,7 +46,7 @@ fun NavigationGraph(navController: NavHostController) {
             )
         }
         composable(BottomNavItem.UserList.route) {
-
+            val viewModel: UserListViewModel = hiltViewModel()
         }
     }
 }

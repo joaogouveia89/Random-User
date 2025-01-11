@@ -27,8 +27,8 @@ enum class Nationality(
     US("US", "American");
 
     companion object {
-        fun fromReference(ref: String): Nationality? {
-            return entries.find { it.reference == ref }
+        fun fromReference(ref: String?): Nationality? {
+            return ref?.let { entries.firstOrNull { entry -> entry.reference == it } }
         }
     }
 }
