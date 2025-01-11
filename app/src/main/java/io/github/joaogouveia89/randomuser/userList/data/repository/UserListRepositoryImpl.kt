@@ -1,5 +1,6 @@
 package io.github.joaogouveia89.randomuser.userList.data.repository
 
+import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListGetState
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListRepository
 import io.github.joaogouveia89.randomuser.userList.domain.source.UserListSource
@@ -13,7 +14,14 @@ class UserListRepositoryImpl @Inject constructor(
     override suspend fun getUsers(): Flow<UserListGetState> = flow {
         emit(UserListGetState.Loading)
 
-        val users = userListSource.getUsers()
+        val users = userListSource
+            .getUsers()
+            .sortedWith(
+                compareBy(
+                    User::firstName,
+                    User::lastName
+                )
+            )
 
         emit(UserListGetState.Success(users))
     }

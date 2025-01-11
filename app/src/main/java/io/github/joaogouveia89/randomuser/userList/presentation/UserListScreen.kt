@@ -105,19 +105,10 @@ fun UserListItem(
                 overflow = TextOverflow.Ellipsis
             )
         }
-
-        // Button to open user's location on a map
-        IconButton(
-            onClick = {
-//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(user.getMapsIntentQuery()))
-//                ContextCompat.startActivity(LocalContext.current, intent, null)
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Place,
-                contentDescription = "Open Map",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
+        AsyncImage(
+            modifier = Modifier.size(40.dp),
+            model = "https://flagsapi.com/${user.nationality}/flat/64.png",
+            contentDescription = null
+        )
     }
 }
