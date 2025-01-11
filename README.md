@@ -30,6 +30,7 @@ This project is an Android application that consumes the [Random User API](https
 ## Bug fixing
 
 - [x] ~~Crash on user fetching~~
+- [ ] When on fetch screen, go to list screen and go back to fetch screen the user must not be fetched again
 
 ## Screenshots
 

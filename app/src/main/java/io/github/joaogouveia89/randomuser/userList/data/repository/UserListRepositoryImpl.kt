@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class UserListRepositoryImpl @Inject  constructor(
+class UserListRepositoryImpl @Inject constructor(
     private val userListSource: UserListSource
-): UserListRepository {
+) : UserListRepository {
     override suspend fun getUsers(): Flow<UserListGetState> = flow {
         emit(UserListGetState.Loading)
 

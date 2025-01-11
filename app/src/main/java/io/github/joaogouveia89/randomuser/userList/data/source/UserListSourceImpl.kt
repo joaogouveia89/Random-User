@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class UserListSourceImpl @Inject constructor(
     private val userDao: UserDao
-): UserListSource {
+) : UserListSource {
     override suspend fun getUsers(): List<User> =
         userDao
             .getUsersEntities()

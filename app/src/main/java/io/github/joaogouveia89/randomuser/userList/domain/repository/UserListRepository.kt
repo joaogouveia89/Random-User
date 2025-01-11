@@ -9,6 +9,7 @@ sealed class UserListGetState {
     data class Success(val users: List<User>) : UserListGetState()
     data class Error(val errorMessage: String) : UserListGetState()
 }
+
 interface UserListRepository {
     suspend fun getUsers(): Flow<UserListGetState>
 }

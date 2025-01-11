@@ -2,7 +2,7 @@ package io.github.joaogouveia89.randomuser.randomUser.domain.model
 
 import kotlinx.datetime.Instant
 
-data class  User(
+data class User(
     val id: Long = 0L,
     val gender: String = "",
     val title: String = "",

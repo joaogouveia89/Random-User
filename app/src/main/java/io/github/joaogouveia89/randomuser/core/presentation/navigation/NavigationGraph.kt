@@ -1,5 +1,6 @@
 package io.github.joaogouveia89.randomuser.core.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,6 +16,7 @@ import io.github.joaogouveia89.randomuser.randomUser.openMaps
 import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScreen
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
+import io.github.joaogouveia89.randomuser.userList.presentation.UserListScreen
 import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListViewModel
 import kotlinx.datetime.Clock
 
@@ -47,6 +49,12 @@ fun NavigationGraph(navController: NavHostController) {
         }
         composable(BottomNavItem.UserList.route) {
             val viewModel: UserListViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            UserListScreen(
+                uiState = uiState,
+                onUserClick = {}
+            )
         }
     }
 }
