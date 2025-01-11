@@ -13,8 +13,9 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Clickable phone numbers: Enable users to initiate calls by tapping on phone numbers.~~
 - [x] ~~Bottom navigation bar: Implement navigation for different app sections.~~
 - [x] ~~Add to contacts: Add functionality to save users as contacts~~
-- [ ] Add dedicated screen to display saved contacts.
+- [x] Add dedicated screen to display saved contacts.
 - [ ] A sticky letter list for easier navigation through the contact list.
+- [ ] Make a search field on list
 
 
 ## Technical features
@@ -24,6 +25,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add random user source as an injectable dependency~~
 - [x] ~~Add random user repository as an injectable dependency~~
 - [x] Testing strategy in general
+- [ ] Handle user click on user list
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 - [ ] Add UI tests with Espresso
 

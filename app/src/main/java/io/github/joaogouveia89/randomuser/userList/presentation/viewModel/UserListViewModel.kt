@@ -1,7 +1,5 @@
 package io.github.joaogouveia89.randomuser.userList.presentation.viewModel
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +28,7 @@ class UserListViewModel @Inject constructor(
     init {
         viewModelScope.launch(dispatcher) {
             repository.getUsers().collect { state ->
-                when(state){
+                when (state) {
                     is UserListGetState.Loading -> _uiState.update { UserListState(isLoading = true) }
                     is UserListGetState.Success -> _uiState.update { UserListState(userList = state.users) }
                     is UserListGetState.Error -> _uiState.update { UserListState(isError = true) }
