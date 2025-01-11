@@ -23,6 +23,7 @@ import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScre
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
+import kotlinx.datetime.Clock
 
 private const val COPY_EMAIL_TO_CLIPBOARD_LABEL = "random_user_email"
 
@@ -34,6 +35,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
+
         setContent {
             RandomUserTheme {
                 Scaffold(
@@ -45,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     PullToRefreshBox(
                         isRefreshing = uiState.isGettingNewUser,
                         onRefresh = {
-                            viewModel.execute(RandomUserCommand.GetNewUser)
+                            viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
                         },
                     ) {
                         RandomUserScreen(

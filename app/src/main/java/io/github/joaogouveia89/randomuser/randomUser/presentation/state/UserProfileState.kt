@@ -7,7 +7,8 @@ data class UserProfileState(
     val user: User = User(),
     val locationTime: Instant? = null,
     val isLoading: Boolean = false,
-    val isGettingNewUser: Boolean = false
+    val isGettingNewUser: Boolean = false,
+    val isError: Boolean = false
 ) {
     val isSaveButtonEnabled: Boolean
         get() = user.id == 0L

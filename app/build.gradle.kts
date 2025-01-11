@@ -39,9 +39,30 @@ android {
     }
 }
 
+// Configure JVM arguments specifically for the test tasks.
+// - `-Dnet.bytebuddy.experimental=true`: Enables experimental features in ByteBuddy,
+//   allowing dynamic interception and manipulation of bytecode during runtime.
+//   This is essential for certain mocking or bytecode manipulation libraries.
+// - `-XX:+EnableDynamicAgentLoading`: Explicitly allows dynamic agent loading,
+//   which is required for tools like ByteBuddy to attach agents during runtime.
+//   Suppresses warnings about the future default behavior of disallowing this feature.
+// Considerations:
+// 1. Ensure that these arguments are necessary for this project, as enabling experimental
+//    or dynamic features can introduce subtle issues or dependencies on specific JVM versions.
+// 2. Future versions of Java may restrict dynamic agent loading by default. Monitor the release
+//    notes of both the JDK and ByteBuddy to adapt accordingly.
+// 3. For production environments, review whether these arguments should be disabled to avoid
+//    unnecessary overhead or unintended behaviors.
+tasks.withType<Test> {
+    jvmArgs = listOf(
+        "-Dnet.bytebuddy.experimental=true",
+        "-XX:+EnableDynamicAgentLoading"
+    )
+}
 
 dependencies {
 
+    testImplementation(libs.byte.buddy)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

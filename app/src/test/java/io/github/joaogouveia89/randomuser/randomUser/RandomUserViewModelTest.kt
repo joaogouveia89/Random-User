@@ -2,26 +2,24 @@ package io.github.joaogouveia89.randomuser.randomUser
 
 import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
-import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock
 import org.junit.Rule
 import org.junit.Test
 
@@ -39,6 +37,7 @@ class RandomUserViewModelTest {
     var mainCoroutineRule = MainCoroutineRule(dispatcher)
 
     private val mockRepository = mockk<UserRepository>()
+    private val clock = mockk<Clock>(relaxed = true)
     private lateinit var viewModel: RandomUserViewModel
 
     @Test
@@ -53,6 +52,8 @@ class RandomUserViewModelTest {
         // Initialize viewModel
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
 
+        viewModel.execute(RandomUserCommand.GetNewUser(clock))
+
         // Ensure all coroutines complete
         advanceUntilIdle()
 
@@ -63,23 +64,135 @@ class RandomUserViewModelTest {
         }
     }
 
+    @Test
+    fun `isSaveButtonEnabled is false when user id is non-zero`() = runTest {
+        // Set up initial state
+        val mockUser = User(id = 1)
+
+        coEvery { mockRepository.getRandomUser() } returns flowOf(
+            UserFetchState.Success(mockUser)
+        )
+
+        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+
+        viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
+
+        // Ensure all coroutines complete
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            skipItems(1) // skipping the initial value
+            val successState = awaitItem()
+            assertFalse(successState.isSaveButtonEnabled) // Verify correct user
+        }
+    }
+
+    @Test
+    fun `uiState emits loading state when repository is fetching user`() = runTest {
+        coEvery { mockRepository.getRandomUser() } returns flowOf(
+            UserFetchState.Loading
+        )
+
+        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+
+        viewModel.execute(RandomUserCommand.GetNewUser(clock))
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            skipItems(1) // skipping the initial value
+            val loadingState = awaitItem()
+            assertTrue(loadingState.isLoading) // Verify loading state
+        }
+    }
+
+    @Test
+    fun `uiState emits error state when repository fetch fails`() = runTest {
+        coEvery { mockRepository.getRandomUser() } returns flowOf(
+            UserFetchState.Error("Network error")
+        )
+
+        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+
+        viewModel.execute(RandomUserCommand.GetNewUser(clock))
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            skipItems(1) // skipping the initial value
+            val errorState = awaitItem()
+            assertEquals(User(), errorState.user) // Verify user is reset to default
+            assertFalse(errorState.isLoading) // Ensure not loading
+            assertTrue(errorState.isError) // Ensure error set
+        }
+    }
+
+    @Test
+    fun `saveUser updates user id on success`() = runTest {
+        val mockUser = User(id = 0, firstName = "John", lastName = "Doe")
+
+        coEvery { mockRepository.getRandomUser() } returns flowOf(
+            UserFetchState.Success((mockUser))
+        )
+
+        coEvery { mockRepository.saveUser(mockUser) } returns flowOf(
+            UserSaveState.Success(123)
+        )
+        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+
+        // Simulate a state with a user to save
+        viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
+        advanceUntilIdle()
+
+        viewModel.execute(RandomUserCommand.SaveUser)
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            skipItems(1) // skipping the initial value
+            val updatedState = awaitItem()
+            assertEquals(123, updatedState.user.id) // Verify user id updated
+        }
+    }
+
 //    @Test
-//    fun `isSaveButtonEnabled is false when user id is non-zero`() = runTest {
-//        // Set up initial state
-//        val mockUser = User(id = 1)
+//    fun `chronometer starts and updates locationTime correctly`() = runTest {
+//        // Create a TestCoroutineDispatcher for time control
+//        val testDispatcher = StandardTestDispatcher()
+//
+//        // Mock getRandomUser to return a user with a timezone offset
+//        val offset = "+01:00"
+//        val mockUser = User(timezoneOffset = offset)
 //
 //        coEvery { mockRepository.getRandomUser() } returns flowOf(
 //            UserFetchState.Success(mockUser)
 //        )
 //
-//        viewModel = RandomUserViewModel(mockRepository)
+//        val mockClock = mockk<Clock>()
+//        every { mockClock.now() } returns Instant.fromEpochMilliseconds(testScheduler.currentTime)
 //
-//        viewModel.execute(RandomUserCommand.GetNewUser)
+//        // Create ViewModel and inject the test dispatcher
+//        viewModel = RandomUserViewModel(mockRepository, testDispatcher)
 //
+//        viewModel.execute(RandomUserCommand.GetNewUser(mockClock))
 //
+//        // Start testing the UI state
 //        viewModel.uiState.test {
-//            val successState = awaitItem()
-//            assertFalse(successState.isSaveButtonEnabled) // Verify correct user
+//            // Skip initial state if necessary
+//            skipItems(1)
+//
+//            // Advance time by 2 minutes (this is under your test control)
+//            testScheduler.advanceTimeBy(2.minutes)
+//
+//            // Collect the updated state after time has advanced
+//            val updatedState = awaitItem()
+//
+//            // Check if locationTime was updated correctly after 2 minutes
+//            assertEquals(mockClock.now().plus(2.minutes), updatedState.locationTime)
+//
+//            // Cancel the test scheduler to stop the test
+//            testScheduler.cancel()
 //        }
 //    }
+
 }

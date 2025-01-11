@@ -24,6 +24,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add random user source as an injectable dependency~~
 - [x] ~~Add random user repository as an injectable dependency~~
 - [ ] Testing strategy in general
+- [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 
 ## Bug fixing
 

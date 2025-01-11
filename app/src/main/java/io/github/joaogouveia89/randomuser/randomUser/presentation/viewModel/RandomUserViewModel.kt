@@ -13,7 +13,6 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepos
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -26,7 +25,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 private const val CACHE_LIFETIME_MS = 5000L
@@ -37,8 +38,9 @@ class RandomUserViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private var chronJob: Job? = null
-
+    private lateinit var currentClock: Clock
     private val _uiState = MutableStateFlow(UserProfileState())
+
     val uiState: StateFlow<UserProfileState> =
         _uiState.stateIn(
             scope = viewModelScope,
@@ -51,12 +53,10 @@ class RandomUserViewModel @Inject constructor(
         .map { userFetchState ->
             when (userFetchState) {
                 is UserFetchState.Loading -> {
-                    if (uiState.value.user == User())
+                    if (_uiState.value.user == User())
                         UserProfileState(isLoading = true)
                     else {
-                        uiState.value.copy(
-                            isGettingNewUser = true
-                        )
+                        _uiState.value.copy(isGettingNewUser = true)
                     }
                 }
 
@@ -66,19 +66,21 @@ class RandomUserViewModel @Inject constructor(
                 }
 
                 is UserFetchState.Error -> {
-                    UserProfileState()
+                    UserProfileState(isError = true)
                 }
             }
         }
 
     fun execute(command: RandomUserCommand) {
         when (command) {
-            is RandomUserCommand.GetNewUser -> getNewUser()
+            is RandomUserCommand.GetNewUser -> getNewUser(command.clock)
             is RandomUserCommand.SaveUser -> saveUser()
         }
     }
 
-    private fun getNewUser() {
+    private fun getNewUser(clock: Clock) {
+        Log.d(TAG, "getNewUser")
+        currentClock = clock
         viewModelScope.launch {
             refreshUserFlow.collect { userProfileState ->
                 _uiState.value = userProfileState
@@ -92,22 +94,22 @@ class RandomUserViewModel @Inject constructor(
 
             chronJob = viewModelScope.launch(dispatcher) {
                 try {
-                    var currentInst = Clock.System.now().calculateOffset(offset)
+                    var currentInst = currentClock.now().calculateOffset(offset)
                     _uiState.update {
                         it.copy(
                             locationTime = currentInst
                         )
                     }
                     while (isActive) {
-                        delay(1000)
+                        delay(1.seconds)
                         currentInst = currentInst.plus(1.seconds)
-                        uiState.value.locationTime?.let { locationTime ->
-                            if (currentInst.hadPassedOneMinute(locationTime)) {
-                                _uiState.update {
-                                    it.copy(
-                                        locationTime = currentInst
-                                    )
-                                }
+                        _uiState.update { state ->
+                            if (currentInst.hadPassedOneMinute(state.locationTime ?: currentInst)) {
+                                state.copy(
+                                    locationTime = currentInst
+                                )
+                            } else {
+                                state
                             }
                         }
                     }
@@ -146,10 +148,6 @@ class RandomUserViewModel @Inject constructor(
         viewModelScope.launch {
             stopChronometer()
         }
-    }
-
-    init {
-        getNewUser()
     }
 
     companion object {
