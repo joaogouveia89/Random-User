@@ -78,8 +78,6 @@ fun UserTimezone(
     }
 }
 
-//TODO: Use this as reference to apply to other cards
-
 @Preview(showBackground = true)
 @Composable
 private fun UserTimezonePreview() {

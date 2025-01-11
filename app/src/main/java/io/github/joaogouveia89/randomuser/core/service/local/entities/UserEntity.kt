@@ -1,6 +1,5 @@
 package io.github.joaogouveia89.randomuser.core.service.local.entities
 
-import androidx.compose.ui.graphics.Color
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.Country
@@ -31,7 +30,8 @@ data class UserEntity(
     val largePictureUrl: String,
     val thumbnailUrl: String,
     val nationalityReference: String?,
-    val nationalityColors: Pair<String, String> // TODO: FIND A WAY TO FILL THIS FIELD
+    val nationalityColor1: String,
+    val nationalityColor2: String
 )
 
 fun User.asEntity() = UserEntity(
@@ -56,7 +56,8 @@ fun User.asEntity() = UserEntity(
     largePictureUrl = largePictureUrl,
     thumbnailUrl = thumbnailUrl,
     nationalityReference = nationality?.reference,
-    nationalityColors = nationalityColors
+    nationalityColor1 = nationalityColors.first,
+    nationalityColor2 = nationalityColors.second,
 )
 
 fun UserEntity.asUser() = User(
@@ -81,7 +82,7 @@ fun UserEntity.asUser() = User(
     largePictureUrl = largePictureUrl,
     thumbnailUrl = thumbnailUrl,
     nationality = Nationality.fromReference(nationalityReference),
-    nationalityColors = nationalityColors
+    nationalityColors = Pair(nationalityColor1, nationalityColor2)
 )
 
 fun List<UserEntity>.asUsers() = map { it.asUser() }
