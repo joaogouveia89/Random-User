@@ -33,9 +33,7 @@ This project is an Android application that consumes the [Random User API](https
 
 ## Screenshots
 
-Add screenshots here to showcase the application’s functionality. Include images for each major feature to give a visual understanding of the app.
-
-![random-user-screenshot](app-screenshots/scrsht1.png)
+<img src="app-screenshots/scrsht1.png" width="195" height="420" alt="random-user-screenshot" />
 
 ## Libraries and Tools
 
