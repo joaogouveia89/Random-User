@@ -9,7 +9,7 @@ sealed class UserFetchState {
     data class Error(val errorMessage: String) : UserFetchState()
 }
 
-sealed class UserSaveState{
+sealed class UserSaveState {
     data object Loading : UserSaveState()
     data class Success(val id: Long) : UserSaveState()
     data class Error(val errorMessage: String) : UserSaveState()

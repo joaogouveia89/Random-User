@@ -25,7 +25,7 @@ data class User(
     val thumbnailUrl: String = "",
     val nationality: Nationality? = null,
     val nationalityColors: Pair<String, String> = Pair("", "")
-){
+) {
     fun getMapsIntentQuery() =
         "geo:0,0?q=$latitude,$longitude($title+$firstName+$lastName+Location)"
 }

@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 class UserLocalSourceImpl @Inject constructor(
     private val userDao: UserDao
-): UserLocalSource {
+) : UserLocalSource {
     override suspend fun saveUser(user: User): Long = userDao.insert(user.asEntity())
 }

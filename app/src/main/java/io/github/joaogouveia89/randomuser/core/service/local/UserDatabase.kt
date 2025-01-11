@@ -11,6 +11,6 @@ const val LOCAL_DATABASE_NAME = "random_user"
 
 @Database(entities = [UserEntity::class], version = 1, exportSchema = false)
 @TypeConverters(InstantConverter::class)
-abstract class UserDatabase: RoomDatabase() {
+abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 }

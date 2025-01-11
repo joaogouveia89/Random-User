@@ -25,9 +25,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 private const val CACHE_LIFETIME_MS = 5000L
@@ -51,6 +49,7 @@ class RandomUserViewModel @Inject constructor(
     private val refreshUserFlow = repository
         .getRandomUser()
         .map { userFetchState ->
+            println("MAPPINGGGG")
             when (userFetchState) {
                 is UserFetchState.Loading -> {
                     if (_uiState.value.user == User())
@@ -79,7 +78,6 @@ class RandomUserViewModel @Inject constructor(
     }
 
     private fun getNewUser(clock: Clock) {
-        Log.d(TAG, "getNewUser")
         currentClock = clock
         viewModelScope.launch {
             refreshUserFlow.collect { userProfileState ->

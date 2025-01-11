@@ -1,7 +1,6 @@
 package io.github.joaogouveia89.randomuser.core.di
 
 import android.content.Context
-import androidx.room.Database
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides

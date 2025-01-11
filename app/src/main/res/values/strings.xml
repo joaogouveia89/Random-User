@@ -3,4 +3,6 @@
     <string name="email_copied_to_clipboard">Email copied to clipboard</string>
     <string name="add_to_contacts">Add to Contacts</string>
     <string name="added_to_contacts">Added to Contacts</string>
+    <string name="random_user">Random User</string>
+    <string name="user_list">User List</string>
 </resources>

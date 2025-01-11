@@ -17,5 +17,5 @@ annotation class IoDispatcher
 object CoroutinesModule {
     @Provides
     @IoDispatcher
-    fun provideIoDispatcher() : CoroutineDispatcher = Dispatchers.IO
+    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 }

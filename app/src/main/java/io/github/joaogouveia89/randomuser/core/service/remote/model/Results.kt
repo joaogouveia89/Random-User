@@ -5,15 +5,15 @@ import com.google.gson.annotations.SerializedName
 
 data class Results(
     @SerializedName("gender") val gender: String,
-    @SerializedName("name") val name: io.github.joaogouveia89.randomuser.core.service.remote.model.Name,
-    @SerializedName("location") val location: io.github.joaogouveia89.randomuser.core.service.remote.model.Location,
+    @SerializedName("name") val name: Name,
+    @SerializedName("location") val location: Location,
     @SerializedName("email") val email: String,
-    @SerializedName("login") val login: io.github.joaogouveia89.randomuser.core.service.remote.model.Login,
-    @SerializedName("dob") val dob: io.github.joaogouveia89.randomuser.core.service.remote.model.Dob,
-    @SerializedName("registered") val registered: io.github.joaogouveia89.randomuser.core.service.remote.model.Registered,
+    @SerializedName("login") val login: Login,
+    @SerializedName("dob") val dob: Dob,
+    @SerializedName("registered") val registered: Registered,
     @SerializedName("phone") val phone: String,
     @SerializedName("cell") val cell: String,
-    @SerializedName("id") val id: io.github.joaogouveia89.randomuser.core.service.remote.model.Id,
-    @SerializedName("picture") val picture: io.github.joaogouveia89.randomuser.core.service.remote.model.Picture,
+    @SerializedName("id") val id: Id,
+    @SerializedName("picture") val picture: Picture,
     @SerializedName("nat") val nat: String
 )
