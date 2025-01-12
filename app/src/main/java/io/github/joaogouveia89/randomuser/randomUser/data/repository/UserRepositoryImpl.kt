@@ -6,6 +6,7 @@ import android.graphics.Color
 import androidx.palette.graphics.Palette
 import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.service.remote.model.mappers.asUser
+import io.github.joaogouveia89.randomuser.randomUser.data.source.UserRemoteSourceResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
@@ -31,22 +32,35 @@ class UserRepositoryImpl @Inject constructor(
     override fun getRandomUser(): Flow<UserFetchState> = flow {
         emit(UserFetchState.Loading)
 
-        val user = remoteSource
+        val remoteResponse = remoteSource
             .getRandomUser()
-            .results
-            .first()
 
-        // Get the flag URL based on the user's nationality
-        val flagUrl = "https://flagsapi.com/${user.nat}/flat/64.png"
+        when(remoteResponse){
+            is UserRemoteSourceResponse.Success -> {
+                val remoteResponseUser = remoteResponse
+                    .response
+                    .results
+                    .first()
+                // Get the flag URL based on the user's nationality
+                val flagUrl = "https://flagsapi.com/${remoteResponseUser.nat}/flat/64.png"
 
-        // Analyze the image and get the colors
-        val colors = try {
-            analyzeImageFromUrl(flagUrl)
-        } catch (e: IOException) {
-            Pair("#000000", "#FFFFFF") // Default fallback colors
+                // Analyze the image and get the colors
+                try {
+                    val colors = analyzeImageFromUrl(flagUrl)
+                    emit(UserFetchState.Success(remoteResponseUser.asUser(colors)))
+                } catch (e: IOException) {
+                    Pair("#000000", "#FFFFFF") // Default fallback colors
+                }
+
+            }
+            is UserRemoteSourceResponse.Error ->{
+
+            }
         }
 
-        emit(UserFetchState.Success(user.asUser(colors)))
+
+
+
     }.flowOn(dispatcher)
 
     override fun saveUser(user: User): Flow<UserSaveState> = flow {

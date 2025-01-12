@@ -7,5 +7,4 @@ interface UserService {
     @GET("/api")
     suspend fun getRandomUser(
     ): RandomUserResponse
-
 }

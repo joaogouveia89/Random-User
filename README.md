@@ -25,7 +25,9 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Hilt DI including~~
 - [x] ~~Add random user source as an injectable dependency~~
 - [x] ~~Add random user repository as an injectable dependency~~
-- [x] Testing strategy in general
+- [x] ~~Testing strategy in general~~
+- [x] ~~Add safe api call with error handling on random user~~
+- [ ] Add error handling on random user repository
 - [ ] Handle user click on user list
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 - [ ] Add UI tests with Espresso

@@ -1,7 +1,7 @@
 package io.github.joaogouveia89.randomuser.randomUser.domain.source
 
-import io.github.joaogouveia89.randomuser.core.service.remote.model.RandomUserResponse
+import io.github.joaogouveia89.randomuser.randomUser.data.source.UserRemoteSourceResponse
 
 interface UserRemoteSource {
-    suspend fun getRandomUser(): RandomUserResponse
+    suspend fun getRandomUser(): UserRemoteSourceResponse
 }
