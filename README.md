@@ -15,6 +15,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add to contacts: Add functionality to save users as contacts~~
 - [x] ~~Add dedicated screen to display saved contacts.~~
 - [x] ~~Handle empty list on saved contacts~~
+- [ ] Offline detector
 - [ ] A sticky letter list for easier navigation through the contact list.
 - [ ] Make a search field on list
 
@@ -31,6 +32,7 @@ This project is an Android application that consumes the [Random User API](https
 - [ ] Handle user click on user list
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 - [ ] Add UI tests with Espresso
+- [ ] Service to check if user is offline
 
 ## Bug fixing
 

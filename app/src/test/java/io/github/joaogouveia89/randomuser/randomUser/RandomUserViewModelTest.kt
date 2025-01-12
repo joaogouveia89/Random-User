@@ -3,8 +3,8 @@ package io.github.joaogouveia89.randomuser.randomUser
 import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
-import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
@@ -46,7 +46,7 @@ class RandomUserViewModelTest {
         val mockUser = User(id = 0, firstName = "John", lastName = "Doe")
 
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserFetchState.Success(mockUser)
+            UserRepositoryResponse.Success(mockUser)
         )
 
         // Initialize viewModel
@@ -70,7 +70,7 @@ class RandomUserViewModelTest {
         val mockUser = User(id = 1)
 
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserFetchState.Success(mockUser)
+            UserRepositoryResponse.Success(mockUser)
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -90,7 +90,7 @@ class RandomUserViewModelTest {
     @Test
     fun `uiState emits loading state when repository is fetching user`() = runTest {
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserFetchState.Loading
+            UserRepositoryResponse.Loading
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -109,7 +109,7 @@ class RandomUserViewModelTest {
     @Test
     fun `uiState emits error state when repository fetch fails`() = runTest {
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserFetchState.Error("Network error")
+            UserRepositoryResponse.SourceError("Network error")
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -132,26 +132,35 @@ class RandomUserViewModelTest {
         val mockUser = User(id = 0, firstName = "John", lastName = "Doe")
 
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserFetchState.Success((mockUser))
+            UserRepositoryResponse.Success(mockUser)
         )
 
         coEvery { mockRepository.saveUser(mockUser) } returns flowOf(
-            UserSaveState.Success(123)
+            UserSaveState.Success(123L)
         )
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
 
-        // Simulate a state with a user to save
+        // Trigger fetching a new user
         viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
         advanceUntilIdle()
 
-        viewModel.execute(RandomUserCommand.SaveUser)
+        // Assert that the user was updated in uiState
+        viewModel.uiState.test {
+            skipItems(1)
+            val stateAfterFetch = awaitItem()
+            assertEquals(mockUser, stateAfterFetch.user) // Ensure correct user is loaded
+            cancelAndIgnoreRemainingEvents()
+        }
 
+        // Trigger saving the user
+        viewModel.execute(RandomUserCommand.SaveUser)
         advanceUntilIdle()
 
+        // Assert that the user ID was updated after saving
         viewModel.uiState.test {
-            skipItems(1) // skipping the initial value
-            val updatedState = awaitItem()
-            assertEquals(123, updatedState.user.id) // Verify user id updated
+            val stateAfterSave = awaitItem()
+            assertEquals(123L, stateAfterSave.user.id) // Verify user ID is updated
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

@@ -8,8 +8,8 @@ import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
-import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -50,7 +50,7 @@ class RandomUserViewModel @Inject constructor(
         .getRandomUser()
         .map { userFetchState ->
             when (userFetchState) {
-                is UserFetchState.Loading -> {
+                is UserRepositoryResponse.Loading -> {
                     if (_uiState.value.user == User())
                         UserProfileState(isLoading = true)
                     else {
@@ -58,12 +58,12 @@ class RandomUserViewModel @Inject constructor(
                     }
                 }
 
-                is UserFetchState.Success -> {
+                is UserRepositoryResponse.Success -> {
                     startChronometer(userFetchState.user.timezoneOffset)
                     UserProfileState(user = userFetchState.user)
                 }
 
-                is UserFetchState.Error -> {
+                is UserRepositoryResponse.SourceError -> {
                     UserProfileState(isError = true)
                 }
             }

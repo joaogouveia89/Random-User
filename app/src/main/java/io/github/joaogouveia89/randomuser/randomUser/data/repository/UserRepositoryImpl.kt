@@ -3,16 +3,17 @@ package io.github.joaogouveia89.randomuser.randomUser.data.repository
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import androidx.palette.graphics.Palette
 import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.service.remote.model.mappers.asUser
-import io.github.joaogouveia89.randomuser.randomUser.data.source.UserRemoteSourceResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
-import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserFetchState
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserLocalSource
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserRemoteSource
+import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserRemoteSourceResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,13 +30,15 @@ class UserRepositoryImpl @Inject constructor(
     private val localSource: UserLocalSource,
     @IoDispatcher private val dispatcher: CoroutineContext
 ) : UserRepository {
-    override fun getRandomUser(): Flow<UserFetchState> = flow {
-        emit(UserFetchState.Loading)
+    private val fallbackColors = Pair("#000000", "#FFFFFF")
+
+    override fun getRandomUser(): Flow<UserRepositoryResponse> = flow {
+        emit(UserRepositoryResponse.Loading)
 
         val remoteResponse = remoteSource
             .getRandomUser()
 
-        when(remoteResponse){
+        when (remoteResponse) {
             is UserRemoteSourceResponse.Success -> {
                 val remoteResponseUser = remoteResponse
                     .response
@@ -45,20 +48,25 @@ class UserRepositoryImpl @Inject constructor(
                 val flagUrl = "https://flagsapi.com/${remoteResponseUser.nat}/flat/64.png"
 
                 // Analyze the image and get the colors
-                try {
-                    val colors = analyzeImageFromUrl(flagUrl)
-                    emit(UserFetchState.Success(remoteResponseUser.asUser(colors)))
+                val colors = try {
+                    Pair(analyzeImageFromUrl(flagUrl), false)
                 } catch (e: IOException) {
-                    Pair("#000000", "#FFFFFF") // Default fallback colors
+                    e.message?.let { Log.e(TAG, it) }
+                    Pair(fallbackColors, true)
                 }
 
+                emit(
+                    UserRepositoryResponse.Success(
+                        user = remoteResponseUser.asUser(colors.first),
+                        isColorAnalysisError = colors.second
+                    )
+                )
             }
-            is UserRemoteSourceResponse.Error ->{
 
+            is UserRemoteSourceResponse.Error -> {
+                emit(UserRepositoryResponse.SourceError(remoteResponse.message))
             }
         }
-
-
 
 
     }.flowOn(dispatcher)
@@ -106,5 +114,9 @@ class UserRepositoryImpl @Inject constructor(
             String.format("#%06X", (0xFFFFFF and colors.first())),
             String.format("#%06X", (0xFFFFFF and colors[1]))
         )
+    }
+
+    companion object {
+        val TAG = UserRepositoryImpl::class.java.name
     }
 }
