@@ -54,7 +54,10 @@ class RandomUserViewModel @Inject constructor(
                     if (_uiState.value.user == User())
                         UserProfileState(isLoading = true)
                     else {
-                        _uiState.value.copy(isGettingNewUser = true)
+                        _uiState.value.copy(
+                            isGettingNewUser = true,
+                            errorMessage = null
+                        )
                     }
                 }
 
@@ -64,7 +67,7 @@ class RandomUserViewModel @Inject constructor(
                 }
 
                 is UserRepositoryResponse.SourceError -> {
-                    UserProfileState(isError = true)
+                    _uiState.value.copy(errorMessage = userFetchState.message)
                 }
             }
         }

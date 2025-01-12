@@ -108,8 +108,9 @@ class RandomUserViewModelTest {
 
     @Test
     fun `uiState emits error state when repository fetch fails`() = runTest {
+        val errorMes = "Network error"
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryResponse.SourceError("Network error")
+            UserRepositoryResponse.SourceError(errorMes)
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -123,7 +124,7 @@ class RandomUserViewModelTest {
             val errorState = awaitItem()
             assertEquals(User(), errorState.user) // Verify user is reset to default
             assertFalse(errorState.isLoading) // Ensure not loading
-            assertTrue(errorState.isError) // Ensure error set
+            assertEquals(errorMes, errorState.errorMessage) // Ensure error set
         }
     }
 
