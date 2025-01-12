@@ -5,4 +5,7 @@
     <string name="added_to_contacts">Added to Contacts</string>
     <string name="random_user">Random User</string>
     <string name="user_list">User List</string>
+    <string name="no_contacts">No Contacts</string>
+    <string name="no_contacts_added_yet">No contacts added yet!</string>
+    <string name="go_to_the_random_user_screen_to_add_new_contacts">Go to the \"Random User\" screen to add new contacts.</string>
 </resources>

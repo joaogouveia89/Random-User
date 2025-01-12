@@ -6,4 +6,7 @@ data class UserListState(
     val isLoading: Boolean = false,
     val userList: List<User> = listOf(),
     val isError: Boolean = false
-)
+){
+    val hasNoUser: Boolean
+        get() = userList.isEmpty()
+}
