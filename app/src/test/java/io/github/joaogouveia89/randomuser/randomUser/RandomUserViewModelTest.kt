@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
-import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryResponse
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
@@ -46,7 +46,7 @@ class RandomUserViewModelTest {
         val mockUser = User(id = 0, firstName = "John", lastName = "Doe")
 
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryResponse.Success(mockUser)
+            UserRepositoryFetchResponse.Success(mockUser)
         )
 
         // Initialize viewModel
@@ -70,7 +70,7 @@ class RandomUserViewModelTest {
         val mockUser = User(id = 1)
 
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryResponse.Success(mockUser)
+            UserRepositoryFetchResponse.Success(mockUser)
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -90,7 +90,7 @@ class RandomUserViewModelTest {
     @Test
     fun `uiState emits loading state when repository is fetching user`() = runTest {
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryResponse.Loading
+            UserRepositoryFetchResponse.Loading
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -110,7 +110,7 @@ class RandomUserViewModelTest {
     fun `uiState emits error state when repository fetch fails`() = runTest {
         val errorMes = "Network error"
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryResponse.SourceError(errorMes)
+            UserRepositoryFetchResponse.SourceError(errorMes)
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -133,7 +133,7 @@ class RandomUserViewModelTest {
         val mockUser = User(id = 0, firstName = "John", lastName = "Doe")
 
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryResponse.Success(mockUser)
+            UserRepositoryFetchResponse.Success(mockUser)
         )
 
         coEvery { mockRepository.saveUser(mockUser) } returns flowOf(

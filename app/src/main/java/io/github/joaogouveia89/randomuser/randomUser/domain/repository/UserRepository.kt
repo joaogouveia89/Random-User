@@ -10,6 +10,6 @@ sealed class UserSaveState {
 }
 
 interface UserRepository {
-    fun getRandomUser(): Flow<UserRepositoryResponse>
+    fun getRandomUser(): Flow<UserRepositoryFetchResponse>
     fun saveUser(user: User): Flow<UserSaveState>
 }

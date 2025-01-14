@@ -9,7 +9,7 @@ import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.service.remote.model.mappers.asUser
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
-import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryResponse
+import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserLocalSource
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserRemoteSource
@@ -32,8 +32,8 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
     private val fallbackColors = Pair("#000000", "#FFFFFF")
 
-    override fun getRandomUser(): Flow<UserRepositoryResponse> = flow {
-        emit(UserRepositoryResponse.Loading)
+    override fun getRandomUser(): Flow<UserRepositoryFetchResponse> = flow {
+        emit(UserRepositoryFetchResponse.Loading)
 
         val remoteResponse = remoteSource
             .getRandomUser()
@@ -56,7 +56,7 @@ class UserRepositoryImpl @Inject constructor(
                 }
 
                 emit(
-                    UserRepositoryResponse.Success(
+                    UserRepositoryFetchResponse.Success(
                         user = remoteResponseUser.asUser(colors.first),
                         isColorAnalysisError = colors.second
                     )
@@ -65,7 +65,7 @@ class UserRepositoryImpl @Inject constructor(
 
             is UserRemoteSourceResponse.Error -> {
                 Log.e(TAG, remoteResponse.message)
-                emit(UserRepositoryResponse.SourceError)
+                emit(UserRepositoryFetchResponse.SourceError)
             }
         }
 
