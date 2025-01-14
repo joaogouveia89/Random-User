@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.toColorInt
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
+import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import kotlinx.datetime.Clock
@@ -37,7 +38,7 @@ fun RandomUserScreen(
     else
         MaterialTheme.colorScheme.surface
 
-    if (uiState.isLoading) {
+    if (uiState.isLoading || user == User()) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
