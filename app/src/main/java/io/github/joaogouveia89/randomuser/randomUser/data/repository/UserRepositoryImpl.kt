@@ -64,7 +64,8 @@ class UserRepositoryImpl @Inject constructor(
             }
 
             is UserRemoteSourceResponse.Error -> {
-                emit(UserRepositoryResponse.SourceError(remoteResponse.message))
+                Log.e(TAG, remoteResponse.message)
+                emit(UserRepositoryResponse.SourceError)
             }
         }
 

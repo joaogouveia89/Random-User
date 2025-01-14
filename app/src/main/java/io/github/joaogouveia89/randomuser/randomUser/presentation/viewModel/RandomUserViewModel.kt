@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
@@ -63,11 +64,18 @@ class RandomUserViewModel @Inject constructor(
 
                 is UserRepositoryResponse.Success -> {
                     startChronometer(userFetchState.user.timezoneOffset)
-                    UserProfileState(user = userFetchState.user)
+                    UserProfileState(
+                        user = userFetchState.user,
+                        errorMessage = if (
+                            !userFetchState.isColorAnalysisError)
+                            null
+                        else
+                            R.string.error_message_color_analysis
+                    )
                 }
 
                 is UserRepositoryResponse.SourceError -> {
-                    _uiState.value.copy(errorMessage = userFetchState.message)
+                    _uiState.value.copy(errorMessage = R.string.error_message_source)
                 }
             }
         }
@@ -76,6 +84,7 @@ class RandomUserViewModel @Inject constructor(
         when (command) {
             is RandomUserCommand.GetNewUser -> getNewUser(command.clock)
             is RandomUserCommand.SaveUser -> saveUser()
+            is RandomUserCommand.DismissError -> dismissError()
         }
     }
 
@@ -88,11 +97,20 @@ class RandomUserViewModel @Inject constructor(
         }
     }
 
+    private fun dismissError() {
+        _uiState.update {
+            it.copy(
+                errorMessage = null
+            )
+        }
+    }
+
     private fun startChronometer(offset: String) {
         viewModelScope.launch(dispatcher) {
             stopChronometer()
 
             chronJob = viewModelScope.launch(dispatcher) {
+                val chronJobUser = uiState.value.user
                 try {
                     var currentInst = currentClock.now().calculateOffset(offset)
                     _uiState.update {
@@ -114,7 +132,15 @@ class RandomUserViewModel @Inject constructor(
                         }
                     }
                 } catch (exception: Exception) {
-                    Log.e(TAG, "chronJob has stopped due to ${exception.message}")
+                    /* everytime a getNewUser is called, it cancels the coroutine and this exception block is called, so I just want to consider it
+                     * as an error if the user has not change
+                     */
+                    if (chronJobUser == uiState.value.user) {
+                        _uiState.update {
+                            it.copy(errorMessage = R.string.error_message_chronometer)
+                        }
+                        Log.e(TAG, "chronJob has stopped due to ${exception.message}")
+                    }
                 }
             }
         }

@@ -43,7 +43,8 @@ fun NavigationGraph(navController: NavHostController) {
                 onOpenMapClick = { context.openMaps(uiState.user.getMapsIntentQuery()) },
                 onAddToContactsClick = { viewModel.execute(RandomUserCommand.SaveUser) },
                 onCopyEmailToClipboard = { context.copyEmailToClipboard(uiState.user.email) },
-                onDialRequired = { context.dial(it) }
+                onDialRequired = { context.dial(it) },
+                onCloseErrorBarClick = { viewModel.execute(RandomUserCommand.DismissError) }
             )
         }
         composable(BottomNavItem.UserList.route) {

@@ -1,5 +1,8 @@
 package io.github.joaogouveia89.randomuser.randomUser.presentation
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircleOutline
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -52,7 +56,8 @@ fun RandomUserContent(
     onOpenMapClick: () -> Unit,
     onAddToContactsClick: () -> Unit,
     onCopyEmailToClipboard: () -> Unit,
-    onDialRequired: (String) -> Unit
+    onDialRequired: (String) -> Unit,
+    onCloseErrorBarClick: (() -> Unit)?
 ) {
     val user = uiState.user
     PullToRefreshBox(
@@ -159,8 +164,13 @@ fun RandomUserContent(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-
         }
+
+        ErrorBar(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            messageRes = uiState.errorMessage,
+            onCloseErrorBarClick = onCloseErrorBarClick
+        )
     }
 }
 
@@ -182,6 +192,39 @@ private fun CardSection(
     }
 }
 
+@Composable
+fun ErrorBar(
+    modifier: Modifier = Modifier,
+    @StringRes messageRes: Int?,
+    onCloseErrorBarClick: (() -> Unit)?
+) {
+    messageRes?.let {
+        val elementsColor = Color.White
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(Color.Red)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(12.dp),
+                color = elementsColor,
+                text = stringResource(it)
+            )
+
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 8.dp)
+                    .clickable { onCloseErrorBarClick?.invoke() },
+                imageVector = Icons.Default.Close,
+                tint = elementsColor,
+                contentDescription = null
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun RandomUserContentPreview() {
@@ -198,7 +241,31 @@ fun RandomUserContentPreview() {
             onOpenMapClick = {},
             onAddToContactsClick = {},
             onCopyEmailToClipboard = {},
-            onDialRequired = {}
+            onDialRequired = {},
+            onCloseErrorBarClick = null
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RandomUserContentWithErrorPreview() {
+    RandomUserTheme {
+        RandomUserContent(
+            uiState = UserProfileState(
+                user = fakeUser,
+                locationTime = Clock.System.now(),
+                isLoading = false,
+                errorMessage = R.string.error_message_source
+            ),
+            iconsColor = Color.Blue,
+            iconsBackgroundColor = Color.White,
+            onAskNewUser = {},
+            onOpenMapClick = {},
+            onAddToContactsClick = {},
+            onCopyEmailToClipboard = {},
+            onDialRequired = {},
+            onCloseErrorBarClick = {}
         )
     }
 }

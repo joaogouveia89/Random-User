@@ -5,4 +5,5 @@ import kotlinx.datetime.Clock
 sealed class RandomUserCommand {
     data class GetNewUser(val clock: Clock) : RandomUserCommand()
     data object SaveUser : RandomUserCommand()
+    data object DismissError : RandomUserCommand()
 }

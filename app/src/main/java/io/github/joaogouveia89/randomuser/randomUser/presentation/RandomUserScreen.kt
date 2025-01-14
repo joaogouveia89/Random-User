@@ -22,7 +22,8 @@ fun RandomUserScreen(
     onOpenMapClick: () -> Unit,
     onAddToContactsClick: () -> Unit,
     onCopyEmailToClipboard: () -> Unit,
-    onDialRequired: (phoneNumber: String) -> Unit
+    onDialRequired: (phoneNumber: String) -> Unit,
+    onCloseErrorBarClick: (() -> Unit)?
 ) {
     val user = uiState.user
 
@@ -52,7 +53,8 @@ fun RandomUserScreen(
             onOpenMapClick = onOpenMapClick,
             onAddToContactsClick = onAddToContactsClick,
             onCopyEmailToClipboard = onCopyEmailToClipboard,
-            onDialRequired = onDialRequired
+            onDialRequired = onDialRequired,
+            onCloseErrorBarClick = onCloseErrorBarClick
         )
     }
 }
@@ -71,7 +73,8 @@ fun GreetingPreview() {
             onOpenMapClick = {},
             onAddToContactsClick = {},
             onCopyEmailToClipboard = {},
-            onDialRequired = {}
+            onDialRequired = {},
+            onCloseErrorBarClick = null
         )
     }
 }

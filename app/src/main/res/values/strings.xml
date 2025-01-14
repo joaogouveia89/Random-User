@@ -8,4 +8,9 @@
     <string name="no_contacts">No Contacts</string>
     <string name="no_contacts_added_yet">No contacts added yet!</string>
     <string name="go_to_the_random_user_screen_to_add_new_contacts">Go to the \"Random User\" screen to add new contacts.</string>
+
+    <!-- Error messages -->
+    <string name="error_message_color_analysis">Error getting nationality colors</string>
+    <string name="error_message_source">Error fetching User</string>
+    <string name="error_message_chronometer">User real time update has stopped</string>
 </resources>
