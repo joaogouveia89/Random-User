@@ -160,10 +160,11 @@ class RandomUserViewModel @Inject constructor(
     private fun saveUser() {
         viewModelScope.launch {
             repository.saveUser(uiState.value.user).collect { saveState ->
-                when(saveState){
+                when (saveState) {
                     UserSaveState.Loading -> _uiState.update {
                         it.copy(isSaving = true)
                     }
+
                     is UserSaveState.Success -> {
                         _uiState.update {
                             it.copy(
@@ -171,6 +172,7 @@ class RandomUserViewModel @Inject constructor(
                             )
                         }
                     }
+
                     is UserSaveState.Error -> {
                         _uiState.update {
                             it.copy(

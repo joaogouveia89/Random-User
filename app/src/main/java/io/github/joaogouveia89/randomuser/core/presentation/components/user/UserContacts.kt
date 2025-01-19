@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.randomUser.presentation.components
+package io.github.joaogouveia89.randomuser.core.presentation.components.user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

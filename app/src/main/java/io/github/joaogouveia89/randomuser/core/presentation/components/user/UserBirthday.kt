@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.randomUser.presentation.components
+package io.github.joaogouveia89.randomuser.core.presentation.components.user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Cake
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,59 +20,57 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.char
+import kotlinx.datetime.toLocalDateTime
+
+private val timeFormat = LocalDateTime.Format {
+    dayOfMonth()
+    char('/')
+    monthNumber()
+    char('/')
+    year()
+}
 
 @Composable
-fun UserTimezone(
-    timezone: String,
-    timezoneDescription: String,
-    localTime: String,
+fun UserBirthday(
+    date: Instant,
+    age: Int,
     iconBackgroundColor: Color,
-    iconColor: Color,
+    iconColor: Color
 ) {
+    val localTime = date.toLocalDateTime(TimeZone.UTC)
+
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Apply background color if provided
-        val iconModifier = Modifier
-            .size(36.dp) // Slightly larger area for background effect
-            .let { base ->
-                iconBackgroundColor.let { color ->
-                    base.background(
-                        color,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                }
-            }
-            .padding(6.dp) // Inner padding for the icon itself
-
         Icon(
-            imageVector = Icons.Default.Timer,
+            modifier = Modifier
+                .size(36.dp)
+                .background(iconBackgroundColor, shape = RoundedCornerShape(10.dp)),
+            imageVector = Icons.Default.Cake,
             contentDescription = null,
-            tint = iconColor, // Dynamic icon tint
-            modifier = iconModifier
+            tint = iconColor,
         )
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
         Column {
             Text(
-                text = timezone,
+                text = timeFormat.format(localTime),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = timezoneDescription,
+                text = "$age years old",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Text(
-                text = localTime,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -80,14 +78,14 @@ fun UserTimezone(
 
 @Preview(showBackground = true)
 @Composable
-private fun UserTimezonePreview() {
+private fun UserBirthdayPreview() {
     // Example dynamic colors (replace these with your analyzed colors)
     val dynamicIconColor = Color(0xFF6200EE)      // Example purple color
     val dynamicIconBackgroundColor = Color(0xFF00FFFF) // Light purple background
-    UserTimezone(
-        timezone = "0:00",
-        timezoneDescription = "Lisbon",
-        localTime = "15:20",
+
+    UserBirthday(
+        date = Clock.System.now(),
+        age = 34,
         iconBackgroundColor = dynamicIconBackgroundColor,
         iconColor = dynamicIconColor
     )
