@@ -15,12 +15,12 @@ sealed class BottomNavItem(
     data object RandomUser : BottomNavItem(
         title = R.string.random_user,
         icon = Icons.Default.Person3,
-        route = "route_random_user"
+        route = Routes.RANDOM_USER_ROUTE
     )
 
     data object UserList : BottomNavItem(
         title = R.string.user_list,
         icon = Icons.Default.ImportContacts,
-        route = "route_user_list"
+        route = Routes.USER_LIST_ROUTE
     )
 }

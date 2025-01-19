@@ -1,5 +1,6 @@
 package io.github.joaogouveia89.randomuser.core.presentation.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -7,14 +8,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import io.github.joaogouveia89.randomuser.randomUser.copyEmailToClipboard
 import io.github.joaogouveia89.randomuser.randomUser.dial
 import io.github.joaogouveia89.randomuser.randomUser.openMaps
 import io.github.joaogouveia89.randomuser.randomUser.presentation.RandomUserScreen
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
+import io.github.joaogouveia89.randomuser.userDetail.presentation.UserDetailScreen
+import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.UserDetailCommand
+import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.UserDetailViewModel
 import io.github.joaogouveia89.randomuser.userList.presentation.UserListScreen
 import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListViewModel
 import kotlinx.datetime.Clock
@@ -24,7 +30,7 @@ import kotlinx.datetime.Clock
 fun NavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavItem.RandomUser.route
+        startDestination = Routes.RANDOM_USER_ROUTE
     ) {
 
         composable(BottomNavItem.RandomUser.route) {
@@ -53,7 +59,32 @@ fun NavigationGraph(navController: NavHostController) {
 
             UserListScreen(
                 uiState = uiState,
-                onUserClick = {}
+                onUserClick = {
+                    navController.navigate(DetailScreenNav.DetailScreen.passUserId(userId = it.id))
+                }
+            )
+        }
+
+        composable(
+            DetailScreenNav.DetailScreen.route,
+            arguments = listOf(
+                navArgument(DetailScreenNav.USER_ID) {
+                    type = NavType.LongType
+                    defaultValue = 0L
+                }
+            )
+        ) {
+            val viewModel: UserDetailViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            viewModel.execute(UserDetailCommand.GetUserDetails(Clock.System))
+
+            UserDetailScreen(
+                uiState = uiState,
+                onOpenMapClick =  {},
+                onDeleteContactClick =  {},
+                onCopyEmailToClipboard =  {},
+                onDialRequired =  {},
             )
         }
     }

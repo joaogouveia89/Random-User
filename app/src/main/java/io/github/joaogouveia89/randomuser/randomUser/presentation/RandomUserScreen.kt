@@ -45,7 +45,7 @@ fun RandomUserScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun RandomUserScreenPreview() {
     RandomUserTheme {
         RandomUserScreen(
             uiState = UserProfileState(
