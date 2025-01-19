@@ -9,5 +9,11 @@ import javax.inject.Inject
 class UserLocalSourceImpl @Inject constructor(
     private val userDao: UserDao
 ) : UserLocalSource {
-    override suspend fun saveUser(user: User): Long = userDao.insert(user.asEntity())
+    override suspend fun saveUser(user: User): Long?{
+        try {
+            return userDao.insert(user.asEntity())
+        }catch (e: Exception){
+            return null
+        }
+    }
 }

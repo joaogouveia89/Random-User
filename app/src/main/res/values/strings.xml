@@ -13,4 +13,5 @@
     <string name="error_message_color_analysis">Error getting nationality colors</string>
     <string name="error_message_source">Error fetching User</string>
     <string name="error_message_chronometer">User real time update has stopped</string>
+    <string name="error_message_saving_user">Error saving user</string>
 </resources>

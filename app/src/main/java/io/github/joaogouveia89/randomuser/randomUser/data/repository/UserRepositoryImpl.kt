@@ -75,7 +75,11 @@ class UserRepositoryImpl @Inject constructor(
     override fun saveUser(user: User): Flow<UserSaveState> = flow {
         emit(UserSaveState.Loading)
         val id = localSource.saveUser(user)
-        emit(UserSaveState.Success(id))
+        if(id == null){
+            emit(UserSaveState.Error)
+        }else{
+            emit(UserSaveState.Success(id))
+        }
     }.flowOn(dispatcher)
 
     // Suspend function to download the image and extract the colors

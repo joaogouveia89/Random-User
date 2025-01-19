@@ -9,6 +9,7 @@ data class UserProfileState(
     val locationTime: Instant? = null,
     val isLoading: Boolean = false,
     val isGettingNewUser: Boolean = false,
+    val isSaving: Boolean = false,
     @StringRes val errorMessage: Int? = null
 ) {
     val isSaveButtonEnabled: Boolean

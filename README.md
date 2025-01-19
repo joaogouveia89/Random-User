@@ -29,7 +29,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Testing strategy in general~~
 - [x] ~~Add safe api call with error handling on random user~~
 - [x] ~~Add error handling on random user fetching on repository~~
-- [ ] Add error handling on random user saving on repository
+- [x] ~~Add error handling on random user saving on repository~~
 - [ ] Handle user click on user list
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 - [ ] Add UI tests with Espresso
