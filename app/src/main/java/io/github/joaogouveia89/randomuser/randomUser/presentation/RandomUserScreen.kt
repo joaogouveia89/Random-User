@@ -23,9 +23,7 @@ fun RandomUserScreen(
     onDialRequired: (phoneNumber: String) -> Unit,
     onCloseErrorBarClick: (() -> Unit)?
 ) {
-    val user = uiState.user
-
-    if (uiState.isLoading || user == User()) {
+    if (uiState.isLoading || uiState.user == User()) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
