@@ -38,6 +38,7 @@ This project is an Android application that consumes the [Random User API](https
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 - [ ] Add UI tests with Espresso
 - [ ] Service to check if user is offline
+- [ ] Include and setup [Detekt library](https://github.com/detekt/detekt)
 
 ## Bug fixing
 
