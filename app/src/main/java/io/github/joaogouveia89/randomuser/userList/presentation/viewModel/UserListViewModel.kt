@@ -25,7 +25,13 @@ class UserListViewModel @Inject constructor(
     val uiState: StateFlow<UserListState>
         get() = _uiState
 
-    init {
+    fun execute(command: UserListCommand){
+        when(command){
+            UserListCommand.GetUsers -> getUsers()
+        }
+    }
+
+    private fun getUsers(){
         viewModelScope.launch(dispatcher) {
             repository.getUsers().collect { state ->
                 when (state) {

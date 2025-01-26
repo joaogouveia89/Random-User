@@ -1,6 +1,9 @@
 package io.github.joaogouveia89.randomuser.userDetail.data.repository
 
+import android.util.Log
 import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
+import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
+import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserDetailDeleteState
 import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserDetailGetState
 import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserDetailRepository
 import io.github.joaogouveia89.randomuser.userDetail.domain.source.UserDetailSource
@@ -19,4 +22,20 @@ class UserDetailRepositoryImpl @Inject constructor(
         val user = userDetailSource.getUser(userId)
         emit(UserDetailGetState.Success(user = user))
     }.flowOn(dispatcher)
+
+    override suspend fun deleteUser(id: Long): Flow<UserDetailDeleteState> = flow {
+        emit(UserDetailDeleteState.Loading)
+        try {
+            userDetailSource.deleteUser(id)
+            emit(UserDetailDeleteState.Success)
+        }
+        catch (e: Exception){
+            Log.e(TAG, e.message ?: "")
+            emit(UserDetailDeleteState.Error)
+        }
+    }
+
+    companion object {
+        val TAG = UserRepositoryImpl::class.java.name
+    }
 }

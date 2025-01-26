@@ -10,10 +10,19 @@
     <string name="no_contacts_added_yet">No contacts added yet!</string>
     <string name="go_to_the_random_user_screen_to_add_new_contacts">Go to the \"Random User\" screen to add new contacts.</string>
 
+    <!-- Dialogs -->
+    <string name="user_delete_dialog_title">Delete Confirmation</string>
+    <string name="user_delete_dialog_message">Are you sure you want to delete this user?</string>
+    <string name="user_delete_dialog_confirm">Confirm</string>
+    <string name="user_delete_dialog_dismiss">Dismiss</string>
+
+
     <!-- Error messages -->
     <string name="error_message_color_analysis">Error getting nationality colors</string>
     <string name="error_message_source">Error fetching User</string>
     <string name="error_message_chronometer">User real time update has stopped</string>
     <string name="error_message_saving_user">Error saving user</string>
+
+
     <string name="user_details_title">User Details</string>
 </resources>

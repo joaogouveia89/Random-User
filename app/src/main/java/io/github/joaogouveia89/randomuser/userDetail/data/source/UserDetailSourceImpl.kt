@@ -11,4 +11,7 @@ class UserDetailSourceImpl @Inject constructor(
 ): UserDetailSource {
     override suspend fun getUser(userId: Long): User =
         userDao.getUser(userId).asUser()
+
+    override suspend fun deleteUser(userId: Long) =
+        userDao.delete(userId)
 }

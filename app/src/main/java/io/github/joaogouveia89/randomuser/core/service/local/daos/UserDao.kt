@@ -15,4 +15,7 @@ interface UserDao {
 
     @Query("SELECT * FROM userentity WHERE id=:id")
     fun getUser(id: Long): UserEntity
+
+    @Query("DELETE FROM userentity WHERE id=:id")
+    fun delete(id: Long)
 }

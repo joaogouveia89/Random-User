@@ -10,6 +10,7 @@ import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.core.presentation.navigation.DetailScreenNav.Companion.USER_ID
+import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserDetailDeleteState
 import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserDetailGetState
 import io.github.joaogouveia89.randomuser.userDetail.domain.repository.UserDetailRepository
 import io.github.joaogouveia89.randomuser.userDetail.presentation.state.UserDetailState
@@ -43,17 +44,19 @@ class UserDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UserDetailState())
 
     val uiState: StateFlow<UserDetailState>
-        get() = _uiState.stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(stopTimeoutMillis = CACHE_LIFETIME_MS),
-            initialValue = UserDetailState()
-        )
+        get() = _uiState
 
 
     fun execute(command: UserDetailCommand) {
         when (command) {
             is UserDetailCommand.GetUserDetails -> getUserDetails(command.clock)
-            is UserDetailCommand.DeleteUser -> {}
+            is UserDetailCommand.DeleteUser -> deleteUser()
+            is UserDetailCommand.ConfirmDeleteDialog -> confirmDeleteUser()
+            is UserDetailCommand.DismissDeleteDialog -> {
+                _uiState.update {
+                    it.copy(showDeleteDialog = false)
+                }
+            }
             is UserDetailCommand.DismissError -> {}
         }
     }
@@ -78,6 +81,31 @@ class UserDetailViewModel @Inject constructor(
         }
     }
 
+    private fun deleteUser(){
+        _uiState.update {
+            it.copy(showDeleteDialog = true)
+        }
+    }
+
+    private fun confirmDeleteUser(){
+        _uiState.update {
+            it.copy(showDeleteDialog = true)
+        }
+
+        viewModelScope.launch(dispatcher) {
+            // FIXME uiState.value.user.id is comming as 0 for some reason
+            repository.deleteUser(uiState.value.user.id).collect{
+                if(it is UserDetailDeleteState.Success){
+                    _uiState.update { state ->
+                        state.copy(
+                            navigateBack = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     private fun startChronometer(offset: String) {
         viewModelScope.launch(dispatcher) {
             stopChronometer()
@@ -94,13 +122,11 @@ class UserDetailViewModel @Inject constructor(
                     while (isActive) {
                         delay(1.seconds)
                         currentInst = currentInst.plus(1.seconds)
-                        _uiState.update { state ->
-                            if (currentInst.hadPassedOneMinute(state.locationTime ?: currentInst)) {
+                        if (currentInst.hadPassedOneMinute(_uiState.value.locationTime ?: currentInst)) {
+                            _uiState.update { state ->
                                 state.copy(
                                     locationTime = currentInst
                                 )
-                            } else {
-                                state
                             }
                         }
                     }
@@ -109,9 +135,9 @@ class UserDetailViewModel @Inject constructor(
                      * as an error if the user has not change
                      */
                     if (chronJobUser == uiState.value.user) {
-//                        _uiState.update {
-//                            it.copy(errorMessage = R.string.error_message_chronometer)
-//                        }
+                        _uiState.update {
+                            it.copy(errorMessage = R.string.error_message_chronometer)
+                        }
                         Log.e(TAG, "chronJob has stopped due to ${exception.message}")
                     }
                 }

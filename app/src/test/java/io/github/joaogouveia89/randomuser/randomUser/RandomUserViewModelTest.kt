@@ -2,6 +2,7 @@ package io.github.joaogouveia89.randomuser.randomUser
 
 import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
+import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
@@ -20,6 +21,7 @@ import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
+import net.bytebuddy.matcher.ElementMatchers.any
 import org.junit.Rule
 import org.junit.Test
 
@@ -108,9 +110,9 @@ class RandomUserViewModelTest {
 
     @Test
     fun `uiState emits error state when repository fetch fails`() = runTest {
-        val errorMes = "Network error"
+
         coEvery { mockRepository.getRandomUser() } returns flowOf(
-            UserRepositoryFetchResponse.SourceError(errorMes)
+            UserRepositoryFetchResponse.SourceError
         )
 
         viewModel = RandomUserViewModel(mockRepository, dispatcher)
@@ -124,7 +126,7 @@ class RandomUserViewModelTest {
             val errorState = awaitItem()
             assertEquals(User(), errorState.user) // Verify user is reset to default
             assertFalse(errorState.isLoading) // Ensure not loading
-            assertEquals(errorMes, errorState.errorMessage) // Ensure error set
+            assertEquals(R.string.error_message_source, errorState.errorMessage) // Ensure error set
         }
     }
 

@@ -16,6 +16,8 @@ fun UserDetailScreen(
     onDeleteContactClick: () -> Unit,
     onCopyEmailToClipboard: () -> Unit,
     onDialRequired: (String) -> Unit,
+    onDeleteDialogConfirmation: () -> Unit,
+    onDeleteDialogDismiss: () -> Unit,
 ) {
     if (uiState.isLoading || uiState.user == User()) {
         Box(
@@ -25,6 +27,13 @@ fun UserDetailScreen(
             CircularProgressIndicator()
         }
     } else {
+        if(uiState.showDeleteDialog){
+            DeleteConfirmationDialog(
+                onConfirmation = { onDeleteDialogConfirmation.invoke() },
+                onDismissRequest = { onDeleteDialogDismiss.invoke() }
+            )
+        }
+
         UserDetailContent(
             uiState = uiState,
             onOpenMapClick = onOpenMapClick,

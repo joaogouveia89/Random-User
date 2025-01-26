@@ -1,6 +1,6 @@
 package io.github.joaogouveia89.randomuser.core.presentation.navigation
 
-import androidx.compose.material3.Text
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +22,7 @@ import io.github.joaogouveia89.randomuser.userDetail.presentation.UserDetailScre
 import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.UserDetailCommand
 import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.UserDetailViewModel
 import io.github.joaogouveia89.randomuser.userList.presentation.UserListScreen
+import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListCommand
 import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListViewModel
 import kotlinx.datetime.Clock
 
@@ -57,6 +58,10 @@ fun NavigationGraph(navController: NavHostController) {
             val viewModel: UserListViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            LaunchedEffect(Unit) {
+                viewModel.execute(UserListCommand.GetUsers)
+            }
+
             UserListScreen(
                 uiState = uiState,
                 onUserClick = {
@@ -77,14 +82,24 @@ fun NavigationGraph(navController: NavHostController) {
             val viewModel: UserDetailViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            viewModel.execute(UserDetailCommand.GetUserDetails(Clock.System))
+            LaunchedEffect(Unit) {
+                viewModel.execute(UserDetailCommand.GetUserDetails(Clock.System))
+            }
+
+            LaunchedEffect(uiState.navigateBack) {
+                if(uiState.navigateBack){
+                    navController.popBackStack()
+                }
+            }
 
             UserDetailScreen(
                 uiState = uiState,
-                onOpenMapClick =  {},
-                onDeleteContactClick =  {},
-                onCopyEmailToClipboard =  {},
-                onDialRequired =  {},
+                onOpenMapClick = {},
+                onDeleteContactClick = { viewModel.execute(UserDetailCommand.DeleteUser) },
+                onCopyEmailToClipboard = {},
+                onDialRequired = {},
+                onDeleteDialogConfirmation = { viewModel.execute(UserDetailCommand.ConfirmDeleteDialog) },
+                onDeleteDialogDismiss = { viewModel.execute(UserDetailCommand.DismissDeleteDialog) },
             )
         }
     }

@@ -9,6 +9,13 @@ sealed class UserDetailGetState {
     data class Error(val errorMessage: String) : UserDetailGetState()
 }
 
+sealed class UserDetailDeleteState {
+    data object Loading : UserDetailDeleteState()
+    data object Success : UserDetailDeleteState()
+    data object Error: UserDetailDeleteState()
+}
+
 interface UserDetailRepository {
     suspend fun getUser(userId: Long): Flow<UserDetailGetState>
+    suspend fun deleteUser(id: Long): Flow<UserDetailDeleteState>
 }
