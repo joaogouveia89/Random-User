@@ -65,6 +65,9 @@ fun NavigationGraph(navController: NavHostController) {
                 uiState = uiState,
                 onUserClick = {
                     navController.navigate(DetailScreenNav.DetailScreen.passUserId(userId = it.id))
+                },
+                onSearchQueryChange = {
+                    
                 }
             )
         }

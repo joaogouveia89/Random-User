@@ -14,7 +14,8 @@ import io.github.joaogouveia89.randomuser.userList.presentation.state.UserListSt
 @Composable
 fun UserListScreen(
     uiState: UserListState,
-    onUserClick: (User) -> Unit
+    onUserClick: (User) -> Unit,
+    onSearchQueryChange: (String) -> Unit,
 ) {
     if (uiState.isLoading) {
         Column(
@@ -28,7 +29,8 @@ fun UserListScreen(
     } else {
         UserListContent(
             uiState = uiState,
-            onUserClick = onUserClick
+            onUserClick = onUserClick,
+            onSearchQueryChange = onSearchQueryChange
         )
     }
 }
