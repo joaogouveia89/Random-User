@@ -48,7 +48,7 @@ This project is an Android application that consumes the [Random User API](https
 
 ## Screenshots
 
-<img src="app-screenshots/scrsht1.png" width="195" height="420" alt="random-user-screenshot" />
+<img src="app-screenshots/scrsht1.png" width="195" height="420" alt="random-user-screenshot" /> <img src="app-screenshots/scrsht2.png" width="195" height="420" alt="random-user-screenshot" />
 
 ## Libraries and Tools
 
