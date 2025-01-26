@@ -16,7 +16,7 @@ import kotlin.coroutines.CoroutineContext
 class UserDetailRepositoryImpl @Inject constructor(
     private val userDetailSource: UserDetailSource,
     @IoDispatcher private val dispatcher: CoroutineContext
-): UserDetailRepository {
+) : UserDetailRepository {
     override suspend fun getUser(userId: Long): Flow<UserDetailGetState> = flow {
         emit(UserDetailGetState.Loading)
         val user = userDetailSource.getUser(userId)
@@ -28,8 +28,7 @@ class UserDetailRepositoryImpl @Inject constructor(
         try {
             userDetailSource.deleteUser(id)
             emit(UserDetailDeleteState.Success)
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Log.e(TAG, e.message ?: "")
             emit(UserDetailDeleteState.Error)
         }

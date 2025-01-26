@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class UserDetailSourceImpl @Inject constructor(
     val userDao: UserDao
-): UserDetailSource {
+) : UserDetailSource {
     override suspend fun getUser(userId: Long): User =
         userDao.getUser(userId).asUser()
 

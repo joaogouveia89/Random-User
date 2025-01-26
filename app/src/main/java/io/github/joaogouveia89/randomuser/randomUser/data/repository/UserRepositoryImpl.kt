@@ -75,9 +75,9 @@ class UserRepositoryImpl @Inject constructor(
     override fun saveUser(user: User): Flow<UserSaveState> = flow {
         emit(UserSaveState.Loading)
         val id = localSource.saveUser(user)
-        if(id == null){
+        if (id == null) {
             emit(UserSaveState.Error)
-        }else{
+        } else {
             emit(UserSaveState.Success(id))
         }
     }.flowOn(dispatcher)

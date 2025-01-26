@@ -19,9 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -36,7 +34,7 @@ class UserDetailViewModel @Inject constructor(
     val repository: UserDetailRepository,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
     private val userId = savedStateHandle.get<Long>(key = USER_ID)
 
     private var chronJob: Job? = null
@@ -57,23 +55,26 @@ class UserDetailViewModel @Inject constructor(
                     it.copy(showDeleteDialog = false)
                 }
             }
+
             is UserDetailCommand.DismissError -> {}
         }
     }
 
-    private fun getUserDetails(clock: Clock){
+    private fun getUserDetails(clock: Clock) {
         userId?.let {
             currentClock = clock
             viewModelScope.launch {
-                repository.getUser(it).collect{ getState ->
-                    when(getState){
+                repository.getUser(it).collect { getState ->
+                    when (getState) {
                         is UserDetailGetState.Loading -> _uiState.update {
                             UserDetailState(isLoading = true)
                         }
+
                         is UserDetailGetState.Success -> _uiState.update {
                             startChronometer(getState.user.timezoneOffset)
                             UserDetailState(user = getState.user)
                         }
+
                         is UserDetailGetState.Error -> {}
                     }
                 }
@@ -81,21 +82,21 @@ class UserDetailViewModel @Inject constructor(
         }
     }
 
-    private fun deleteUser(){
+    private fun deleteUser() {
         _uiState.update {
             it.copy(showDeleteDialog = true)
         }
     }
 
-    private fun confirmDeleteUser(){
+    private fun confirmDeleteUser() {
         _uiState.update {
             it.copy(showDeleteDialog = true)
         }
 
         viewModelScope.launch(dispatcher) {
             // FIXME uiState.value.user.id is comming as 0 for some reason
-            repository.deleteUser(uiState.value.user.id).collect{
-                if(it is UserDetailDeleteState.Success){
+            repository.deleteUser(uiState.value.user.id).collect {
+                if (it is UserDetailDeleteState.Success) {
                     _uiState.update { state ->
                         state.copy(
                             navigateBack = true
@@ -122,7 +123,10 @@ class UserDetailViewModel @Inject constructor(
                     while (isActive) {
                         delay(1.seconds)
                         currentInst = currentInst.plus(1.seconds)
-                        if (currentInst.hadPassedOneMinute(_uiState.value.locationTime ?: currentInst)) {
+                        if (currentInst.hadPassedOneMinute(
+                                _uiState.value.locationTime ?: currentInst
+                            )
+                        ) {
                             _uiState.update { state ->
                                 state.copy(
                                     locationTime = currentInst

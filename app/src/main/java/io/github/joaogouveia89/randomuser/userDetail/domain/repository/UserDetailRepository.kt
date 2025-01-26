@@ -12,7 +12,7 @@ sealed class UserDetailGetState {
 sealed class UserDetailDeleteState {
     data object Loading : UserDetailDeleteState()
     data object Success : UserDetailDeleteState()
-    data object Error: UserDetailDeleteState()
+    data object Error : UserDetailDeleteState()
 }
 
 interface UserDetailRepository {

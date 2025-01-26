@@ -27,7 +27,7 @@ fun UserDetailScreen(
             CircularProgressIndicator()
         }
     } else {
-        if(uiState.showDeleteDialog){
+        if (uiState.showDeleteDialog) {
             DeleteConfirmationDialog(
                 onConfirmation = { onDeleteDialogConfirmation.invoke() },
                 onDismissRequest = { onDeleteDialogDismiss.invoke() }

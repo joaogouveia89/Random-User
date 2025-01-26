@@ -11,7 +11,7 @@ sealed class DetailScreenNav(val route: String) {
             "$USER_DETAIL_ROUTE?$USER_ID=$userId"
     }
 
-    companion object{
+    companion object {
         const val USER_ID = "userId"
     }
 }

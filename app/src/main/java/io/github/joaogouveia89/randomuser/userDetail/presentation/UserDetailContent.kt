@@ -57,7 +57,7 @@ fun UserDetailContent(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text =
-                        stringResource(R.string.delete_contact)
+                    stringResource(R.string.delete_contact)
                 )
             }
         }
@@ -70,8 +70,8 @@ private fun UserDetailContentPreview() {
     UserDetailContent(
         uiState = UserDetailState(user = fakeUser),
         onOpenMapClick = {},
-        onCopyEmailToClipboard =  {},
-        onDialRequired =  {},
+        onCopyEmailToClipboard = {},
+        onDialRequired = {},
         onDeleteContactClick = {}
     )
 }
