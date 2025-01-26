@@ -67,7 +67,7 @@ fun NavigationGraph(navController: NavHostController) {
                     navController.navigate(DetailScreenNav.DetailScreen.passUserId(userId = it.id))
                 },
                 onSearchQueryChange = {
-                    
+                    viewModel.execute(UserListCommand.Search(it))
                 }
             )
         }
