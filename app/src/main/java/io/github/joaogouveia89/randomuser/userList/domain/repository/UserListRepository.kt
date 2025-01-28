@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 sealed class UserListGetState {
     data object Loading : UserListGetState()
     data class Success(val users: List<User>) : UserListGetState()
-    data class Error(val errorMessage: String) : UserListGetState()
+    data object Error : UserListGetState()
 }
 
 interface UserListRepository {

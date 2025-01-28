@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val LEVENSHTEIN_DISTANCE_MAX = 4
+private const val LEVENSHTEIN_DISTANCE_MAX = 3
 
 @HiltViewModel
 class UserListViewModel @Inject constructor(

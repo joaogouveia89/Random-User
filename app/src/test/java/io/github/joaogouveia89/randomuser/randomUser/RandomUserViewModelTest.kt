@@ -27,14 +27,9 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class RandomUserViewModelTest {
-
-    // Create a TestCoroutineScheduler only once
     private val testScheduler = TestCoroutineScheduler()
-
-    // Create a dispatcher that uses the test scheduler
     private val dispatcher = StandardTestDispatcher(testScheduler)
 
-    // Set the dispatcher in the MainCoroutineRule so it's used in all tests
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule(dispatcher)
 
