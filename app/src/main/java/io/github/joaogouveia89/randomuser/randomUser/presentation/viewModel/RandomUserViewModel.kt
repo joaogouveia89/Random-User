@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.joaogouveia89.randomuser.R
+import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionMonitor
+import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionStatus
 import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
@@ -18,6 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -34,6 +37,7 @@ private const val CACHE_LIFETIME_MS = 5000L
 @HiltViewModel
 class RandomUserViewModel @Inject constructor(
     private val repository: UserRepository,
+    private val internetConnectionMonitor: InternetConnectionMonitor,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private var chronJob: Job? = null
@@ -46,6 +50,27 @@ class RandomUserViewModel @Inject constructor(
             started = WhileSubscribed(stopTimeoutMillis = CACHE_LIFETIME_MS),
             initialValue = UserProfileState()
         )
+
+    private val internetConnectionStatus =
+        internetConnectionMonitor
+            .status
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Eagerly,
+                InternetConnectionStatus.OFFLINE
+            )
+
+    init {
+        viewModelScope.launch {
+            internetConnectionStatus.collect{ connectionStatus ->
+                _uiState.update {
+                    it.copy(
+                        isOffline = connectionStatus == InternetConnectionStatus.OFFLINE
+                    )
+                }
+            }
+        }
+    }
 
     private val refreshUserFlow = repository
         .getRandomUser()
@@ -81,6 +106,7 @@ class RandomUserViewModel @Inject constructor(
         }
 
     fun execute(command: RandomUserCommand) {
+
         when (command) {
             is RandomUserCommand.GetNewUser -> getNewUser(command.clock)
             is RandomUserCommand.SaveUser -> saveUser()

@@ -3,6 +3,7 @@ package io.github.joaogouveia89.randomuser.randomUser
 import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
 import io.github.joaogouveia89.randomuser.R
+import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionMonitor
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
@@ -21,7 +22,6 @@ import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
-import net.bytebuddy.matcher.ElementMatchers.any
 import org.junit.Rule
 import org.junit.Test
 
@@ -34,6 +34,7 @@ class RandomUserViewModelTest {
     var mainCoroutineRule = MainCoroutineRule(dispatcher)
 
     private val mockRepository = mockk<UserRepository>()
+    private val internetConnectionMonitor = mockk<InternetConnectionMonitor>(relaxed = true)
     private val clock = mockk<Clock>(relaxed = true)
     private lateinit var viewModel: RandomUserViewModel
 
@@ -47,7 +48,11 @@ class RandomUserViewModelTest {
         )
 
         // Initialize viewModel
-        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+        viewModel = RandomUserViewModel(
+            repository = mockRepository,
+            internetConnectionMonitor = internetConnectionMonitor,
+            dispatcher = dispatcher
+        )
 
         viewModel.execute(RandomUserCommand.GetNewUser(clock))
 
@@ -70,7 +75,11 @@ class RandomUserViewModelTest {
             UserRepositoryFetchResponse.Success(mockUser)
         )
 
-        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+        viewModel = RandomUserViewModel(
+            repository = mockRepository,
+            internetConnectionMonitor = internetConnectionMonitor,
+            dispatcher = dispatcher
+        )
 
         viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
 
@@ -90,7 +99,11 @@ class RandomUserViewModelTest {
             UserRepositoryFetchResponse.Loading
         )
 
-        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+        viewModel = RandomUserViewModel(
+            repository = mockRepository,
+            internetConnectionMonitor = internetConnectionMonitor,
+            dispatcher = dispatcher
+        )
 
         viewModel.execute(RandomUserCommand.GetNewUser(clock))
 
@@ -110,7 +123,11 @@ class RandomUserViewModelTest {
             UserRepositoryFetchResponse.SourceError
         )
 
-        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+        viewModel = RandomUserViewModel(
+            repository = mockRepository,
+            internetConnectionMonitor = internetConnectionMonitor,
+            dispatcher = dispatcher
+        )
 
         viewModel.execute(RandomUserCommand.GetNewUser(clock))
 
@@ -136,7 +153,12 @@ class RandomUserViewModelTest {
         coEvery { mockRepository.saveUser(mockUser) } returns flowOf(
             UserSaveState.Success(123L)
         )
-        viewModel = RandomUserViewModel(mockRepository, dispatcher)
+
+        viewModel = RandomUserViewModel(
+            repository = mockRepository,
+            internetConnectionMonitor = internetConnectionMonitor,
+            dispatcher = dispatcher
+        )
 
         // Trigger fetching a new user
         viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
