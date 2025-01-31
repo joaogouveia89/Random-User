@@ -10,6 +10,7 @@ data class UserProfileState(
     val isLoading: Boolean = false,
     val isGettingNewUser: Boolean = false,
     val isSaving: Boolean = false,
+    val isOffline: Boolean = false,
     @StringRes val errorMessage: Int? = null
 ) {
     val isSaveButtonEnabled: Boolean

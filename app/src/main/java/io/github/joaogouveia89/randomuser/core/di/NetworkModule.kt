@@ -1,11 +1,14 @@
 package io.github.joaogouveia89.randomuser.core.di
 
+import android.content.Context
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.joaogouveia89.randomuser.BuildConfig
+import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionMonitor
 import io.github.joaogouveia89.randomuser.core.service.remote.LogJsonInterceptor
 import io.github.joaogouveia89.randomuser.core.service.remote.ParamsInterceptor
 import io.github.joaogouveia89.randomuser.core.service.remote.UserService
@@ -73,4 +76,9 @@ object NetworkModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
             .create(UserService::class.java)
+
+    @Provides
+    fun provideInternetConnectionMonitor(
+        @ApplicationContext context: Context
+    ) = InternetConnectionMonitor(context)
 }

@@ -15,7 +15,8 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add to contacts: Add functionality to save users as contacts~~
 - [x] ~~Add dedicated screen to display saved contacts.~~
 - [x] ~~Handle empty list on saved contacts~~
-- [ ] Offline detector
+- [x] ~~Offline detector~~
+- [ ] Offline screen and offline snack bar
 - [ ] A sticky letter list for easier navigation through the contact list.
 - [x] ~~Make a search field on list~~
 - [ ] Filter Contact list by one or more user attributes
