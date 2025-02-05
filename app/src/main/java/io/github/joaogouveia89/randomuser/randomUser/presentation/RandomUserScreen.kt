@@ -54,10 +54,9 @@ fun RandomUserScreen(
         }
         if(uiState.isOffline){
             ErrorSnackBar(
-                modifier = Modifier.align(Alignment.BottomCenter),
+                modifier = Modifier.align(Alignment.TopCenter),
                 icon = Icons.Outlined.WifiOff,
-                messageRes = R.string.error_message_offline,
-                onCloseErrorBarClick = {}
+                messageRes = R.string.error_message_offline
             )
         }
     }

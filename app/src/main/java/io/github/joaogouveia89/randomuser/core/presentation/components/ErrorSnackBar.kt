@@ -25,7 +25,7 @@ fun ErrorSnackBar(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     @StringRes messageRes: Int?,
-    onCloseErrorBarClick: (() -> Unit)?
+    onCloseErrorBarClick: (() -> Unit)? = null
 ) {
     messageRes?.let {
         val elementsColor = Color.White
@@ -47,21 +47,24 @@ fun ErrorSnackBar(
                     )
                 }
                 Text(
+                    modifier = Modifier.padding(start = 8.dp),
                     color = elementsColor,
                     text = stringResource(it)
                 )
             }
 
 
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 8.dp)
-                    .clickable { onCloseErrorBarClick?.invoke() },
-                imageVector = Icons.Default.Close,
-                tint = elementsColor,
-                contentDescription = null
-            )
+            onCloseErrorBarClick?.let {
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 8.dp)
+                        .clickable { it.invoke() },
+                    imageVector = Icons.Default.Close,
+                    tint = elementsColor,
+                    contentDescription = null
+                )
+            }
         }
     }
 }
