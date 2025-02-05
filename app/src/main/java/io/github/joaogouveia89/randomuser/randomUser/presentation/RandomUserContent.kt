@@ -24,6 +24,7 @@ import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
 import io.github.joaogouveia89.randomuser.core.presentation.components.user.UserDetails
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
@@ -78,11 +79,13 @@ fun RandomUserContent(
             }
         )
 
-        ErrorSnackBar(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            messageRes = uiState.errorMessage,
-            onCloseErrorBarClick = onCloseErrorBarClick
-        )
+        if (uiState.errorState is ErrorState.SnackBarError) {
+            ErrorSnackBar(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                messageRes = uiState.errorState.message,
+                onCloseErrorBarClick = onCloseErrorBarClick
+            )
+        }
     }
 }
 
@@ -115,7 +118,7 @@ fun RandomUserContentWithErrorPreview() {
                 user = fakeUser,
                 locationTime = Clock.System.now(),
                 loadState = LoadState.IDLE,
-                errorMessage = R.string.error_message_source
+                errorState = ErrorState.SnackBarError(R.string.error_message_source)
             ),
             onAskNewUser = {},
             onOpenMapClick = {},

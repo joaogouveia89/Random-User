@@ -8,13 +8,19 @@ enum class LoadState {
     GETTING_USER, REPLACING_USER, IDLE
 }
 
+sealed class ErrorState {
+    data object None : ErrorState()
+    data object Offline : ErrorState()
+    data object FullScreenError : ErrorState()
+    data class SnackBarError(@StringRes val message: Int) : ErrorState()
+}
+
 data class UserProfileState(
     val user: User = User(),
     val locationTime: Instant? = null,
     val loadState: LoadState = LoadState.IDLE,
     val isSaving: Boolean = false,
-    val isOffline: Boolean = false,
-    @StringRes val errorMessage: Int? = null
+    val errorState: ErrorState = ErrorState.None
 ) {
     val isSaveButtonEnabled: Boolean
         get() = user.id == 0L

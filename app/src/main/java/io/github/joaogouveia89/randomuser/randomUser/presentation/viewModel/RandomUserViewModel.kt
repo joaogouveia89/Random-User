@@ -14,6 +14,7 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -66,9 +67,9 @@ class RandomUserViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             internetConnectionStatus.collect { connectionStatus ->
                 _uiState.update {
-                    it.copy(
-                        isOffline = connectionStatus == InternetConnectionStatus.OFFLINE
-                    )
+                    if (connectionStatus == InternetConnectionStatus.OFFLINE) {
+                        it.copy(errorState = ErrorState.Offline)
+                    } else it
                 }
             }
         }
@@ -82,10 +83,7 @@ class RandomUserViewModel @Inject constructor(
                     if (_uiState.value.user == User())
                         UserProfileState(loadState = LoadState.GETTING_USER)
                     else {
-                        _uiState.value.copy(
-                            loadState = LoadState.REPLACING_USER,
-                            errorMessage = null
-                        )
+                        _uiState.value.copy(loadState = LoadState.REPLACING_USER)
                     }
                 }
 
@@ -93,18 +91,23 @@ class RandomUserViewModel @Inject constructor(
                     startChronometer(userFetchState.user.timezoneOffset)
                     UserProfileState(
                         user = userFetchState.user,
-                        errorMessage = if (
+                        errorState = if (
                             !userFetchState.isColorAnalysisError)
-                            null
+                            ErrorState.None
                         else
-                            R.string.error_message_color_analysis
+                            ErrorState.SnackBarError(R.string.error_message_color_analysis)
                     )
                 }
 
                 is UserRepositoryFetchResponse.SourceError -> {
-                    _uiState.value.copy(
+                    if (isUserOnline()) {
+                        _uiState.value.copy(
+                            loadState = LoadState.IDLE,
+                            errorState = ErrorState.SnackBarError(R.string.error_message_source)
+                        )
+                    } else _uiState.value.copy(
                         loadState = LoadState.IDLE,
-                        errorMessage = R.string.error_message_source
+                        errorState = ErrorState.Offline
                     )
                 }
             }
@@ -129,11 +132,7 @@ class RandomUserViewModel @Inject constructor(
     }
 
     private fun dismissError() {
-        _uiState.update {
-            it.copy(
-                errorMessage = null
-            )
-        }
+        _uiState.update { it.copy(errorState = ErrorState.None) }
     }
 
     private fun startChronometer(offset: String) {
@@ -166,9 +165,9 @@ class RandomUserViewModel @Inject constructor(
                     /* everytime a getNewUser is called, it cancels the coroutine and this exception block is called, so I just want to consider it
                      * as an error if the user has not change
                      */
-                    if (chronJobUser == uiState.value.user) {
+                    if (isUserOnline() && chronJobUser == uiState.value.user) {
                         _uiState.update {
-                            it.copy(errorMessage = R.string.error_message_chronometer)
+                            it.copy(errorState = ErrorState.SnackBarError(R.string.error_message_chronometer))
                         }
                         Log.e(TAG, "chronJob has stopped due to ${exception.message}")
                     }
@@ -205,11 +204,7 @@ class RandomUserViewModel @Inject constructor(
                     }
 
                     is UserSaveState.Error -> {
-                        _uiState.update {
-                            it.copy(
-                                errorMessage = R.string.error_message_saving_user
-                            )
-                        }
+                        _uiState.update { it.copy(errorState = ErrorState.SnackBarError(R.string.error_message_saving_user)) }
                     }
                 }
                 if (saveState is UserSaveState.Success) {
@@ -229,6 +224,8 @@ class RandomUserViewModel @Inject constructor(
             stopChronometer()
         }
     }
+
+    private fun isUserOnline() = internetConnectionStatus.value == InternetConnectionStatus.ONLINE
 
     companion object {
         private val TAG = this::class.java.name

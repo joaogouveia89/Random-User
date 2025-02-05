@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
@@ -49,7 +50,7 @@ fun RandomUserScreen(
                 onCloseErrorBarClick = onCloseErrorBarClick
             )
         }
-        if (uiState.isOffline) {
+        if (uiState.errorState is ErrorState.Offline) {
             ErrorSnackBar(
                 modifier = Modifier.align(Alignment.TopCenter),
                 icon = Icons.Outlined.WifiOff,

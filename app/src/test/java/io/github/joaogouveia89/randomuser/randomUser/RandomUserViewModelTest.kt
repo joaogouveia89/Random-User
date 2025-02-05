@@ -4,10 +4,12 @@ import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionMonitor
+import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionStatus
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
@@ -15,8 +17,8 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -124,6 +126,10 @@ class RandomUserViewModelTest {
             UserRepositoryFetchResponse.SourceError
         )
 
+        coEvery { internetConnectionMonitor.status } returns MutableStateFlow(
+            InternetConnectionStatus.ONLINE
+        )
+
         viewModel = RandomUserViewModel(
             repository = mockRepository,
             internetConnectionMonitor = internetConnectionMonitor,
@@ -139,7 +145,10 @@ class RandomUserViewModelTest {
             val errorState = awaitItem()
             assertEquals(User(), errorState.user) // Verify user is reset to default
             assertEquals(LoadState.IDLE, errorState.loadState) // Ensure not loading
-            assertEquals(R.string.error_message_source, errorState.errorMessage) // Ensure error set
+            assertEquals(
+                ErrorState.SnackBarError(R.string.error_message_source),
+                errorState.errorState
+            ) // Ensure error set
         }
     }
 
