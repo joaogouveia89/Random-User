@@ -3,25 +3,25 @@ package io.github.joaogouveia89.randomuser.userList.di
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import io.github.joaogouveia89.randomuser.core.service.local.daos.UserDao
 import io.github.joaogouveia89.randomuser.userList.data.repository.UserListRepositoryImpl
 import io.github.joaogouveia89.randomuser.userList.data.source.UserListSourceImpl
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListRepository
 import io.github.joaogouveia89.randomuser.userList.domain.source.UserListSource
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object UserListModule {
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideUserListSource(
         userDao: UserDao
     ): UserListSource = UserListSourceImpl(userDao)
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideUserListRepository(
         source: UserListSource
     ): UserListRepository = UserListRepositoryImpl(source)
