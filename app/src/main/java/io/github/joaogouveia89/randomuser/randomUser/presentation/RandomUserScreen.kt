@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
@@ -29,7 +28,7 @@ fun RandomUserScreen(
     onCloseErrorBarClick: (() -> Unit)?
 ) {
 
-    val contentAlignment = if(uiState.loadState == LoadState.GETTING_USER)
+    val contentAlignment = if (uiState.loadState == LoadState.GETTING_USER)
         Alignment.Center
     else
         Alignment.TopStart
@@ -37,9 +36,9 @@ fun RandomUserScreen(
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = contentAlignment
-    ){
-        if(uiState.loadState == LoadState.GETTING_USER) CircularProgressIndicator()
-        else{
+    ) {
+        if (uiState.loadState == LoadState.GETTING_USER) CircularProgressIndicator()
+        else {
             RandomUserContent(
                 uiState = uiState,
                 onAskNewUser = onAskNewUser,
@@ -50,7 +49,7 @@ fun RandomUserScreen(
                 onCloseErrorBarClick = onCloseErrorBarClick
             )
         }
-        if(uiState.isOffline){
+        if (uiState.isOffline) {
             ErrorSnackBar(
                 modifier = Modifier.align(Alignment.TopCenter),
                 icon = Icons.Outlined.WifiOff,

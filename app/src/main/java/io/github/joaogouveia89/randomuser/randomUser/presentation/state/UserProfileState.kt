@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import kotlinx.datetime.Instant
 
-enum class LoadState{
+enum class LoadState {
     GETTING_USER, REPLACING_USER, IDLE
 }
 

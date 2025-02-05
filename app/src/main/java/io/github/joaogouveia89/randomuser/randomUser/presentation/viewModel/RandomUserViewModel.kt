@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.joaogouveia89.randomuser.R
+import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionMonitor
 import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionStatus
-import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.ktx.hadPassedOneMinute
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
@@ -64,7 +64,7 @@ class RandomUserViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            internetConnectionStatus.collect{ connectionStatus ->
+            internetConnectionStatus.collect { connectionStatus ->
                 _uiState.update {
                     it.copy(
                         isOffline = connectionStatus == InternetConnectionStatus.OFFLINE
