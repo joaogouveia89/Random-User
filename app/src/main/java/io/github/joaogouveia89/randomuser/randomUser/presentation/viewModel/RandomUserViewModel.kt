@@ -16,6 +16,7 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepos
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -61,7 +62,7 @@ class RandomUserViewModel @Inject constructor(
             )
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             internetConnectionStatus.collect{ connectionStatus ->
                 _uiState.update {
                     it.copy(
