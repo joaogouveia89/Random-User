@@ -3,7 +3,6 @@ package io.github.joaogouveia89.randomuser.randomUser.data.source
 import io.github.joaogouveia89.randomuser.core.service.remote.UserService
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserRemoteSource
 import io.github.joaogouveia89.randomuser.randomUser.domain.source.UserRemoteSourceResponse
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class UserRemoteSourceImpl @Inject constructor(

@@ -1,6 +1,5 @@
 package io.github.joaogouveia89.randomuser.core.presentation.components
 
-import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

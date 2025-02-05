@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-enum class InternetConnectionStatus{
+enum class InternetConnectionStatus {
     OFFLINE, ONLINE
 }
 
 class InternetConnectionMonitor(
     context: Context
-): LifecycleObserver {
+) : LifecycleObserver {
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
