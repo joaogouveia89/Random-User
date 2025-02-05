@@ -14,6 +14,7 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -73,16 +74,16 @@ class RandomUserViewModel @Inject constructor(
         }
     }
 
-    private val refreshUserFlow = repository
+    private val getUserFlow = repository
         .getRandomUser()
         .map { userFetchState ->
             when (userFetchState) {
                 is UserRepositoryFetchResponse.Loading -> {
                     if (_uiState.value.user == User())
-                        UserProfileState(isLoading = true)
+                        UserProfileState(loadState = LoadState.GETTING_USER)
                     else {
                         _uiState.value.copy(
-                            isGettingNewUser = true,
+                            loadState = LoadState.REPLACING_USER,
                             errorMessage = null
                         )
                     }
@@ -101,7 +102,10 @@ class RandomUserViewModel @Inject constructor(
                 }
 
                 is UserRepositoryFetchResponse.SourceError -> {
-                    _uiState.value.copy(errorMessage = R.string.error_message_source)
+                    _uiState.value.copy(
+                        loadState = LoadState.IDLE,
+                        errorMessage = R.string.error_message_source
+                    )
                 }
             }
         }
@@ -118,7 +122,7 @@ class RandomUserViewModel @Inject constructor(
     private fun getNewUser(clock: Clock) {
         currentClock = clock
         viewModelScope.launch {
-            refreshUserFlow.collect { userProfileState ->
+            getUserFlow.collect { userProfileState ->
                 _uiState.value = userProfileState
             }
         }

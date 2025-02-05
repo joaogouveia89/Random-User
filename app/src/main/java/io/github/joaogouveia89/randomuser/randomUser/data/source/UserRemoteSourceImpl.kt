@@ -10,13 +10,11 @@ class UserRemoteSourceImpl @Inject constructor(
     private val service: UserService
 ) : UserRemoteSource {
     override suspend fun getRandomUser(): UserRemoteSourceResponse {
-        try {
+        return try {
             val user = service.getRandomUser()
-            return UserRemoteSourceResponse.Success(user)
-        } catch (exception: HttpException) {
-            return UserRemoteSourceResponse.Error(
-                "${exception.code()} - ${exception.message()}"
-            )
+            UserRemoteSourceResponse.Success(user)
+        } catch (exception: Exception) {
+            UserRemoteSourceResponse.Error(exception.message ?: "UserRemoteSource Generic Error")
         }
     }
 }

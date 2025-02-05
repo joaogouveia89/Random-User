@@ -24,6 +24,7 @@ import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
 import io.github.joaogouveia89.randomuser.core.presentation.components.user.UserDetails
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import kotlinx.datetime.Clock
@@ -40,7 +41,7 @@ fun RandomUserContent(
     onCloseErrorBarClick: (() -> Unit)?
 ) {
     PullToRefreshBox(
-        isRefreshing = uiState.isGettingNewUser,
+        isRefreshing = uiState.loadState == LoadState.REPLACING_USER,
         onRefresh = onAskNewUser,
     ) {
         UserDetails(
@@ -93,7 +94,7 @@ fun RandomUserContentPreview() {
             uiState = UserProfileState(
                 user = fakeUser,
                 locationTime = Clock.System.now(),
-                isLoading = false
+                loadState = LoadState.IDLE
             ),
             onAskNewUser = {},
             onOpenMapClick = {},
@@ -113,7 +114,7 @@ fun RandomUserContentWithErrorPreview() {
             uiState = UserProfileState(
                 user = fakeUser,
                 locationTime = Clock.System.now(),
-                isLoading = false,
+                loadState = LoadState.IDLE,
                 errorMessage = R.string.error_message_source
             ),
             onAskNewUser = {},

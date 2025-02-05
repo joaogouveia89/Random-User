@@ -3,7 +3,6 @@ package io.github.joaogouveia89.randomuser.randomUser.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.OfflinePin
 import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -14,6 +13,7 @@ import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import kotlinx.datetime.Clock
@@ -29,9 +29,7 @@ fun RandomUserScreen(
     onCloseErrorBarClick: (() -> Unit)?
 ) {
 
-    val showLoading = uiState.isLoading || uiState.user == User()
-
-    val contentAlignment = if(showLoading)
+    val contentAlignment = if(uiState.loadState == LoadState.GETTING_USER)
         Alignment.Center
     else
         Alignment.TopStart
@@ -40,7 +38,7 @@ fun RandomUserScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = contentAlignment
     ){
-        if(showLoading) CircularProgressIndicator()
+        if(uiState.loadState == LoadState.GETTING_USER) CircularProgressIndicator()
         else{
             RandomUserContent(
                 uiState = uiState,
@@ -70,7 +68,7 @@ fun RandomUserScreenPreview() {
             uiState = UserProfileState(
                 user = fakeUser,
                 locationTime = Clock.System.now(),
-                isLoading = false
+                loadState = LoadState.IDLE
             ),
             onAskNewUser = {},
             onOpenMapClick = {},

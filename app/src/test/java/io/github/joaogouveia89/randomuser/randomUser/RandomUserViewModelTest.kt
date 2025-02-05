@@ -8,6 +8,7 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
+import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserCommand
 import io.github.joaogouveia89.randomuser.randomUser.presentation.viewModel.RandomUserViewModel
 import io.mockk.coEvery
@@ -112,7 +113,7 @@ class RandomUserViewModelTest {
         viewModel.uiState.test {
             skipItems(1) // skipping the initial value
             val loadingState = awaitItem()
-            assertTrue(loadingState.isLoading) // Verify loading state
+            assertEquals(LoadState.GETTING_USER, loadingState.loadState) // Verify loading state
         }
     }
 
@@ -137,7 +138,7 @@ class RandomUserViewModelTest {
             skipItems(1) // skipping the initial value
             val errorState = awaitItem()
             assertEquals(User(), errorState.user) // Verify user is reset to default
-            assertFalse(errorState.isLoading) // Ensure not loading
+            assertEquals(LoadState.IDLE, errorState.loadState) // Ensure not loading
             assertEquals(R.string.error_message_source, errorState.errorMessage) // Ensure error set
         }
     }
