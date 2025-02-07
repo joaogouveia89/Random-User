@@ -16,9 +16,13 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add dedicated screen to display saved contacts.~~
 - [x] ~~Handle empty list on saved contacts~~
 - [x] ~~Offline detector~~
-- [ ] Offline screen and offline snack bar
-- [ ] A sticky letter list for easier navigation through the contact list.
+- [x]  ~~Offline screen and offline snack bar to Random User~~
 - [x] ~~Make a search field on list~~
+- [ ] Offline screen and offline snack bar to user list
+- [ ] Offline screen and offline snack bar to user detail
+- [ ] Pagination to user list
+- [ ] Caching(storing ids to avoid duplicating objects)
+- [ ] A sticky letter list for easier navigation through the contact list.
 - [ ] Filter Contact list by one or more user attributes
 - [ ] Add long click behaviour to each item of contact list and show the delete option for multiple contacts
 - [ ] Add a field to user details screen with the distance from the phone user and the detailed user(GPS permission required)
@@ -35,6 +39,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add error handling on random user fetching on repository~~
 - [x] ~~Add error handling on random user saving on repository~~
 - [x] ~~Handle user click on user list~~
+- [ ] Create a chronometer manager to be injected on view models to handle chronometer, similar [InternetConnectionMonitor](./app/src/main/java/io/github/joaogouveia89/randomuser/core/internetConnectionMonitor/InternetConnectionMonitor.kt)
 - [ ] Create a base view model(ChronometerViewModel or something similar) to reuse the chronometer logic
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
 - [ ] Add UI tests with Espresso
