@@ -40,12 +40,12 @@ fun NavigationGraph(navController: NavHostController) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
+                viewModel.execute(RandomUserCommand.GetNewUser)
             }
 
             RandomUserScreen(
                 uiState = uiState,
-                onAskNewUser = { viewModel.execute(RandomUserCommand.GetNewUser(Clock.System)) },
+                onAskNewUser = { viewModel.execute(RandomUserCommand.GetNewUser) },
                 onOpenMapClick = { context.openMaps(uiState.user.getMapsIntentQuery()) },
                 onAddToContactsClick = { viewModel.execute(RandomUserCommand.SaveUser) },
                 onCopyEmailToClipboard = { context.copyEmailToClipboard(uiState.user.email) },

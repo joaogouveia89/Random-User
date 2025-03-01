@@ -43,7 +43,7 @@ fun RandomUserContent(
 ) {
     PullToRefreshBox(
         isRefreshing = uiState.loadState == LoadState.REPLACING_USER,
-        onRefresh = onAskNewUser,
+        onRefresh = onAskNewUser
     ) {
         UserDetails(
             user = uiState.user,

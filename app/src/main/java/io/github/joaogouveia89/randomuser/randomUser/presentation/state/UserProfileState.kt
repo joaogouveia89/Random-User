@@ -10,8 +10,8 @@ enum class LoadState {
 
 sealed class ErrorState {
     data object None : ErrorState()
-    data object Offline : ErrorState()
-    data object FullScreenError : ErrorState()
+    data object OfflineSnackBar : ErrorState()
+    data object OfflineScreen : ErrorState()
     data class SnackBarError(@StringRes val message: Int) : ErrorState()
 }
 

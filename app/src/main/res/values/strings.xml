@@ -23,6 +23,7 @@
     <string name="error_message_chronometer">User real time update has stopped</string>
     <string name="error_message_saving_user">Error saving user</string>
     <string name="error_message_offline">You are offline</string>
+    <string name="error_offline_screen_description">No internet connection.\nSwipe down to retry</string>
 
 
     <string name="user_details_title">User Details</string>

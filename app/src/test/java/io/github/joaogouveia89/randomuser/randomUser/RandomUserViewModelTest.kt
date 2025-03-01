@@ -53,11 +53,12 @@ class RandomUserViewModelTest {
         // Initialize viewModel
         viewModel = RandomUserViewModel(
             repository = mockRepository,
+            clock = clock,
             internetConnectionMonitor = internetConnectionMonitor,
             dispatcher = dispatcher
         )
 
-        viewModel.execute(RandomUserCommand.GetNewUser(clock))
+        viewModel.execute(RandomUserCommand.GetNewUser)
 
         // Ensure all coroutines complete
         advanceUntilIdle()
@@ -80,11 +81,12 @@ class RandomUserViewModelTest {
 
         viewModel = RandomUserViewModel(
             repository = mockRepository,
+            clock = clock,
             internetConnectionMonitor = internetConnectionMonitor,
             dispatcher = dispatcher
         )
 
-        viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
+        viewModel.execute(RandomUserCommand.GetNewUser)
 
         // Ensure all coroutines complete
         advanceUntilIdle()
@@ -104,11 +106,12 @@ class RandomUserViewModelTest {
 
         viewModel = RandomUserViewModel(
             repository = mockRepository,
+            clock = clock,
             internetConnectionMonitor = internetConnectionMonitor,
             dispatcher = dispatcher
         )
 
-        viewModel.execute(RandomUserCommand.GetNewUser(clock))
+        viewModel.execute(RandomUserCommand.GetNewUser)
 
         advanceUntilIdle()
 
@@ -132,11 +135,12 @@ class RandomUserViewModelTest {
 
         viewModel = RandomUserViewModel(
             repository = mockRepository,
+            clock = clock,
             internetConnectionMonitor = internetConnectionMonitor,
             dispatcher = dispatcher
         )
 
-        viewModel.execute(RandomUserCommand.GetNewUser(clock))
+        viewModel.execute(RandomUserCommand.GetNewUser)
 
         advanceUntilIdle()
 
@@ -166,12 +170,13 @@ class RandomUserViewModelTest {
 
         viewModel = RandomUserViewModel(
             repository = mockRepository,
+            clock = clock,
             internetConnectionMonitor = internetConnectionMonitor,
             dispatcher = dispatcher
         )
 
         // Trigger fetching a new user
-        viewModel.execute(RandomUserCommand.GetNewUser(Clock.System))
+        viewModel.execute(RandomUserCommand.GetNewUser)
         advanceUntilIdle()
 
         // Assert that the user was updated in uiState

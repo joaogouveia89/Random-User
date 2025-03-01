@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
+import io.github.joaogouveia89.randomuser.core.presentation.OfflineScreen
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
@@ -38,7 +39,8 @@ fun RandomUserScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = contentAlignment
     ) {
-        if (uiState.loadState == LoadState.GETTING_USER) CircularProgressIndicator()
+        if(uiState.errorState == ErrorState.OfflineScreen) OfflineScreen()
+        else if (uiState.loadState == LoadState.GETTING_USER) CircularProgressIndicator()
         else {
             RandomUserContent(
                 uiState = uiState,
@@ -50,7 +52,7 @@ fun RandomUserScreen(
                 onCloseErrorBarClick = onCloseErrorBarClick
             )
         }
-        if (uiState.errorState is ErrorState.Offline) {
+        if (uiState.errorState is ErrorState.OfflineSnackBar) {
             ErrorSnackBar(
                 modifier = Modifier.align(Alignment.TopCenter),
                 icon = Icons.Outlined.WifiOff,

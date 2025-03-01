@@ -40,11 +40,11 @@ private const val CACHE_LIFETIME_MS = 5000L
 @HiltViewModel
 class RandomUserViewModel @Inject constructor(
     private val repository: UserRepository,
-    private val internetConnectionMonitor: InternetConnectionMonitor,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    private val clock: Clock,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    internetConnectionMonitor: InternetConnectionMonitor
 ) : ViewModel() {
     private var chronJob: Job? = null
-    private lateinit var currentClock: Clock
     private val _uiState = MutableStateFlow(UserProfileState())
 
     val uiState: StateFlow<UserProfileState> =
@@ -68,8 +68,11 @@ class RandomUserViewModel @Inject constructor(
             internetConnectionStatus.collect { connectionStatus ->
                 _uiState.update {
                     if (connectionStatus == InternetConnectionStatus.OFFLINE) {
-                        it.copy(errorState = ErrorState.Offline)
-                    } else it
+                        it.copy(errorState = handleOfflineErrorAction())
+                    } else if(it.user == User()){
+                        getNewUser()
+                        it
+                    }else it
                 }
             }
         }
@@ -107,7 +110,7 @@ class RandomUserViewModel @Inject constructor(
                         )
                     } else _uiState.value.copy(
                         loadState = LoadState.IDLE,
-                        errorState = ErrorState.Offline
+                        errorState = handleOfflineErrorAction()
                     )
                 }
             }
@@ -116,14 +119,13 @@ class RandomUserViewModel @Inject constructor(
     fun execute(command: RandomUserCommand) {
 
         when (command) {
-            is RandomUserCommand.GetNewUser -> getNewUser(command.clock)
+            is RandomUserCommand.GetNewUser -> getNewUser()
             is RandomUserCommand.SaveUser -> saveUser()
             is RandomUserCommand.DismissError -> dismissError()
         }
     }
 
-    private fun getNewUser(clock: Clock) {
-        currentClock = clock
+    private fun getNewUser() {
         viewModelScope.launch {
             getUserFlow.collect { userProfileState ->
                 _uiState.value = userProfileState
@@ -142,7 +144,7 @@ class RandomUserViewModel @Inject constructor(
             chronJob = viewModelScope.launch(dispatcher) {
                 val chronJobUser = uiState.value.user
                 try {
-                    var currentInst = currentClock.now().calculateOffset(offset)
+                    var currentInst = clock.now().calculateOffset(offset)
                     _uiState.update {
                         it.copy(
                             locationTime = currentInst
@@ -224,6 +226,9 @@ class RandomUserViewModel @Inject constructor(
             stopChronometer()
         }
     }
+
+    private fun handleOfflineErrorAction(): ErrorState =
+        if(_uiState.value.user == User()) ErrorState.OfflineScreen else ErrorState.OfflineSnackBar
 
     private fun isUserOnline() = internetConnectionStatus.value == InternetConnectionStatus.ONLINE
 
