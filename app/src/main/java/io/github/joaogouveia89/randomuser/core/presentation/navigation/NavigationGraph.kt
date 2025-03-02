@@ -50,7 +50,8 @@ fun NavigationGraph(navController: NavHostController) {
                 onAddToContactsClick = { viewModel.execute(RandomUserCommand.SaveUser) },
                 onCopyEmailToClipboard = { context.copyEmailToClipboard(uiState.user.email) },
                 onDialRequired = { context.dial(it) },
-                onCloseErrorBarClick = { viewModel.execute(RandomUserCommand.DismissError) }
+                onCloseErrorBarClick = { viewModel.execute(RandomUserCommand.DismissError) },
+                onErrorRetryClick = { viewModel.execute(RandomUserCommand.ErrorRetryClick) }
             )
         }
         composable(BottomNavItem.UserList.route) {

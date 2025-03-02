@@ -13,6 +13,7 @@ sealed class ErrorState {
     data object OfflineSnackBar : ErrorState()
     data object OfflineScreen : ErrorState()
     data class SnackBarError(@StringRes val message: Int) : ErrorState()
+    data object ScreenError : ErrorState()
 }
 
 data class UserProfileState(

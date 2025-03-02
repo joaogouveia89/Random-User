@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
+import io.github.joaogouveia89.randomuser.core.presentation.GenericErrorScreen
 import io.github.joaogouveia89.randomuser.core.presentation.OfflineScreen
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
@@ -27,7 +28,8 @@ fun RandomUserScreen(
     onAddToContactsClick: () -> Unit,
     onCopyEmailToClipboard: () -> Unit,
     onDialRequired: (phoneNumber: String) -> Unit,
-    onCloseErrorBarClick: (() -> Unit)?
+    onCloseErrorBarClick: (() -> Unit)?,
+    onErrorRetryClick: (() -> Unit)
 ) {
 
     val contentAlignment = if (uiState.loadState == LoadState.GETTING_USER)
@@ -40,6 +42,7 @@ fun RandomUserScreen(
         contentAlignment = contentAlignment
     ) {
         if(uiState.errorState == ErrorState.OfflineScreen) OfflineScreen()
+        if(uiState.errorState == ErrorState.ScreenError) GenericErrorScreen(onRetry = onErrorRetryClick)
         else if (uiState.loadState == LoadState.GETTING_USER) CircularProgressIndicator()
         else {
             RandomUserContent(
@@ -77,6 +80,7 @@ fun RandomUserScreenPreview() {
             onAddToContactsClick = {},
             onCopyEmailToClipboard = {},
             onDialRequired = {},
+            onErrorRetryClick = {},
             onCloseErrorBarClick = null
         )
     }

@@ -106,7 +106,7 @@ class RandomUserViewModel @Inject constructor(
                     if (isUserOnline()) {
                         _uiState.value.copy(
                             loadState = LoadState.IDLE,
-                            errorState = ErrorState.SnackBarError(R.string.error_message_source)
+                            errorState = handleGenericErrorAction(R.string.error_message_source)
                         )
                     } else _uiState.value.copy(
                         loadState = LoadState.IDLE,
@@ -122,6 +122,7 @@ class RandomUserViewModel @Inject constructor(
             is RandomUserCommand.GetNewUser -> getNewUser()
             is RandomUserCommand.SaveUser -> saveUser()
             is RandomUserCommand.DismissError -> dismissError()
+            is RandomUserCommand.ErrorRetryClick -> getNewUser()
         }
     }
 
@@ -229,6 +230,9 @@ class RandomUserViewModel @Inject constructor(
 
     private fun handleOfflineErrorAction(): ErrorState =
         if(_uiState.value.user == User()) ErrorState.OfflineScreen else ErrorState.OfflineSnackBar
+
+    private fun handleGenericErrorAction(errorMessage: Int = 0): ErrorState =
+        if(_uiState.value.user == User()) ErrorState.ScreenError else ErrorState.SnackBarError(errorMessage)
 
     private fun isUserOnline() = internetConnectionStatus.value == InternetConnectionStatus.ONLINE
 
