@@ -1,6 +1,5 @@
 package io.github.joaogouveia89.randomuser.core.presentation.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 fun ErrorSnackBar(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
-    @StringRes messageRes: Int?,
+    messageRes: String?,
     onCloseErrorBarClick: (() -> Unit)? = null
 ) {
     messageRes?.let {
@@ -48,7 +47,7 @@ fun ErrorSnackBar(
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
                     color = elementsColor,
-                    text = stringResource(it)
+                    text = it
                 )
             }
 

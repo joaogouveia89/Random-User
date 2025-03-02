@@ -39,6 +39,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add error handling on random user fetching on repository~~
 - [x] ~~Add error handling on random user saving on repository~~
 - [x] ~~Handle user click on user list~~
+- [ ] Create a generic screen with loading, error and offline handling, also a state to handle common states
 - [ ] Create a chronometer manager to be injected on view models to handle chronometer, similar [InternetConnectionMonitor](./app/src/main/java/io/github/joaogouveia89/randomuser/core/internetConnectionMonitor/InternetConnectionMonitor.kt)
 - [ ] Create a base view model(ChronometerViewModel or something similar) to reuse the chronometer logic
 - [ ] Find a way to write tests to the chronometer on RandomUserViewModel
