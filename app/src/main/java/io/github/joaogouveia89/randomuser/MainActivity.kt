@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.joaogouveia89.randomuser.core.presentation.MainScreen
+import io.github.joaogouveia89.randomuser.core.presentation.screen.MainScreen
 
 
 @AndroidEntryPoint

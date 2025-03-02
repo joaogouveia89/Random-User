@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
-import io.github.joaogouveia89.randomuser.core.presentation.GenericErrorScreen
-import io.github.joaogouveia89.randomuser.core.presentation.OfflineScreen
+import io.github.joaogouveia89.randomuser.core.presentation.screen.GenericErrorScreen
+import io.github.joaogouveia89.randomuser.core.presentation.screen.OfflineScreen
 import io.github.joaogouveia89.randomuser.core.presentation.components.ErrorSnackBar
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.ErrorState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState

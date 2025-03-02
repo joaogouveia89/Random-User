@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.core.presentation
+package io.github.joaogouveia89.randomuser.core.presentation.screen
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SentimentVeryDissatisfied

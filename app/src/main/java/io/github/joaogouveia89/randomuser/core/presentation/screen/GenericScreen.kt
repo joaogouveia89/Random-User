@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.core.presentation
+package io.github.joaogouveia89.randomuser.core.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
