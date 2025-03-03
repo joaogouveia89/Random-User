@@ -24,7 +24,7 @@
     <string name="error_message_saving_user">Error saving user</string>
     <string name="error_message_offline">You are offline</string>
     <string name="error_offline_screen_description">No internet connection.</string>
-    <string name="error_generic_screen_description">Something went wrong.</string>
+    <string name="error_generic_description">Something went wrong.</string>
 
 
     <string name="user_details_title">User Details</string>

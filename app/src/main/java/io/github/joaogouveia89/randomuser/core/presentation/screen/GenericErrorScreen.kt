@@ -18,7 +18,7 @@ fun GenericErrorScreen(
     GenericScreen(
         modifier = modifier,
         icon = Icons.Default.SentimentVeryDissatisfied,
-        description = stringResource(R.string.error_generic_screen_description),
+        description = stringResource(R.string.error_generic_description),
         action = {
             Button(
                 onClick = onRetry,

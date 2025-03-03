@@ -3,7 +3,9 @@ package io.github.joaogouveia89.randomuser.userList.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
+import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.state.ContentState
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListGetState
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListRepository
@@ -43,13 +45,18 @@ class UserListViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             repository.getUsers().collect { state ->
                 when (state) {
-                    is UserListGetState.Loading -> _uiState.update { UserListState(isLoading = true) }
+                    is UserListGetState.Loading -> _uiState.update { UserListState(contentState = ContentState.Loading) }
                     is UserListGetState.Success -> {
                         fullUserList = state.users
                         _uiState.update { UserListState(userList = state.users) }
                     }
 
-                    is UserListGetState.Error -> _uiState.update { UserListState(isError = true) }
+                    is UserListGetState.Error -> _uiState.update {
+                        UserListState(
+                            showSnackBar = true,
+                            contentState = ContentState.Error(R.string.error_generic_description)
+                        )
+                    }
                 }
             }
         }
@@ -102,17 +109,17 @@ class UserListViewModel @Inject constructor(
         var cost = Array(lhsLength) { it }
         var newCost = Array(lhsLength) { 0 }
 
-        for (i in 1..rhsLength - 1) {
+        for (i in 1..<rhsLength) {
             newCost[0] = i
 
-            for (j in 1..lhsLength - 1) {
+            for (j in 1..<lhsLength) {
                 val match = if (lhs[j - 1] == rhs[i - 1]) 0 else 1
 
                 val costReplace = cost[j - 1] + match
                 val costInsert = cost[j] + 1
                 val costDelete = newCost[j - 1] + 1
 
-                newCost[j] = Math.min(Math.min(costInsert, costDelete), costReplace)
+                newCost[j] = costInsert.coerceAtMost(costDelete).coerceAtMost(costReplace)
             }
 
             val swap = cost
