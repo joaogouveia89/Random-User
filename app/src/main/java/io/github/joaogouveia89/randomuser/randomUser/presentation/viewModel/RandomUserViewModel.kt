@@ -68,11 +68,14 @@ class RandomUserViewModel @Inject constructor(
             internetConnectionStatus.collect { connectionStatus ->
                 _uiState.update {
                     if (connectionStatus == InternetConnectionStatus.OFFLINE) {
-                        it.copy(contentState = ContentState.Offline, showSnackBar = !it.shouldShowFullErrorScreen() )
-                    } else if(it.user == User()){
+                        it.copy(
+                            contentState = ContentState.Offline,
+                            showSnackBar = !it.shouldShowFullErrorScreen()
+                        )
+                    } else if (it.user == User()) {
                         getNewUser()
                         it
-                    }else it
+                    } else it
                 }
             }
         }
@@ -172,7 +175,10 @@ class RandomUserViewModel @Inject constructor(
                      */
                     if (isUserOnline() && chronJobUser == uiState.value.user) {
                         _uiState.update {
-                            it.copy(contentState = ContentState.Error(R.string.error_message_chronometer), showSnackBar = true)
+                            it.copy(
+                                contentState = ContentState.Error(R.string.error_message_chronometer),
+                                showSnackBar = true
+                            )
                         }
                         Log.e(TAG, "chronJob has stopped due to ${exception.message}")
                     }
@@ -209,7 +215,12 @@ class RandomUserViewModel @Inject constructor(
                     }
 
                     is UserSaveState.Error -> {
-                        _uiState.update { it.copy(contentState = ContentState.Error(R.string.error_message_saving_user), showSnackBar = true) }
+                        _uiState.update {
+                            it.copy(
+                                contentState = ContentState.Error(R.string.error_message_saving_user),
+                                showSnackBar = true
+                            )
+                        }
                     }
                 }
                 if (saveState is UserSaveState.Success) {

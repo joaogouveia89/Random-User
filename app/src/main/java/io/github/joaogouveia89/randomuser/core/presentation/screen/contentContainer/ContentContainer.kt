@@ -37,7 +37,7 @@ fun ContentContainer(
                 snackBarLeadIcon = Icons.Default.WifiOff
             ) else OfflineScreen()
 
-        is ContentState.Error -> if(showSnackBar){
+        is ContentState.Error -> if (showSnackBar) {
             ContentWithErrorSnackBar(
                 content = content,
                 snackBarErrorMessage = stringResource(R.string.error_message_chronometer),
