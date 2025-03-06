@@ -5,4 +5,5 @@ sealed class RandomUserCommand {
     data object SaveUser : RandomUserCommand()
     data object DismissError : RandomUserCommand()
     data object ErrorRetryClick : RandomUserCommand()
+    data object OnLocalClockUpdated : RandomUserCommand()
 }

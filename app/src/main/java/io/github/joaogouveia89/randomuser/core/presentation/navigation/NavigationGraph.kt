@@ -39,9 +39,7 @@ fun NavigationGraph(navController: NavHostController) {
         startDestination = Routes.RANDOM_USER_ROUTE
     ) {
 
-        val tickerReceiver = TimeTickReceiver{
-            println("JOAODEBUG::minute changed")
-        }
+        var tickerReceiver: TimeTickReceiver? = null
 
         composable(BottomNavItem.RandomUser.route) {
             val context = LocalContext.current
@@ -49,8 +47,14 @@ fun NavigationGraph(navController: NavHostController) {
             val viewModel: RandomUserViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            tickerReceiver = TimeTickReceiver{
+                viewModel.execute(RandomUserCommand.OnLocalClockUpdated)
+            }
+
             LaunchedEffect(Unit) {
-                context.registerReceiver(tickerReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
+                tickerReceiver?.let { ticker ->
+                    context.registerReceiver(ticker, IntentFilter(Intent.ACTION_TIME_TICK))
+                }
                 viewModel.execute(RandomUserCommand.GetNewUser)
             }
 
@@ -71,7 +75,11 @@ fun NavigationGraph(navController: NavHostController) {
             val context = LocalContext.current
 
             LaunchedEffect(Unit) {
-                context.unregisterReceiver(tickerReceiver)
+                tickerReceiver?.also { ticker ->
+                    context.unregisterReceiver(ticker)
+                    tickerReceiver = null
+                }
+
                 viewModel.execute(UserListCommand.GetUsers)
             }
 
