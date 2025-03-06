@@ -1,16 +1,22 @@
 package io.github.joaogouveia89.randomuser.core.presentation.navigation
 
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import io.github.joaogouveia89.randomuser.core.receiver.TimeTickReceiver
 import io.github.joaogouveia89.randomuser.randomUser.copyEmailToClipboard
 import io.github.joaogouveia89.randomuser.randomUser.dial
 import io.github.joaogouveia89.randomuser.randomUser.openMaps
@@ -33,6 +39,10 @@ fun NavigationGraph(navController: NavHostController) {
         startDestination = Routes.RANDOM_USER_ROUTE
     ) {
 
+        val tickerReceiver = TimeTickReceiver{
+            println("JOAODEBUG::minute changed")
+        }
+
         composable(BottomNavItem.RandomUser.route) {
             val context = LocalContext.current
 
@@ -40,6 +50,7 @@ fun NavigationGraph(navController: NavHostController) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
+                context.registerReceiver(tickerReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
                 viewModel.execute(RandomUserCommand.GetNewUser)
             }
 
@@ -57,8 +68,10 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.UserList.route) {
             val viewModel: UserListViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             LaunchedEffect(Unit) {
+                context.unregisterReceiver(tickerReceiver)
                 viewModel.execute(UserListCommand.GetUsers)
             }
 

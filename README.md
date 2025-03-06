@@ -18,8 +18,6 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Offline detector~~
 - [x]  ~~Offline screen and offline snack bar to Random User~~
 - [x] ~~Make a search field on list~~
-- [ ] Offline screen and offline snack bar to user list
-- [ ] Offline screen and offline snack bar to user detail
 - [ ] Pagination to user list
 - [ ] Caching(storing ids to avoid duplicating objects)
 - [ ] A sticky letter list for easier navigation through the contact list.
@@ -39,12 +37,11 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Add error handling on random user fetching on repository~~
 - [x] ~~Add error handling on random user saving on repository~~
 - [x] ~~Handle user click on user list~~
-- [ ] Create a generic screen with loading, error and offline handling, also a state to handle common states
-- [ ] Create a chronometer manager to be injected on view models to handle chronometer, similar [InternetConnectionMonitor](./app/src/main/java/io/github/joaogouveia89/randomuser/core/internetConnectionMonitor/InternetConnectionMonitor.kt)
-- [ ] Create a base view model(ChronometerViewModel or something similar) to reuse the chronometer logic
-- [ ] Find a way to write tests to the chronometer on RandomUserViewModel
+- [x] ~~Create a generic screen with loading, error and offline handling, also a state to handle common states~~
+- [x] ~~Create a solution for time updating using broadcast receiver and intent filter action time tick~~
+- [x] ~~Service to check if user is offline~~
+- [ ] Integrate the broadcast receiver response to the view model logic to update the current user clock
 - [ ] Add UI tests with Espresso
-- [ ] Service to check if user is offline
 - [ ] Include and setup [Detekt library](https://github.com/detekt/detekt)
 
 ## Bug fixing
