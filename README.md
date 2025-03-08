@@ -40,7 +40,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Create a generic screen with loading, error and offline handling, also a state to handle common states~~
 - [x] ~~Create a solution for time updating using broadcast receiver and intent filter action time tick~~
 - [x] ~~Service to check if user is offline~~
-- [ ] Integrate the broadcast receiver response to the view model logic to update the current user clock
+- [x] ~~Integrate the broadcast receiver response to the view model logic to update the current user clock~~
 - [ ] Add UI tests with Espresso
 - [ ] Include and setup [Detekt library](https://github.com/detekt/detekt)
 
