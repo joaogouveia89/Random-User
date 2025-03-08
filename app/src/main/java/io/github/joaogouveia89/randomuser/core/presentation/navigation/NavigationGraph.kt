@@ -27,7 +27,6 @@ import io.github.joaogouveia89.randomuser.userDetail.presentation.viewModel.User
 import io.github.joaogouveia89.randomuser.userList.presentation.UserListScreen
 import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListCommand
 import io.github.joaogouveia89.randomuser.userList.presentation.viewModel.UserListViewModel
-import kotlinx.datetime.Clock
 
 
 @Composable
@@ -99,14 +98,26 @@ fun NavigationGraph(navController: NavHostController) {
         ) {
             val viewModel: UserDetailViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             LaunchedEffect(Unit) {
-                viewModel.execute(UserDetailCommand.GetUserDetails(Clock.System))
+                viewModel.execute(UserDetailCommand.GetUserDetails)
             }
 
             LaunchedEffect(uiState.navigateBack) {
                 if (uiState.navigateBack) {
                     navController.popBackStack()
+                }
+            }
+
+            DisposableEffect(Unit) {
+                val tickerReceiver = TimeTickReceiver {
+                    viewModel.execute(UserDetailCommand.OnLocalClockUpdated)
+                }
+                context.registerReceiver(tickerReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
+
+                onDispose {
+                    context.unregisterReceiver(tickerReceiver)
                 }
             }
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.joaogouveia89.randomuser.R
-import io.github.joaogouveia89.randomuser.core.di.IoDispatcher
 import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionMonitor
 import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionStatus
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
@@ -15,7 +14,6 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepos
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,7 +32,6 @@ private const val CACHE_LIFETIME_MS = 5000L
 class RandomUserViewModel @Inject constructor(
     private val repository: UserRepository,
     private val clock: Clock,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
     internetConnectionMonitor: InternetConnectionMonitor
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UserProfileState())
@@ -182,8 +179,4 @@ class RandomUserViewModel @Inject constructor(
     }
 
     private fun isUserOnline() = internetConnectionStatus.value == InternetConnectionStatus.ONLINE
-
-    companion object {
-        private val TAG = this::class.java.name
-    }
 }
