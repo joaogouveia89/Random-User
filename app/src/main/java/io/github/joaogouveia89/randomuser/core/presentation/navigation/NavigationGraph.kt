@@ -3,13 +3,11 @@ package io.github.joaogouveia89.randomuser.core.presentation.navigation
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -39,22 +37,24 @@ fun NavigationGraph(navController: NavHostController) {
         startDestination = Routes.RANDOM_USER_ROUTE
     ) {
 
-        var tickerReceiver: TimeTickReceiver? = null
-
         composable(BottomNavItem.RandomUser.route) {
             val context = LocalContext.current
 
             val viewModel: RandomUserViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            tickerReceiver = TimeTickReceiver{
-                viewModel.execute(RandomUserCommand.OnLocalClockUpdated)
+            DisposableEffect(Unit) {
+                val tickerReceiver = TimeTickReceiver {
+                    viewModel.execute(RandomUserCommand.OnLocalClockUpdated)
+                }
+                context.registerReceiver(tickerReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
+
+                onDispose {
+                    context.unregisterReceiver(tickerReceiver)
+                }
             }
 
             LaunchedEffect(Unit) {
-                tickerReceiver?.let { ticker ->
-                    context.registerReceiver(ticker, IntentFilter(Intent.ACTION_TIME_TICK))
-                }
                 viewModel.execute(RandomUserCommand.GetNewUser)
             }
 
@@ -72,14 +72,8 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.UserList.route) {
             val viewModel: UserListViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val context = LocalContext.current
 
             LaunchedEffect(Unit) {
-                tickerReceiver?.also { ticker ->
-                    context.unregisterReceiver(ticker)
-                    tickerReceiver = null
-                }
-
                 viewModel.execute(UserListCommand.GetUsers)
             }
 
