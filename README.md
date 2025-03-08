@@ -43,6 +43,7 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Integrate the broadcast receiver response to the view model logic to update the current user clock~~
 - [ ] Add UI tests with Espresso
 - [ ] Include and setup [Detekt library](https://github.com/detekt/detekt)
+- [ ] Implement a more scalable solution to [NavigationGraph](app/src/main/java/io/github/joaogouveia89/randomuser/core/presentation/navigation/NavigationGraph.kt)
 
 ## Bug fixing
 
