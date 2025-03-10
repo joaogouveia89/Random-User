@@ -2,6 +2,7 @@ package io.github.joaogouveia89.randomuser.userList
 
 import app.cash.turbine.test
 import io.github.joaogouveia89.randomuser.MainCoroutineRule
+import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.state.ContentState
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListGetState
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListRepository
@@ -74,7 +75,8 @@ class UserListViewModelTest {
             // Error state
             val errorState = awaitItem()
 
-            assertTrue(errorState.isError)
+            // TODO CHANGE THIS TO GENERIC ERROR INSTEAD
+            assertEquals(ContentState.Error(2131427346), errorState.contentState)
         }
     }
 

@@ -4,14 +4,11 @@ import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContai
 import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import kotlinx.datetime.Instant
 
-enum class LoadState {
-    GETTING_USER, REPLACING_USER, IDLE
-}
 
 data class UserProfileState(
     val user: User = User(),
     val locationTime: Instant? = null,
-    val loadState: LoadState = LoadState.IDLE,
+    val isReplacingUser: Boolean = false,
     val isSaving: Boolean = false,
     val contentState: ContentState = ContentState.Ready,
     val showSnackBar: Boolean = false

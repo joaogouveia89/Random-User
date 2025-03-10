@@ -54,6 +54,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
 
             LaunchedEffect(Unit) {
+                viewModel.execute(RandomUserCommand.MonitorInternetStatus)
                 viewModel.execute(RandomUserCommand.GetNewUser)
             }
 

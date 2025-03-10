@@ -12,7 +12,6 @@ import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState
-import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,7 +51,61 @@ class RandomUserViewModel @Inject constructor(
                 InternetConnectionStatus.OFFLINE
             )
 
-    init {
+    private val getUserFlow = repository
+        .getRandomUser()
+        .map { userFetchState ->
+            when (userFetchState) {
+                is UserRepositoryFetchResponse.Loading -> {
+                    if (uiState.value.user == User())
+                        UserProfileState(contentState = ContentState.Loading)
+                    else {
+                        _uiState.value.copy(isReplacingUser = true)
+                    }
+                }
+
+                is UserRepositoryFetchResponse.Success -> {
+                    UserProfileState(
+                        user = userFetchState.user,
+                        locationTime = clock
+                            .now()
+                            .calculateOffset(userFetchState.user.timezoneOffset),
+                        contentState = if (
+                            !userFetchState.isColorAnalysisError)
+                            ContentState.Ready
+                        else
+                            ContentState.Error(R.string.error_message_color_analysis)
+                    )
+                }
+
+                is UserRepositoryFetchResponse.SourceError -> {
+                    if (isUserOnline()) {
+                        _uiState.value.copy(
+                            isReplacingUser = false,
+                            contentState = ContentState.Error(R.string.error_message_source),
+                            showSnackBar = !_uiState.value.shouldShowFullErrorScreen()
+                        )
+                    } else _uiState.value.copy(
+                        isReplacingUser = false,
+                        contentState = ContentState.Offline,
+                        showSnackBar = !_uiState.value.shouldShowFullErrorScreen()
+                    )
+                }
+            }
+        }
+
+    fun execute(command: RandomUserCommand) {
+
+        when (command) {
+            is RandomUserCommand.MonitorInternetStatus -> monitorInternetStatus()
+            is RandomUserCommand.GetNewUser -> getNewUser()
+            is RandomUserCommand.SaveUser -> saveUser()
+            is RandomUserCommand.DismissError -> dismissError()
+            is RandomUserCommand.ErrorRetryClick -> getNewUser()
+            is RandomUserCommand.OnLocalClockUpdated -> updateUserLocalTime()
+        }
+    }
+
+    private fun monitorInternetStatus(){
         viewModelScope.launch(Dispatchers.IO) {
             internetConnectionStatus.collect { connectionStatus ->
                 _uiState.update {
@@ -70,71 +123,21 @@ class RandomUserViewModel @Inject constructor(
         }
     }
 
-    private val getUserFlow = repository
-        .getRandomUser()
-        .map { userFetchState ->
-            when (userFetchState) {
-                is UserRepositoryFetchResponse.Loading -> {
-                    if (_uiState.value.user == User())
-                        UserProfileState(contentState = ContentState.Loading)
-                    else {
-                        _uiState.value.copy(loadState = LoadState.REPLACING_USER)
-                    }
-                }
-
-                is UserRepositoryFetchResponse.Success -> {
-                    UserProfileState(
-                        user = userFetchState.user,
-                        locationTime = clock.now()
-                            .calculateOffset(userFetchState.user.timezoneOffset),
-                        contentState = if (
-                            !userFetchState.isColorAnalysisError)
-                            ContentState.Ready
-                        else
-                            ContentState.Error(R.string.error_message_color_analysis)
-                    )
-                }
-
-                is UserRepositoryFetchResponse.SourceError -> {
-                    if (isUserOnline()) {
-                        _uiState.value.copy(
-                            loadState = LoadState.IDLE,
-                            contentState = ContentState.Error(R.string.error_message_source),
-                            showSnackBar = !_uiState.value.shouldShowFullErrorScreen()
-                        )
-                    } else _uiState.value.copy(
-                        loadState = LoadState.IDLE,
-                        contentState = ContentState.Offline,
-                        showSnackBar = !_uiState.value.shouldShowFullErrorScreen()
-                    )
-                }
-            }
-        }
-
-    fun execute(command: RandomUserCommand) {
-
-        when (command) {
-            is RandomUserCommand.GetNewUser -> getNewUser()
-            is RandomUserCommand.SaveUser -> saveUser()
-            is RandomUserCommand.DismissError -> dismissError()
-            is RandomUserCommand.ErrorRetryClick -> getNewUser()
-            is RandomUserCommand.OnLocalClockUpdated -> updateUserLocalTime()
-        }
-    }
-
     private fun getNewUser() {
         viewModelScope.launch {
             getUserFlow.collect { userProfileState ->
-                _uiState.value = userProfileState
+                _uiState.update { userProfileState }
             }
         }
     }
 
     private fun updateUserLocalTime() {
-        _uiState.update {
-            it.copy(
-                locationTime = clock.now().calculateOffset(it.user.timezoneOffset)
-            )
+        if(_uiState.value.contentState == ContentState.Ready){
+            _uiState.update {
+                it.copy(
+                    locationTime = clock.now().calculateOffset(it.user.timezoneOffset)
+                )
+            }
         }
     }
 

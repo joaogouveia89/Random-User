@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.ContentContainer
-import io.github.joaogouveia89.randomuser.randomUser.presentation.state.LoadState
 import io.github.joaogouveia89.randomuser.randomUser.presentation.state.UserProfileState
 import io.github.joaogouveia89.randomuser.ui.theme.RandomUserTheme
 import kotlinx.datetime.Clock
@@ -46,7 +45,7 @@ fun RandomUserScreenPreview() {
             uiState = UserProfileState(
                 user = fakeUser,
                 locationTime = Clock.System.now(),
-                loadState = LoadState.IDLE
+                isReplacingUser = false
             ),
             onAskNewUser = {},
             onOpenMapClick = {},
