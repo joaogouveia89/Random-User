@@ -11,6 +11,7 @@ import io.github.joaogouveia89.randomuser.userList.presentation.state.UserListSt
 fun UserListScreen(
     uiState: UserListState,
     onUserClick: (User) -> Unit,
+    onUserLongClick: (User) -> Unit,
     onSearchQueryChange: (String) -> Unit,
 ) {
     ContentContainer(
@@ -22,6 +23,7 @@ fun UserListScreen(
             UserListContent(
                 uiState = uiState,
                 onUserClick = onUserClick,
+                onUserLongClick = onUserLongClick,
                 onSearchQueryChange = onSearchQueryChange
             )
         }

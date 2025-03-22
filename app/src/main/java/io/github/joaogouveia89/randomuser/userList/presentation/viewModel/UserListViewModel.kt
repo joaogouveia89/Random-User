@@ -29,7 +29,7 @@ class UserListViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(UserListState())
 
-    private var fullUserList: List<User> = listOf()
+    private var fullUserList: List<Pair<User, Boolean>> = listOf()
 
     val uiState: StateFlow<UserListState>
         get() = _uiState
@@ -38,6 +38,8 @@ class UserListViewModel @Inject constructor(
         when (command) {
             UserListCommand.GetUsers -> getUsers()
             is UserListCommand.Search -> search(command.query)
+            is UserListCommand.UserLongClick -> userLongClickHandle(command.user)
+            is UserListCommand.UserClick -> userClick(command.user)
         }
     }
 
@@ -47,8 +49,8 @@ class UserListViewModel @Inject constructor(
                 when (state) {
                     is UserListGetState.Loading -> _uiState.update { UserListState(contentState = ContentState.Loading) }
                     is UserListGetState.Success -> {
-                        fullUserList = state.users
-                        _uiState.update { UserListState(userList = state.users) }
+                        fullUserList = state.users.map { Pair(it, false) }
+                        _uiState.update { UserListState(userList = state.users.map { Pair(it, false) }) }
                     }
 
                     is UserListGetState.Error -> _uiState.update {
@@ -59,6 +61,37 @@ class UserListViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun userClick(user: User){
+        val selectedCount = _uiState.value.userList.count { it.second }
+        if(selectedCount > 0){
+            selectUser(user)
+        } else{
+            _uiState.update {
+                it.copy(
+                    askedForDetails = user
+                )
+            }
+        }
+    }
+
+    private fun userLongClickHandle(user: User) {
+        selectUser(user)
+    }
+
+    private fun selectUser(user: User){
+        val newList = _uiState.value.userList.map {
+            if(it.first == user){
+                Pair(user, !it.second)
+            } else it
+        }
+        _uiState.update {
+            it.copy(
+                userList = newList,
+                isMultiSelectionMode = !newList.all { pair -> !pair.second }
+            )
         }
     }
 
@@ -79,7 +112,7 @@ class UserListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun filterList(users: List<User>, query: String): List<User> {
+    private suspend fun filterList(users: List<Pair<User, Boolean>>, query: String): List<Pair<User, Boolean>> {
         val chunkedUsers =
             users.chunked(100) // To avoid coroutines overhead, using one to evaluate blocks of 100
 
@@ -87,9 +120,9 @@ class UserListViewModel @Inject constructor(
             viewModelScope.async(dispatcher) {
                 chunk.filter { user ->
                     listOf(
-                        levenshteinDistance(user.firstName, query),
-                        levenshteinDistance(user.lastName, query),
-                        levenshteinDistance(user.email, query)
+                        levenshteinDistance(user.first.firstName, query),
+                        levenshteinDistance(user.first.lastName, query),
+                        levenshteinDistance(user.first.email, query)
                     ).any {
                         it < LEVENSHTEIN_DISTANCE_MAX
                     }

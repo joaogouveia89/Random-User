@@ -19,7 +19,8 @@ import io.github.joaogouveia89.randomuser.userList.presentation.state.UserListSt
 fun UserListContent(
     uiState: UserListState,
     onSearchQueryChange: (String) -> Unit,
-    onUserClick: (User) -> Unit
+    onUserClick: (User) -> Unit,
+    onUserLongClick: (User) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -30,16 +31,22 @@ fun UserListContent(
         if (uiState.hasNoUser) {
             UserListEmpty()
         } else {
-            SearchBar(
-                onSearchQueryChange = onSearchQueryChange
-            )
+            if(uiState.isMultiSelectionMode){
+                
+            }else{
+                SearchBar(
+                    onSearchQueryChange = onSearchQueryChange
+                )
+            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(uiState.userList) { user ->
                     UserListItem(
-                        user = user,
-                        onClick = { onUserClick(user) }
+                        user = user.first,
+                        isSelected = user.second,
+                        onClick = { onUserClick(user.first) },
+                        onLongClick = { onUserLongClick(user.first) },
                     )
                     Spacer(modifier = Modifier.height(12.dp)) // Add spacing between items
                 }
@@ -53,9 +60,10 @@ fun UserListContent(
 private fun UserListContentPreview() {
     UserListContent(
         uiState = UserListState(
-            userList = listOf(fakeUser, fakeUser)
+            userList = listOf(Pair(fakeUser, false), Pair(fakeUser, false))
         ),
         onSearchQueryChange = {},
-        onUserClick = {}
+        onUserClick = {},
+        onUserLongClick = {},
     )
 }

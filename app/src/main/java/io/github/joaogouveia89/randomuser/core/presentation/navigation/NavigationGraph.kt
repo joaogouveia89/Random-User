@@ -77,10 +77,19 @@ fun NavigationGraph(navController: NavHostController) {
                 viewModel.execute(UserListCommand.GetUsers)
             }
 
+            LaunchedEffect(uiState.askedForDetails) {
+                uiState.askedForDetails?.let {
+                    navController.navigate(DetailScreenNav.DetailScreen.passUserId(userId = it.id))
+                }
+            }
+
             UserListScreen(
                 uiState = uiState,
                 onUserClick = {
-                    navController.navigate(DetailScreenNav.DetailScreen.passUserId(userId = it.id))
+                    viewModel.execute(UserListCommand.UserClick(it))
+                },
+                onUserLongClick = {
+                    viewModel.execute(UserListCommand.UserLongClick(it))
                 },
                 onSearchQueryChange = {
                     viewModel.execute(UserListCommand.Search(it))
