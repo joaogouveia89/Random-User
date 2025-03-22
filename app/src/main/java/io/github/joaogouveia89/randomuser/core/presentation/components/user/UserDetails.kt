@@ -30,7 +30,7 @@ import io.github.joaogouveia89.randomuser.R
 import io.github.joaogouveia89.randomuser.core.fakeData.fakeUser
 import io.github.joaogouveia89.randomuser.core.ktx.humanizedHourMin
 import io.github.joaogouveia89.randomuser.core.presentation.components.CardSection
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 

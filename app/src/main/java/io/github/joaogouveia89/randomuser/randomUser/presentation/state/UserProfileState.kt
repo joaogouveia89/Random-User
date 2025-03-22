@@ -1,7 +1,7 @@
 package io.github.joaogouveia89.randomuser.randomUser.presentation.state
 
 import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.state.ContentState
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import kotlinx.datetime.Instant
 
 

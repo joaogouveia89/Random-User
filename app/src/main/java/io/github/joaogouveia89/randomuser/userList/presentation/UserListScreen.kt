@@ -3,7 +3,7 @@ package io.github.joaogouveia89.randomuser.userList.presentation
 import androidx.compose.runtime.Composable
 import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.ContentContainer
 import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.state.ContentState
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import io.github.joaogouveia89.randomuser.userList.presentation.components.UserListContent
 import io.github.joaogouveia89.randomuser.userList.presentation.state.UserListState
 

@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 
 @Composable
 fun UserListItem(

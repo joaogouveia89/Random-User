@@ -1,4 +1,4 @@
-package io.github.joaogouveia89.randomuser.randomUser.domain.model
+package io.github.joaogouveia89.randomuser.core.model
 
 import kotlinx.datetime.Instant
 

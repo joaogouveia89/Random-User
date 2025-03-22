@@ -7,7 +7,7 @@ import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.Interne
 import io.github.joaogouveia89.randomuser.core.service.remote.UserService
 import io.github.joaogouveia89.randomuser.core.service.remote.model.RandomUserResponse
 import io.github.joaogouveia89.randomuser.randomUser.data.repository.UserRepositoryImpl
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState

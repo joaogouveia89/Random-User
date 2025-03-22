@@ -2,9 +2,9 @@ package io.github.joaogouveia89.randomuser.core.service.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.Country
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.Nationality
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.Country
+import io.github.joaogouveia89.randomuser.core.model.Nationality
+import io.github.joaogouveia89.randomuser.core.model.User
 import kotlinx.datetime.Instant
 
 @Entity

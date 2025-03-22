@@ -1,7 +1,7 @@
 package io.github.joaogouveia89.randomuser.userDetail.presentation.state
 
 import androidx.annotation.StringRes
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import kotlinx.datetime.Instant
 
 data class UserDetailState(

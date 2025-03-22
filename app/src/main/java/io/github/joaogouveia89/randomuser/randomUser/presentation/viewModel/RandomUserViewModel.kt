@@ -8,7 +8,7 @@ import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.Interne
 import io.github.joaogouveia89.randomuser.core.internetConnectionMonitor.InternetConnectionStatus
 import io.github.joaogouveia89.randomuser.core.ktx.calculateOffset
 import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContainer.state.ContentState
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepository
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserRepositoryFetchResponse
 import io.github.joaogouveia89.randomuser.randomUser.domain.repository.UserSaveState

@@ -1,6 +1,6 @@
 package io.github.joaogouveia89.randomuser.userList.domain.repository
 
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.User
 import kotlinx.coroutines.flow.Flow
 
 

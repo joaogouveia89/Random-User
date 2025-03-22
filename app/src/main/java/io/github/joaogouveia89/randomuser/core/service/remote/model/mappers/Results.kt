@@ -1,9 +1,9 @@
 package io.github.joaogouveia89.randomuser.core.service.remote.model.mappers
 
 import io.github.joaogouveia89.randomuser.core.service.remote.model.Results
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.Country
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.Nationality
-import io.github.joaogouveia89.randomuser.randomUser.domain.model.User
+import io.github.joaogouveia89.randomuser.core.model.Country
+import io.github.joaogouveia89.randomuser.core.model.Nationality
+import io.github.joaogouveia89.randomuser.core.model.User
 import kotlinx.datetime.Instant
 
 fun Results.asUser(colors: Pair<String, String>): User =
