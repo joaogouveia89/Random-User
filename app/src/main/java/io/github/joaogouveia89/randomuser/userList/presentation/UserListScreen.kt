@@ -13,6 +13,7 @@ fun UserListScreen(
     onUserClick: (User) -> Unit,
     onUserLongClick: (User) -> Unit,
     onSearchQueryChange: (String) -> Unit,
+    onMultipleDeleteClick: () -> Unit,
 ) {
     ContentContainer(
         contentState = ContentState.Ready,
@@ -24,7 +25,8 @@ fun UserListScreen(
                 uiState = uiState,
                 onUserClick = onUserClick,
                 onUserLongClick = onUserLongClick,
-                onSearchQueryChange = onSearchQueryChange
+                onSearchQueryChange = onSearchQueryChange,
+                onMultipleDeleteClick = onMultipleDeleteClick
             )
         }
     )

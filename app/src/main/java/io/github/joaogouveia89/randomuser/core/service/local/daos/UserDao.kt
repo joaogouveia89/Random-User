@@ -18,4 +18,7 @@ interface UserDao {
 
     @Query("DELETE FROM userentity WHERE id=:id")
     fun delete(id: Long)
+
+    @Query("DELETE FROM userentity WHERE id in (:ids)")
+    fun deleteMultiple(ids: List<Long>)
 }

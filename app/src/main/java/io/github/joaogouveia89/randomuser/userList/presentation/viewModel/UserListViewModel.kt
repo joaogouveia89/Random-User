@@ -9,6 +9,7 @@ import io.github.joaogouveia89.randomuser.core.presentation.screen.contentContai
 import io.github.joaogouveia89.randomuser.core.model.User
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListGetState
 import io.github.joaogouveia89.randomuser.userList.domain.repository.UserListRepository
+import io.github.joaogouveia89.randomuser.userList.domain.repository.UsersDeleteState
 import io.github.joaogouveia89.randomuser.userList.presentation.state.UserListState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -37,6 +38,7 @@ class UserListViewModel @Inject constructor(
     fun execute(command: UserListCommand) {
         when (command) {
             UserListCommand.GetUsers -> getUsers()
+            UserListCommand.MultipleDeleteClick -> multipleDelete()
             is UserListCommand.Search -> search(command.query)
             is UserListCommand.UserLongClick -> userLongClickHandle(command.user)
             is UserListCommand.UserClick -> userClick(command.user)
@@ -57,6 +59,22 @@ class UserListViewModel @Inject constructor(
                         UserListState(
                             showSnackBar = true,
                             contentState = ContentState.Error(R.string.error_generic_description)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun multipleDelete(){
+        viewModelScope.launch(dispatcher) {
+            val usersToDelete = uiState.value.userList.filter { it.second }
+            repository.deleteUsers(usersToDelete.map { it.first }).collect{ state ->
+                if(state is UsersDeleteState.Success){
+                    _uiState.update {
+                        it.copy(
+                            userList = uiState.value.userList - usersToDelete.toSet(),
+                            isMultiSelectionMode = false
                         )
                     }
                 }

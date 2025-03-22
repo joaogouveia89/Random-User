@@ -13,4 +13,8 @@ class UserListSourceImpl @Inject constructor(
         userDao
             .getUsersEntities()
             .asUsers()
+
+    override suspend fun deleteUsers(users: List<User>) {
+        userDao.deleteMultiple(users.map { it.id })
+    }
 }

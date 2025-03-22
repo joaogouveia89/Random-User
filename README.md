@@ -18,11 +18,11 @@ This project is an Android application that consumes the [Random User API](https
 - [x] ~~Offline detector~~
 - [x]  ~~Offline screen and offline snack bar to Random User~~
 - [x] ~~Make a search field on list~~
+- [x] ~~Add long click behaviour to each item of contact list and show the delete option for multiple contacts~~
 - [ ] Pagination to user list
 - [ ] Caching(storing ids to avoid duplicating objects)
 - [ ] A sticky letter list for easier navigation through the contact list.
 - [ ] Filter Contact list by one or more user attributes
-- [ ] Add long click behaviour to each item of contact list and show the delete option for multiple contacts
 - [ ] Add a field to user details screen with the distance from the phone user and the detailed user(GPS permission required)
 
 

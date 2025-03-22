@@ -10,6 +10,13 @@ sealed class UserListGetState {
     data object Error : UserListGetState()
 }
 
+sealed class UsersDeleteState {
+    data object Loading : UsersDeleteState()
+    data object Success : UsersDeleteState()
+    data object Error : UsersDeleteState()
+}
+
 interface UserListRepository {
     suspend fun getUsers(): Flow<UserListGetState>
+    suspend fun deleteUsers(users: List<User>): Flow<UsersDeleteState>
 }

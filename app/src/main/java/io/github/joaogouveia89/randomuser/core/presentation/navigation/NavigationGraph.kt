@@ -93,6 +93,9 @@ fun NavigationGraph(navController: NavHostController) {
                 },
                 onSearchQueryChange = {
                     viewModel.execute(UserListCommand.Search(it))
+                },
+                onMultipleDeleteClick = {
+                    viewModel.execute(UserListCommand.MultipleDeleteClick)
                 }
             )
         }
